@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAT Study Notes - SATyr</title>
+    <style>
+        :root {
+            --primary-color: #008080;
+            --secondary-color: #006666;
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+            --sidebar-bg: #242424;
+            --card-bg: #2a2a2a;
+            --hover-color: #00a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            display: block;
+            text-decoration: none;
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--hover-color);
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: var(--card-bg);
+            color: var(--hover-color);
+        }
+
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .content-header {
+            margin-bottom: 2rem;
+        }
+
+        .content-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .content-description {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .note-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .note-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .note-content {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .note-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .note-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <a href="index.html" class="logo">SATyr</a>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search notes...">
+            </div>
+
+            <nav class="nav-section">
+                <h2 class="nav-title">English</h2>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#reading" class="nav-link active">Reading Comprehension</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#writing" class="nav-link">Writing & Language</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#essay" class="nav-link">Essay Writing</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="nav-section">
+                <h2 class="nav-title">Math</h2>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#algebra" class="nav-link">Algebra</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#geometry" class="nav-link">Geometry</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#trigonometry" class="nav-link">Trigonometry</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="content-title">Reading Comprehension</h1>
+                <p class="content-description">Master the art of understanding and analyzing complex texts</p>
+            </div>
+
+            <div class="notes-grid">
+                <article class="note-card">
+                    <h3 class="note-title">Main Idea & Purpose</h3>
+                    <p class="note-content">Learn how to identify the central theme and author's intent in passages.</p>
+                    <div class="note-footer">
+                        <span class="note-tag">Reading</span>
+                        <span>5 min read</span>
+                    </div>
+                </article>
+
+                <article class="note-card">
+                    <h3 class="note-title">Supporting Details</h3>
+                    <p class="note-content">Understand how to find and analyze evidence that supports the main idea.</p>
+                    <div class="note-footer">
+                        <span class="note-tag">Reading</span>
+                        <span>4 min read</span>
+                    </div>
+                </article>
+
+                <article class="note-card">
+                    <h3 class="note-title">Making Inferences</h3>
+                    <p class="note-content">Develop skills to draw logical conclusions from text evidence.</p>
+                    <div class="note-footer">
+                        <span class="note-tag">Reading</span>
+                        <span>6 min read</span>
+                    </div>
+                </article>
+
+                <article class="note-card">
+                    <h3 class="note-title">Author's Tone & Attitude</h3>
+                    <p class="note-content">Learn to identify the author's perspective and emotional stance.</p>
+                    <div class="note-footer">
+                        <span class="note-tag">Reading</span>
+                        <span>5 min read</span>
+                    </div>
+                </article>
+
+                <article class="note-card">
+                    <h3 class="note-title">Vocabulary in Context</h3>
+                    <p class="note-content">Master the skill of understanding word meanings from context.</p>
+                    <div class="note-footer">
+                        <span class="note-tag">Reading</span>
+                        <span>7 min read</span>
+                    </div>
+                </article>
+
+                <article class="note-card">
+                    <h3 class="note-title">Text Structure</h3>
+                    <p class="note-content">Understand how authors organize information in passages.</p>
+                    <div class="note-footer">
+                        <span class="note-tag">Reading</span>
+                        <span>4 min read</span>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Add click event listeners to nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(l => {
+                    l.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Update content based on clicked section
+                const section = this.getAttribute('href').substring(1);
+                updateContent(section);
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const noteCards = document.querySelectorAll('.note-card');
+            
+            noteCards.forEach(card => {
+                const title = card.querySelector('.note-title').textContent.toLowerCase();
+                const content = card.querySelector('.note-content').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        function updateContent(section) {
+            // Update content title and description
+            const contentTitle = document.querySelector('.content-title');
+            const contentDescription = document.querySelector('.content-description');
+            
+            switch(section) {
+                case 'reading':
+                    contentTitle.textContent = 'Reading Comprehension';
+                    contentDescription.textContent = 'Master the art of understanding and analyzing complex texts';
+                    break;
+                case 'writing':
+                    contentTitle.textContent = 'Writing & Language';
+                    contentDescription.textContent = 'Learn grammar, usage, and effective writing techniques';
+                    break;
+                case 'essay':
+                    contentTitle.textContent = 'Essay Writing';
+                    contentDescription.textContent = 'Develop strong analytical writing skills';
+                    break;
+                case 'algebra':
+                    contentTitle.textContent = 'Algebra';
+                    contentDescription.textContent = 'Master algebraic concepts and problem-solving';
+                    break;
+                case 'geometry':
+                    contentTitle.textContent = 'Geometry';
+                    contentDescription.textContent = 'Learn geometric principles and applications';
+                    break;
+                case 'trigonometry':
+                    contentTitle.textContent = 'Trigonometry';
+                    contentDescription.textContent = 'Understand trigonometric functions and their applications';
+                    break;
+            }
+        }
+    </script>
+</body>
+</html> 

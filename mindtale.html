@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindtale - Work in Progress</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #0a0a23 0%, #1a1a3a 100%);
+            overflow: hidden;
+            font-family: 'Cinzel Decorative', cursive;
+            color: #d8b8ff;
+        }
+
+        /* Starry background animation */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(1.2); }
+        }
+
+        /* Random star positions and sizes */
+        .star:nth-child(1) { top: 10%; left: 15%; width: 2px; height: 2px; animation-delay: 0s; }
+        .star:nth-child(2) { top: 20%; left: 85%; width: 3px; height: 3px; animation-delay: 1s; }
+        .star:nth-child(3) { top: 30%; left: 25%; width: 1px; height: 1px; animation-delay: 2s; }
+        .star:nth-child(4) { top: 40%; left: 65%; width: 2px; height: 2px; animation-delay: 3s; }
+        .star:nth-child(5) { top: 50%; left: 35%; width: 3px; height: 3px; animation-delay: 4s; }
+        .star:nth-child(6) { top: 60%; left: 75%; width: 1px; height: 1px; animation-delay: 0.5s; }
+        .star:nth-child(7) { top: 70%; left: 20%; width: 2px; height: 2px; animation-delay: 1.5s; }
+        .star:nth-child(8) { top: 80%; left: 90%; width: 3px; height: 3px; animation-delay: 2.5s; }
+        .star:nth-child(9) { top: 15%; left: 50%; width: 2px; height: 2px; animation-delay: 3.5s; }
+        .star:nth-child(10) { top: 25%; left: 70%; width: 1px; height: 1px; animation-delay: 4.5s; }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(26, 26, 58, 0.7);
+            border: 2px solid #d8b8ff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(216, 184, 255, 0.5);
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(216, 184, 255, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(216, 184, 255, 0.8); }
+        }
+
+        h1 {
+            font-size: 4em;
+            margin: 0;
+            text-shadow: 0 0 10px #d8b8ff, 0 0 20px #d8b8ff;
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        p {
+            font-size: 1.5em;
+            margin: 20px 0;
+            text-shadow: 0 0 5px #d8b8ff;
+        }
+
+        .scroll {
+            position: absolute;
+            bottom: 20px;
+            font-size: 1.2em;
+            text-shadow: 0 0 5px #d8b8ff;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+    <div class="container">
+        <h1>Mindtale</h1>
+        <p>A Mythical Journey Awaits...</p>
+        <p>Embark on an epic adventure through a world of ancient mythology and fantasy.</p>
+        <p>Coming Soon!</p>
+    </div>
+    <div class="scroll">Scrolls of lore are being woven...</div>
+</body>
+</html>
