@@ -54,10 +54,15 @@ header {
     opacity: 1;
     position: absolute;
     left: 0;
-    font-weight: bold;
-    font-size: 24px;
     text-decoration: none;
     color: white;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
 }
 
 body:not(.home-active) .logo {
@@ -2365,7 +2370,9 @@ body.mindtale-active .light-blob {
 <!-- Header -->
 <header>
 <div class="header-container">
-    <a href="#" class="logo">SATyr</a>
+    <a href="#" class="logo">
+        <img src="/images/logo.png" alt="SATyr Logo">
+    </a>
     <nav>
         <a class="nav-link active" data-section="home">Home</a>
         <a class="nav-link" data-section="mindtale-direct">Mindtale</a>
