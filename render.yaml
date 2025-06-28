@@ -1,0 +1,4 @@
+routes:
+  - type: rewrite
+    source: /ai-chat
+    destination: /ai-chat.html
