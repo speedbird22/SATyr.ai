@@ -2,3 +2,8 @@ routes:
   - type: rewrite
     source: /ai-chat
     destination: /ai-chat.html
+
+  - type: redirect
+    source: /ai-chat.html
+    destination: /ai-chat
+    statusCode: 301
