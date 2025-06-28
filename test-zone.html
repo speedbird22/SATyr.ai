@@ -8,6 +8,8 @@
     <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
     <link rel="shortcut icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
     <link rel="apple-touch-icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,23 +18,86 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        .star:nth-child(odd) {
+            animation-delay: 1s;
+        }
+
+        .star:nth-child(3n) {
+            animation-delay: 2s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #fff, #4ecdc4);
+            border-radius: 50%;
+            animation: shoot 4s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100vw) translateY(-100px);
+                opacity: 0;
+            }
         }
 
         .container {
             text-align: center;
             max-width: 600px;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(15, 15, 35, 0.8);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(78, 205, 196, 0.2);
         }
 
         .logo {
@@ -41,29 +106,27 @@
             border-radius: 50%;
             margin: 0 auto 30px;
             display: block;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
         }
 
         h1 {
             font-size: 3rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d, #667eea);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             font-weight: 700;
-        }
-
-        .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
+            text-shadow: 0 0 30px rgba(78, 205, 196, 0.5);
         }
 
         .description {
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 40px;
-            opacity: 0.8;
+            opacity: 0.9;
+            color: #e0e6ed;
+            font-weight: 300;
         }
 
         .features {
@@ -74,85 +137,156 @@
         }
 
         .feature {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
+            background: rgba(15, 15, 35, 0.6);
+            padding: 25px;
             border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(78, 205, 196, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(78, 205, 196, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .feature:hover::before {
+            left: 100%;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.2);
+            border-color: rgba(78, 205, 196, 0.4);
         }
 
         .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(78, 205, 196, 0.5));
         }
 
         .feature h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
             color: #4ecdc4;
+            font-weight: 600;
         }
 
         .feature p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             opacity: 0.8;
+            color: #b8c5d1;
+            font-weight: 300;
         }
 
         .back-button {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.2);
+            gap: 12px;
+            background: linear-gradient(45deg, rgba(78, 205, 196, 0.2), rgba(68, 160, 141, 0.2));
             color: white;
             text-decoration: none;
-            padding: 12px 24px;
+            padding: 15px 30px;
             border-radius: 30px;
             font-weight: 500;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(78, 205, 196, 0.3), rgba(68, 160, 141, 0.3));
+            transition: left 0.3s;
+        }
+
+        .back-button:hover::before {
+            left: 0;
         }
 
         .back-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+            border-color: rgba(78, 205, 196, 0.6);
+        }
+
+        .back-button span {
+            position: relative;
+            z-index: 1;
         }
 
         .status-badge {
             display: inline-block;
             background: linear-gradient(45deg, #ff6b6b, #ee5a24);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
             font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             animation: pulse 2s infinite;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 107, 107, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 107, 107, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 107, 107, 0.4); }
         }
 
         .progress-bar {
             width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            margin: 20px 0;
+            height: 10px;
+            background: rgba(15, 15, 35, 0.8);
+            border-radius: 5px;
+            margin: 25px 0;
             overflow: hidden;
+            border: 1px solid rgba(78, 205, 196, 0.2);
         }
 
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #4ecdc4, #44a08d);
             width: 25%;
-            border-radius: 4px;
+            border-radius: 5px;
             animation: progressGlow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         @keyframes progressGlow {
-            0% { box-shadow: 0 0 5px rgba(78, 205, 196, 0.5); }
-            100% { box-shadow: 0 0 20px rgba(78, 205, 196, 0.8); }
+            0% { box-shadow: 0 0 10px rgba(78, 205, 196, 0.5); }
+            100% { box-shadow: 0 0 25px rgba(78, 205, 196, 0.8); }
         }
 
         @media (max-width: 768px) {
@@ -165,20 +299,21 @@
                 font-size: 2.5rem;
             }
             
-            .subtitle {
-                font-size: 1.3rem;
+            .features {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+    <div class="stars" id="stars"></div>
+    
     <div class="container">
         <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="SATyr Logo" class="logo">
         
         <div class="status-badge">🚧 Under Development</div>
         
         <h1>Test Zone</h1>
-        <p class="subtitle">Practice Makes Perfect</p>
         
         <p class="description">
             Welcome to the SATyr Test Zone! We're building an amazing space where you can take practice tests, 
@@ -189,7 +324,7 @@
         <div class="progress-bar">
             <div class="progress-fill"></div>
         </div>
-        <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 30px;">Development Progress: 25%</p>
+        <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 30px; color: #b8c5d1; font-weight: 300;">Development Progress: 25%</p>
 
         <div class="features">
             <div class="feature">
@@ -217,23 +352,50 @@
             </div>
         </div>
 
-        <a href="javascript:history.back()" class="back-button">
+        <a href="index.html" class="back-button">
             <span>←</span>
-            Back to SATyr
+            <span>Back to SATyr</span>
         </a>
     </div>
 
     <script>
-        // Add some interactive elements
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 100;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+            
+            // Create shooting stars
+            for (let i = 0; i < 3; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.top = Math.random() * 50 + '%';
+                shootingStar.style.animationDelay = Math.random() * 4 + 's';
+                starsContainer.appendChild(shootingStar);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            
             // Animate features on load
             const features = document.querySelectorAll('.feature');
             features.forEach((feature, index) => {
                 feature.style.opacity = '0';
-                feature.style.transform = 'translateY(20px)';
+                feature.style.transform = 'translateY(30px)';
                 
                 setTimeout(() => {
-                    feature.style.transition = 'all 0.6s ease';
+                    feature.style.transition = 'all 0.8s ease';
                     feature.style.opacity = '1';
                     feature.style.transform = 'translateY(0)';
                 }, index * 200);
@@ -242,9 +404,9 @@
             // Add click effect to features
             features.forEach(feature => {
                 feature.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
+                    this.style.transform = 'scale(0.95) translateY(-5px)';
                     setTimeout(() => {
-                        this.style.transform = 'scale(1)';
+                        this.style.transform = 'scale(1) translateY(-5px)';
                     }, 150);
                 });
             });
