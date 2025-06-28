@@ -2390,7 +2390,8 @@ body.mindtale-active .light-blob {
         <a class="nav-link" data-section="mindtale-direct">Mindtale</a>
         <a class="nav-link" data-section="notes">Notes</a>
         <a class="nav-link" data-section="ai">AI</a>
-        <a class="nav-link" data-section="mission-vision">Mission & Vision</a>
+        <a class="nav-link" data-section="about-us">About Us</a>
+        <a class="nav-link" data-section="test-zone">Test Zone</a>
     </nav>
 </div>
 </header>
@@ -3355,6 +3356,10 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (section === 'notes') {
                 // Open SAT notes in new tab
                 window.open('sat-notes.html', '_blank');
+            } else if (section === 'about-us') {
+                showSection('mission-vision');
+            } else if (section === 'test-zone') {
+                window.open('test-zone.html', '_blank');
             } else {
                 showSection(section);
             }
@@ -3385,6 +3390,10 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (section === 'notes') {
                 // Open SAT notes in new tab
                 window.open('sat-notes.html', '_blank');
+            } else if (section === 'about-us') {
+                showSection('mission-vision');
+            } else if (section === 'test-zone') {
+                window.open('test-zone.html', '_blank');
             } else {
                 showSection(section);
             }
