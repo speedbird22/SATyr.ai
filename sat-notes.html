@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 1600 - SAT Study Notes</title>
+    <title>SATyr - SAT Study Notes</title>
     <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
     
     <!-- Load Configuration First -->
@@ -275,32 +275,50 @@
             transition: transform 0.3s ease;
         }
 
-        /* Configuration Status */
-        .config-status {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 200;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+        /* Remove the old sidebar toggle button */
+        .sidebar-toggle {
             display: none;
         }
 
-        .config-status.error {
-            border-color: #ef4444;
-            color: #ef4444;
-            display: block;
+        /* Sidebar Edge Toggle Button */
+        .sidebar-edge-toggle {
+            position: fixed;
+            top: 50%;
+            left: 300px;
+            transform: translateY(-50%);
+            z-index: 150;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 48px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
         }
 
-        .config-status.success {
-            border-color: var(--success-color);
-            color: var(--success-color);
-            display: block;
+        .sidebar-edge-toggle:hover {
+            background: var(--secondary-color);
+            transform: translateY(-50%) translateX(2px);
+        }
+
+        .sidebar.hidden + .main-content .sidebar-edge-toggle {
+            left: 0;
+        }
+
+        .sidebar.hidden ~ .sidebar-edge-toggle {
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-edge-toggle {
+                display: none;
+            }
         }
 
         /* Sign In Page Styles */
@@ -649,6 +667,7 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             font-size: 0.9rem;
+            position: relative;
         }
 
         .nav-link:hover {
@@ -731,13 +750,37 @@
             margin-bottom: 2rem;
             border: 1px solid var(--border-color);
             text-align: left;
+            position: relative;
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
         }
 
         .welcome-title {
             font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
+        }
+
+        .dismiss-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .dismiss-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
         }
 
         .welcome-text {
@@ -865,6 +908,9 @@
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             cursor: pointer;
+            display: block;
+            opacity: 1;
+            visibility: visible;
         }
 
         .sub-topic:hover {
@@ -938,6 +984,9 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            display: block;
+            opacity: 1;
+            visibility: visible;
         }
 
         .note-card::before {
@@ -1021,10 +1070,6 @@
                 display: block;
             }
 
-            .theme-toggle {
-                top: 4rem;
-            }
-
             .sidebar {
                 transform: translateX(-100%);
             }
@@ -1066,6 +1111,78 @@
                 font-size: 2rem;
             }
         }
+
+        /* Hover Panel Styles */
+        .topic-hover-panel {
+            position: absolute;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            min-width: 250px;
+            max-width: 300px;
+        }
+
+        [data-theme="light"] .topic-hover-panel {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-hover-panel.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .topic-hover-panel h4 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .topic-hover-panel .subtopic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .topic-hover-panel .subtopic-item:last-child {
+            border-bottom: none;
+        }
+
+        .topic-hover-panel .subtopic-item:hover {
+            color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        .topic-hover-panel .subtopic-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .topic-hover-panel .subtopic-percentage {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .nav-link {
+            position: relative;
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -1079,11 +1196,7 @@
         <span class="theme-icon" id="themeIcon">🌙</span>
     </button>
 
-    <!-- Configuration Status -->
-    <div id="configStatus" class="config-status">
-        Configuration loading...
-    </div>
-
+    <!-- Menu Toggle Button -->
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 
     <!-- Sign In Page -->
@@ -1092,8 +1205,8 @@
             <!-- Login Form -->
             <div id="loginForm" class="signin-form-container">
                 <div class="signin-header">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="Project 1600 Logo" class="signin-logo">
-                    <h1 class="signin-title">Project 1600</h1>
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="SATyr Logo" class="signin-logo">
+                    <h1 class="signin-title">SATyr</h1>
                     <p class="signin-subtitle">Your path to SAT success</p>
                     <p class="signin-description">Access comprehensive study materials, practice tests, and personalized learning tools to achieve your target score of 1600.</p>
                 </div>
@@ -1135,7 +1248,7 @@
             <!-- Success Message -->
             <div id="successMessage" class="success-message">
                 <div class="success-icon">🎉</div>
-                <h2 class="success-title">Welcome to Project 1600!</h2>
+                <h2 class="success-title">Welcome to SATyr!</h2>
                 <p class="success-text">You've successfully signed in. Redirecting to your dashboard...</p>
             </div>
         </div>
@@ -1144,8 +1257,8 @@
     <div class="container hidden" id="mainApp">
         <aside class="sidebar" id="sidebar">
             <div class="logo-container">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="Project 1600 Logo" class="logo-img">
-                <a href="#" class="logo" onclick="showPage('homepage')">Project 1600</a>
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="SATyr Logo" class="logo-img">
+                <a href="#" class="logo" onclick="showPage('homepage')">SATyr</a>
             </div>
 
             <nav class="nav-section">
@@ -1189,20 +1302,24 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" onclick="showPage('trigonometry')" data-page="trigonometry">
-                            <span class="nav-icon">📊</span>
+                            <span class="nav-icon">🌀</span>
                             Trigonometry
                         </a>
                     </li>
                 </ul>
             </nav>
         </aside>
+        <button class="sidebar-edge-toggle" onclick="toggleSidebar()" id="sidebarEdgeToggle">←</button>
 
         <main class="main-content" id="mainContent">
             <!-- Homepage -->
             <div id="homepage" class="homepage">
                 <!-- Welcome Message for Authenticated Users -->
                 <div id="welcomeMessage" class="welcome-message hidden">
-                    <h2 class="welcome-title">Welcome back, <span id="welcomeUserName"></span>!</h2>
+                    <div class="welcome-header">
+                        <h2 class="welcome-title">Welcome back, <span id="welcomeUserName"></span>!</h2>
+                        <button class="dismiss-btn" onclick="dismissWelcomeMessage()" title="Dismiss">×</button>
+                    </div>
                     <p class="welcome-text">Ready to continue your SAT preparation journey? Your progress is automatically saved.</p>
                 </div>
 
@@ -1214,7 +1331,7 @@
                 </div>
 
                 <div class="hero-section">
-                    <h1 class="hero-title">Project 1600</h1>
+                    <h1 class="hero-title">Mission 1600</h1>
                     <p class="hero-subtitle">Comprehensive study notes and resources to help you achieve your target score</p>
                 </div>
 
@@ -1368,6 +1485,186 @@
                             <span class="note-duration">6 min read</span>
                         </div>
                     </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Sentence Structure</h3>
+                        <p class="note-content">Learn to construct clear, concise sentences and avoid common structural errors.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Writing</span>
+                            <span class="note-duration">7 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Rhetorical Skills</h3>
+                        <p class="note-content">Develop skills in organization, style, and strategy for effective written communication.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Writing</span>
+                            <span class="note-duration">9 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="essay" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Essay Writing</h1>
+                    <p class="content-description">Master the SAT essay with strategic analysis and clear, persuasive writing</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Essay Structure</h3>
+                        <p class="note-content">Learn the fundamental structure of a strong SAT essay with introduction, body, and conclusion.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Essay</span>
+                            <span class="note-duration">6 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Rhetorical Analysis</h3>
+                        <p class="note-content">Understand how to analyze an author's use of evidence, reasoning, and stylistic elements.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Essay</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="algebra" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Algebra</h1>
+                    <p class="content-description">Master algebraic concepts and problem-solving techniques for the SAT Math section</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Linear Equations</h3>
+                        <p class="note-content">Solve and graph linear equations in one and two variables. Master slope-intercept form and systems of equations.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Algebra</span>
+                            <span class="note-duration">7 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Quadratic Functions</h3>
+                        <p class="note-content">Understand quadratic equations, factoring, and the quadratic formula. Learn to analyze parabolas.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Algebra</span>
+                            <span class="note-duration">9 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Exponential Functions</h3>
+                        <p class="note-content">Master exponential growth and decay problems. Understand logarithms and their applications.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Algebra</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Polynomial Operations</h3>
+                        <p class="note-content">Learn to add, subtract, multiply, and divide polynomials. Understand factoring techniques.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Algebra</span>
+                            <span class="note-duration">6 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="geometry" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Geometry</h1>
+                    <p class="content-description">Master geometric concepts, formulas, and problem-solving strategies</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Area and Perimeter</h3>
+                        <p class="note-content">Calculate area and perimeter of various shapes including triangles, rectangles, circles, and complex figures.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Geometry</span>
+                            <span class="note-duration">5 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Volume and Surface Area</h3>
+                        <p class="note-content">Master 3D geometry with cylinders, spheres, cones, and rectangular prisms.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Geometry</span>
+                            <span class="note-duration">7 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Coordinate Geometry</h3>
+                        <p class="note-content">Work with points, lines, and shapes on the coordinate plane. Calculate distances and midpoints.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Geometry</span>
+                            <span class="note-duration">6 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Similar Triangles</h3>
+                        <p class="note-content">Understand similarity, proportions, and scaling in geometric figures.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Geometry</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="trigonometry" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Trigonometry</h1>
+                    <p class="content-description">Master trigonometric functions and their applications in SAT problems</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Basic Trigonometric Ratios</h3>
+                        <p class="note-content">Understand sine, cosine, and tangent ratios in right triangles. Master SOH-CAH-TOA.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Trigonometry</span>
+                            <span class="note-duration">6 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Unit Circle</h3>
+                        <p class="note-content">Learn the unit circle and how to find trigonometric values for common angles.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Trigonometry</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Trigonometric Applications</h3>
+                        <p class="note-content">Apply trigonometry to solve real-world problems involving angles and distances.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Trigonometry</span>
+                            <span class="note-duration">7 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Radians and Degrees</h3>
+                        <p class="note-content">Convert between radians and degrees. Understand when to use each unit of measurement.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Trigonometry</span>
+                            <span class="note-duration">5 min read</span>
+                        </div>
+                    </article>
                 </div>
             </div>
         </main>
@@ -1380,27 +1677,15 @@
 
         // Configuration validation
         function validateConfig() {
-            const configStatus = document.getElementById('configStatus');
-            
             if (!window.SATYR_CONFIG) {
-                configStatus.textContent = 'Configuration file not found!';
-                configStatus.className = 'config-status error';
+                console.error('Configuration file not found!');
                 return false;
             }
 
             if (!window.SATYR_CONFIG.firebase || !window.SATYR_CONFIG.firebase.apiKey) {
-                configStatus.textContent = 'Firebase configuration missing!';
-                configStatus.className = 'config-status error';
+                console.error('Firebase configuration missing!');
                 return false;
             }
-
-            configStatus.textContent = 'Configuration loaded successfully';
-            configStatus.className = 'config-status success';
-            
-            // Hide status after 3 seconds
-            setTimeout(() => {
-                configStatus.style.display = 'none';
-            }, 3000);
             
             return true;
         }
@@ -1654,6 +1939,13 @@
             showPage('homepage');
         }
 
+        // Dismiss welcome message
+        function dismissWelcomeMessage() {
+            document.getElementById('welcomeMessage').classList.add('hidden');
+            // Store dismissal in localStorage so it stays dismissed
+            localStorage.setItem('welcomeMessageDismissed', 'true');
+        }
+
         function showPage(pageId) {
             const pages = ['homepage', 'reading', 'writing', 'essay', 'algebra', 'geometry', 'trigonometry'];
             pages.forEach(page => {
@@ -1691,8 +1983,23 @@
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            if (sidebar) {
-                sidebar.classList.toggle('show');
+            const mainContent = document.getElementById('mainContent');
+            const edgeToggle = document.getElementById('sidebarEdgeToggle');
+            
+            if (sidebar && mainContent) {
+                if (window.innerWidth <= 768) {
+                    // Mobile behavior
+                    sidebar.classList.toggle('show');
+                } else {
+                    // Desktop behavior
+                    sidebar.classList.toggle('hidden');
+                    mainContent.classList.toggle('expanded');
+                    
+                    // Update edge toggle button arrow
+                    if (edgeToggle) {
+                        edgeToggle.textContent = sidebar.classList.contains('hidden') ? '→' : '←';
+                    }
+                }
             }
         }
 
@@ -1710,7 +2017,7 @@
                 return;
             }
             
-            console.log('Project 1600 initialized with secure configuration');
+            console.log('SATyr initialized with secure configuration');
         });
 
         if (document.readyState === 'loading') {
@@ -1723,6 +2030,162 @@
             createStars();
             validateConfig();
         }
+
+        // Check if welcome message should be shown (not dismissed)
+        window.addEventListener('load', function() {
+            if (currentUser && !localStorage.getItem('welcomeMessageDismissed')) {
+                // Welcome message will be shown automatically for authenticated users
+            }
+        });
+
+        // Hover panel functionality
+        let hoverTimeout;
+        let currentPanel = null;
+
+        function createHoverPanel(topic, element) {
+            const panels = {
+                reading: {
+                    title: "Reading Comprehension",
+                    subtopics: [
+                        { name: "Standard English Conventions", percentage: "25-27%" },
+                        { name: "Information and Ideas", percentage: "26-28%" },
+                        { name: "Craft and Structure", percentage: "21-23%" }
+                    ]
+                },
+                writing: {
+                    title: "Writing & Language",
+                    subtopics: [
+                        { name: "Expression of Ideas", percentage: "20-22%" },
+                        { name: "Standard English Conventions", percentage: "25-27%" },
+                        { name: "Language Usage", percentage: "15-17%" }
+                    ]
+                },
+                essay: {
+                    title: "Essay Writing",
+                    subtopics: [
+                        { name: "Reading", percentage: "33%" },
+                        { name: "Analysis", percentage: "33%" },
+                        { name: "Writing", percentage: "34%" }
+                    ]
+                },
+                algebra: {
+                    title: "Algebra & Advanced Math",
+                    subtopics: [
+                        { name: "Algebra", percentage: "35%" },
+                        { name: "Advanced Math", percentage: "35%" },
+                        { name: "Functions", percentage: "15%" }
+                    ]
+                },
+                geometry: {
+                    title: "Geometry & Data Analysis",
+                    subtopics: [
+                        { name: "Problem-Solving & Data Analysis", percentage: "15%" },
+                        { name: "Geometry & Trigonometry", percentage: "15%" },
+                        { name: "Coordinate Geometry", percentage: "10%" }
+                    ]
+                },
+                trigonometry: {
+                    title: "Trigonometry",
+                    subtopics: [
+                        { name: "Basic Trigonometric Ratios", percentage: "40%" },
+                        { name: "Unit Circle", percentage: "30%" },
+                        { name: "Trigonometric Applications", percentage: "30%" }
+                    ]
+                }
+            };
+
+            const panelData = panels[topic];
+            if (!panelData) return null;
+
+            // Remove existing panel
+            if (currentPanel) {
+                currentPanel.remove();
+                currentPanel = null;
+            }
+
+            const panel = document.createElement('div');
+            panel.className = 'topic-hover-panel';
+            panel.innerHTML = `
+                <h4>${panelData.title}</h4>
+                ${panelData.subtopics.map(subtopic => `
+                    <div class="subtopic-item" onclick="showPage('${topic}')">
+                        <span class="subtopic-name">${subtopic.name}</span>
+                        <span class="subtopic-percentage">${subtopic.percentage}</span>
+                    </div>
+                `).join('')}
+            `;
+
+            document.body.appendChild(panel);
+            currentPanel = panel;
+
+            // Position the panel
+            const rect = element.getBoundingClientRect();
+            const panelRect = panel.getBoundingClientRect();
+            
+            let left = rect.right + 10;
+            let top = rect.top;
+
+            // Adjust if panel goes off screen
+            if (left + panelRect.width > window.innerWidth) {
+                left = rect.left - panelRect.width - 10;
+            }
+            
+            if (top + panelRect.height > window.innerHeight) {
+                top = window.innerHeight - panelRect.height - 10;
+            }
+
+            panel.style.left = left + 'px';
+            panel.style.top = top + 'px';
+
+            // Show panel with animation
+            setTimeout(() => {
+                panel.classList.add('show');
+            }, 10);
+
+            return panel;
+        }
+
+        function hideHoverPanel() {
+            if (currentPanel) {
+                currentPanel.classList.remove('show');
+                setTimeout(() => {
+                    if (currentPanel) {
+                        currentPanel.remove();
+                        currentPanel = null;
+                    }
+                }, 300);
+            }
+        }
+
+        // Add event listeners to navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link[data-page]');
+            
+            navLinks.forEach(link => {
+                const topic = link.getAttribute('data-page');
+                
+                link.addEventListener('mouseenter', function() {
+                    clearTimeout(hoverTimeout);
+                    hoverTimeout = setTimeout(() => {
+                        createHoverPanel(topic, this);
+                    }, 300);
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    clearTimeout(hoverTimeout);
+                    hoverTimeout = setTimeout(() => {
+                        hideHoverPanel();
+                    }, 200);
+                });
+            });
+
+            // Hide panel when clicking elsewhere
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-link') && !e.target.closest('.topic-hover-panel')) {
+                    hideHoverPanel();
+                }
+            });
+        });
     </script>
 </body>
 </html>
