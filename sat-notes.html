@@ -3,16 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAT Study Notes - SATyr</title>
+    <title>Project 1600 - SAT Study Notes</title>
+    <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
     <style>
         :root {
-            --primary-color: #008080;
-            --secondary-color: #006666;
-            --background-color: #1a1a1a;
-            --text-color: #ffffff;
-            --sidebar-bg: #242424;
-            --card-bg: #2a2a2a;
-            --hover-color: #00a0a0;
+            --primary-color: #6366f1;
+            --secondary-color: #4f46e5;
+            --accent-color: #f59e0b;
+            --background-color: #0f172a;
+            --surface-color: #1e293b;
+            --card-bg: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+            --hover-color: #7c3aed;
+            --success-color: #10b981;
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --gradient-secondary: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+        }
+
+        :root[data-theme="light"] {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --accent-color: #f59e0b;
+            --background-color: #f8fafc;
+            --surface-color: #ffffff;
+            --card-bg: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --hover-color: #7c3aed;
+            --success-color: #10b981;
+            --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --gradient-secondary: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
         }
 
         * {
@@ -22,10 +47,147 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Inter', 'Helvetica Neue', sans-serif;
+            background: var(--background-color);
+            color: var(--text-primary);
             line-height: 1.6;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Starry Night Background */
+        .starry-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at bottom, #1e293b 0%, #0f172a 100%);
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .starry-background {
+            background: radial-gradient(ellipse at bottom, #e2e8f0 0%, #f8fafc 100%);
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        [data-theme="light"] .star {
+            background: #64748b;
+            opacity: 0.3;
+        }
+
+        .star:nth-child(odd) {
+            animation-delay: 1s;
+        }
+
+        .star:nth-child(3n) {
+            animation-delay: 2s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+            animation: shoot linear infinite;
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 4px;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+            transform: translateY(-50%);
+            animation: trail linear infinite;
+        }
+
+        [data-theme="light"] .shooting-star {
+            background: #64748b;
+            box-shadow: 0 0 6px 2px rgba(100, 116, 139, 0.6);
+        }
+
+        [data-theme="light"] .shooting-star::before {
+            background: linear-gradient(90deg, rgba(100, 116, 139, 0.6), transparent);
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(1200px) translateY(-200px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes trail {
+            0% {
+                width: 0;
+            }
+            30% {
+                width: 100px;
+            }
+            100% {
+                width: 0;
+            }
+        }
+
+        /* Animated Background Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        [data-theme="light"] body::before {
+            background: radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-20px) translateY(-10px); }
+            50% { transform: translateX(20px) translateY(10px); }
+            75% { transform: translateX(-10px) translateY(20px); }
         }
 
         .container {
@@ -33,42 +195,111 @@
             min-height: 100vh;
         }
 
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 200;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .theme-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
         /* Sidebar Styles */
         .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-bg);
+            width: 300px;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
             padding: 2rem;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        [data-theme="light"] .sidebar {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
         }
 
         .logo {
             font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-            display: block;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .search-container {
             margin-bottom: 2rem;
+            position: relative;
         }
 
         .search-input {
             width: 100%;
-            padding: 0.8rem 1rem;
-            background-color: var(--card-bg);
-            border: 1px solid var(--primary-color);
-            border-radius: 8px;
-            color: var(--text-color);
-            font-size: 1rem;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
 
         .search-input:focus {
             outline: none;
-            border-color: var(--hover-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
         .nav-section {
@@ -76,10 +307,12 @@
         }
 
         .nav-title {
-            font-size: 1.1rem;
-            color: var(--primary-color);
+            font-size: 0.9rem;
+            color: var(--text-muted);
             margin-bottom: 1rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .nav-list {
@@ -87,132 +320,417 @@
         }
 
         .nav-item {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .nav-link {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
 
         .nav-link:hover {
-            background-color: var(--card-bg);
-            color: var(--hover-color);
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-primary);
+            transform: translateX(4px);
         }
 
         .nav-link.active {
-            background-color: var(--primary-color);
+            background: var(--gradient-primary);
             color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 1rem;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 200;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
         }
 
         /* Main Content Styles */
         .main-content {
             flex: 1;
-            margin-left: 280px;
-            padding: 2rem;
+            margin-left: 300px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
         }
 
-        .content-header {
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        /* Homepage Styles */
+        .homepage {
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
             margin-bottom: 2rem;
         }
 
-        .content-title {
-            font-size: 2rem;
+        /* SAT Structure Diagram */
+        .diagram-container {
+            background: var(--surface-color);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diagram-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .diagram-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .sat-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .diagram-branches {
+            display: flex;
+            gap: 4rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .branch-header {
+            background: var(--card-bg);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid var(--primary-color);
+            min-width: 200px;
+        }
+
+        .branch-title {
+            font-weight: 700;
             color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .branch-questions {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .sub-topics {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .sub-topic {
+            background: var(--card-bg);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sub-topic:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .sub-topic-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .sub-topic-percentage {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .diagram-note {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        /* Content Pages */
+        .content-page {
+            padding: 2rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .content-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 1rem;
         }
 
         .content-description {
-            color: #888;
+            color: var(--text-secondary);
             font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .notes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
         }
 
         .note-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
             transition: transform 0.3s ease;
         }
 
         .note-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        [data-theme="light"] .note-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-card:hover::before {
+            transform: scaleX(1);
         }
 
         .note-title {
-            font-size: 1.2rem;
-            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
             margin-bottom: 1rem;
         }
 
         .note-content {
-            color: #ccc;
-            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
 
         .note-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #888;
-            font-size: 0.9rem;
         }
 
         .note-tag {
-            background-color: var(--primary-color);
+            background: var(--gradient-primary);
             color: white;
-            padding: 0.3rem 0.8rem;
+            padding: 0.4rem 1rem;
             border-radius: 20px;
             font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .note-duration {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Hidden class for page switching */
+        .hidden {
+            display: none !important;
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
+        @media (max-width: 1024px) {
+            .diagram-branches {
                 flex-direction: column;
+                gap: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .theme-toggle {
+                top: 4rem;
             }
 
             .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
             }
 
             .main-content {
                 margin-left: 0;
             }
+
+            .homepage,
+            .content-page {
+                padding: 2rem 1rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .diagram-container {
+                padding: 2rem 1rem;
+            }
+
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
+    <!-- Starry Background -->
+    <div class="starry-background">
+        <div class="stars" id="stars"></div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span class="theme-icon" id="themeIcon">🌙</span>
+    </button>
+
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+
     <div class="container">
-        <aside class="sidebar">
-            <a href="index.html" class="logo">SATyr</a>
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-container">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="SATyr Logo" class="logo-img">
+                <a href="#" class="logo" onclick="showPage('homepage')">SATyr</a>
+            </div>
             
             <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search notes...">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search notes..." id="searchInput">
             </div>
 
             <nav class="nav-section">
                 <h2 class="nav-title">English</h2>
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a href="#reading" class="nav-link active">Reading Comprehension</a>
+                        <a href="#" class="nav-link" onclick="showPage('reading')" data-page="reading">
+                            <span class="nav-icon">📖</span>
+                            Reading Comprehension
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#writing" class="nav-link">Writing & Language</a>
+                        <a href="#" class="nav-link" onclick="showPage('writing')" data-page="writing">
+                            <span class="nav-icon">✍️</span>
+                            Writing & Language
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#essay" class="nav-link">Essay Writing</a>
+                        <a href="#" class="nav-link" onclick="showPage('essay')" data-page="essay">
+                            <span class="nav-icon">📝</span>
+                            Essay Writing
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -221,152 +739,587 @@
                 <h2 class="nav-title">Math</h2>
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a href="#algebra" class="nav-link">Algebra</a>
+                        <a href="#" class="nav-link" onclick="showPage('algebra')" data-page="algebra">
+                            <span class="nav-icon">🔢</span>
+                            Algebra
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#geometry" class="nav-link">Geometry</a>
+                        <a href="#" class="nav-link" onclick="showPage('geometry')" data-page="geometry">
+                            <span class="nav-icon">📐</span>
+                            Geometry
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#trigonometry" class="nav-link">Trigonometry</a>
+                        <a href="#" class="nav-link" onclick="showPage('trigonometry')" data-page="trigonometry">
+                            <span class="nav-icon">📊</span>
+                            Trigonometry
+                        </a>
                     </li>
                 </ul>
             </nav>
         </aside>
 
-        <main class="main-content">
-            <div class="content-header">
-                <h1 class="content-title">Reading Comprehension</h1>
-                <p class="content-description">Master the art of understanding and analyzing complex texts</p>
+        <main class="main-content" id="mainContent">
+            <!-- Homepage -->
+            <div id="homepage" class="homepage">
+                <div class="hero-section">
+                    <h1 class="hero-title">Project 1600</h1>
+                    <p class="hero-subtitle">Comprehensive study notes and resources to help you achieve your target score</p>
+                </div>
+
+                <div class="diagram-container">
+                    <h2 class="diagram-title">SAT Test Structure</h2>
+                    <div class="sat-diagram">
+                        <div class="diagram-branches">
+                            <div class="branch">
+                                <div class="branch-header">
+                                    <div class="branch-title">Reading and Writing</div>
+                                    <div class="branch-questions">46-47 questions</div>
+                                </div>
+                                <div class="sub-topics">
+                                    <div class="sub-topic" onclick="showPage('reading')">
+                                        <div class="sub-topic-title">Standard English Conventions</div>
+                                        <div class="sub-topic-percentage">25-27%</div>
+                                    </div>
+                                    <div class="sub-topic" onclick="showPage('writing')">
+                                        <div class="sub-topic-title">Expression of Ideas</div>
+                                        <div class="sub-topic-percentage">20-22%</div>
+                                    </div>
+                                    <div class="sub-topic" onclick="showPage('reading')">
+                                        <div class="sub-topic-title">Information and Ideas</div>
+                                        <div class="sub-topic-percentage">26-28%</div>
+                                    </div>
+                                    <div class="sub-topic" onclick="showPage('writing')">
+                                        <div class="sub-topic-title">Craft and Structure</div>
+                                        <div class="sub-topic-percentage">21-23%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="branch">
+                                <div class="branch-header">
+                                    <div class="branch-title">Math</div>
+                                    <div class="branch-questions">44 questions</div>
+                                </div>
+                                <div class="sub-topics">
+                                    <div class="sub-topic" onclick="showPage('algebra')">
+                                        <div class="sub-topic-title">Algebra</div>
+                                        <div class="sub-topic-percentage">35%</div>
+                                    </div>
+                                    <div class="sub-topic" onclick="showPage('algebra')">
+                                        <div class="sub-topic-title">Advanced Math</div>
+                                        <div class="sub-topic-percentage">35%</div>
+                                    </div>
+                                    <div class="sub-topic" onclick="showPage('geometry')">
+                                        <div class="sub-topic-title">Problem-Solving & Data Analysis</div>
+                                        <div class="sub-topic-percentage">15%</div>
+                                    </div>
+                                    <div class="sub-topic" onclick="showPage('geometry')">
+                                        <div class="sub-topic-title">Geometry & Trigonometry</div>
+                                        <div class="sub-topic-percentage">15%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="diagram-note">
+                            ⚡ Adaptive Testing: Difficulty adjusts based on first module performance
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="notes-grid">
-                <article class="note-card">
-                    <h3 class="note-title">Main Idea & Purpose</h3>
-                    <p class="note-content">Learn how to identify the central theme and author's intent in passages.</p>
-                    <div class="note-footer">
-                        <span class="note-tag">Reading</span>
-                        <span>5 min read</span>
-                    </div>
-                </article>
+            <!-- Content Pages -->
+            <div id="reading" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Reading Comprehension</h1>
+                    <p class="content-description">Master the art of understanding and analyzing complex texts with strategic reading techniques</p>
+                </div>
 
-                <article class="note-card">
-                    <h3 class="note-title">Supporting Details</h3>
-                    <p class="note-content">Understand how to find and analyze evidence that supports the main idea.</p>
-                    <div class="note-footer">
-                        <span class="note-tag">Reading</span>
-                        <span>4 min read</span>
-                    </div>
-                </article>
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Main Idea & Purpose</h3>
+                        <p class="note-content">Learn how to identify the central theme and author's intent in passages. Master techniques for quickly finding the main point.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Reading</span>
+                            <span class="note-duration">5 min read</span>
+                        </div>
+                    </article>
 
-                <article class="note-card">
-                    <h3 class="note-title">Making Inferences</h3>
-                    <p class="note-content">Develop skills to draw logical conclusions from text evidence.</p>
-                    <div class="note-footer">
-                        <span class="note-tag">Reading</span>
-                        <span>6 min read</span>
-                    </div>
-                </article>
+                    <article class="note-card">
+                        <h3 class="note-title">Supporting Details</h3>
+                        <p class="note-content">Understand how to find and analyze evidence that supports the main idea. Practice identifying key supporting information.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Reading</span>
+                            <span class="note-duration">4 min read</span>
+                        </div>
+                    </article>
 
-                <article class="note-card">
-                    <h3 class="note-title">Author's Tone & Attitude</h3>
-                    <p class="note-content">Learn to identify the author's perspective and emotional stance.</p>
-                    <div class="note-footer">
-                        <span class="note-tag">Reading</span>
-                        <span>5 min read</span>
-                    </div>
-                </article>
+                    <article class="note-card">
+                        <h3 class="note-title">Making Inferences</h3>
+                        <p class="note-content">Develop skills to draw logical conclusions from text evidence. Learn to read between the lines effectively.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Reading</span>
+                            <span class="note-duration">6 min read</span>
+                        </div>
+                    </article>
 
-                <article class="note-card">
-                    <h3 class="note-title">Vocabulary in Context</h3>
-                    <p class="note-content">Master the skill of understanding word meanings from context.</p>
-                    <div class="note-footer">
-                        <span class="note-tag">Reading</span>
-                        <span>7 min read</span>
-                    </div>
-                </article>
+                    <article class="note-card">
+                        <h3 class="note-title">Author's Tone & Attitude</h3>
+                        <p class="note-content">Learn to identify the author's perspective and emotional stance. Understand how tone affects meaning.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Reading</span>
+                            <span class="note-duration">5 min read</span>
+                        </div>
+                    </article>
 
-                <article class="note-card">
-                    <h3 class="note-title">Text Structure</h3>
-                    <p class="note-content">Understand how authors organize information in passages.</p>
-                    <div class="note-footer">
-                        <span class="note-tag">Reading</span>
-                        <span>4 min read</span>
-                    </div>
-                </article>
+                    <article class="note-card">
+                        <h3 class="note-title">Vocabulary in Context</h3>
+                        <p class="note-content">Master the skill of understanding word meanings from context. Learn strategies for tackling unfamiliar words.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Reading</span>
+                            <span class="note-duration">7 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Text Structure</h3>
+                        <p class="note-content">Understand how authors organize information in passages. Recognize common organizational patterns.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Reading</span>
+                            <span class="note-duration">4 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="writing" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Writing & Language</h1>
+                    <p class="content-description">Master grammar, usage, and effective writing techniques for the SAT Writing section</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Grammar Fundamentals</h3>
+                        <p class="note-content">Review essential grammar rules including subject-verb agreement, pronoun usage, and sentence structure.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Writing</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Punctuation Rules</h3>
+                        <p class="note-content">Master comma usage, semicolons, colons, and other punctuation marks for clear communication.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Writing</span>
+                            <span class="note-duration">6 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Sentence Structure</h3>
+                        <p class="note-content">Learn to identify and fix run-on sentences, fragments, and improve sentence variety.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Writing</span>
+                            <span class="note-duration">7 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Word Choice & Style</h3>
+                        <p class="note-content">Develop skills in selecting precise words and maintaining consistent style and tone.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Writing</span>
+                            <span class="note-duration">5 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="essay" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Essay Writing</h1>
+                    <p class="content-description">Develop strong analytical writing skills for effective essay composition</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Essay Structure</h3>
+                        <p class="note-content">Learn the fundamental structure of academic essays: introduction, body paragraphs, and conclusion.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Essay</span>
+                            <span class="note-duration">10 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Thesis Development</h3>
+                        <p class="note-content">Master the art of crafting strong, arguable thesis statements that guide your entire essay.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Essay</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Evidence & Analysis</h3>
+                        <p class="note-content">Learn to select relevant evidence and provide insightful analysis to support your arguments.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Essay</span>
+                            <span class="note-duration">12 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="algebra" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Algebra</h1>
+                    <p class="content-description">Master algebraic concepts and problem-solving techniques for the SAT Math section</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Linear Equations</h3>
+                        <p class="note-content">Solve and graph linear equations in one and two variables. Master slope-intercept form.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Algebra</span>
+                            <span class="note-duration">9 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Systems of Equations</h3>
+                        <p class="note-content">Learn substitution and elimination methods for solving systems of linear equations.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Algebra</span>
+                            <span class="note-duration">11 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Quadratic Functions</h3>
+                        <p class="note-content">Understand parabolas, factoring, and the quadratic formula for solving quadratic equations.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Algebra</span>
+                            <span class="note-duration">13 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Exponential Functions</h3>
+                        <p class="note-content">Master exponential growth and decay problems, including compound interest applications.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Algebra</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="geometry" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Geometry</h1>
+                    <p class="content-description">Learn geometric principles, formulas, and spatial reasoning skills</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Area & Perimeter</h3>
+                        <p class="note-content">Calculate area and perimeter of various shapes including triangles, rectangles, and circles.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Geometry</span>
+                            <span class="note-duration">7 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Volume & Surface Area</h3>
+                        <p class="note-content">Master 3D geometry including cylinders, spheres, cones, and rectangular prisms.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Geometry</span>
+                            <span class="note-duration">9 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Coordinate Geometry</h3>
+                        <p class="note-content">Work with points, lines, and shapes on the coordinate plane. Distance and midpoint formulas.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Geometry</span>
+                            <span class="note-duration">10 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Similar Triangles</h3>
+                        <p class="note-content">Understand similarity, proportions, and applications in real-world problems.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Geometry</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div id="trigonometry" class="content-page hidden">
+                <div class="content-header">
+                    <h1 class="content-title">Trigonometry</h1>
+                    <p class="content-description">Understand trigonometric functions and their applications in problem-solving</p>
+                </div>
+
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3 class="note-title">Basic Trig Functions</h3>
+                        <p class="note-content">Master sine, cosine, and tangent ratios in right triangles. SOH-CAH-TOA method.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Trigonometry</span>
+                            <span class="note-duration">8 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Unit Circle</h3>
+                        <p class="note-content">Understand the unit circle and how to find trig values for common angles.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Trigonometry</span>
+                            <span class="note-duration">12 min read</span>
+                        </div>
+                    </article>
+
+                    <article class="note-card">
+                        <h3 class="note-title">Trig Applications</h3>
+                        <p class="note-content">Apply trigonometry to solve real-world problems involving angles and distances.</p>
+                        <div class="note-footer">
+                            <span class="note-tag">Trigonometry</span>
+                            <span class="note-duration">10 min read</span>
+                        </div>
+                    </article>
+                </div>
             </div>
         </main>
     </div>
 
     <script>
-        // Add click event listeners to nav links
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all links
-                document.querySelectorAll('.nav-link').forEach(l => {
-                    l.classList.remove('active');
-                });
-                
-                // Add active class to clicked link
-                this.classList.add('active');
-                
-                // Update content based on clicked section
-                const section = this.getAttribute('href').substring(1);
-                updateContent(section);
-            });
-        });
+        let currentPage = 'homepage';
 
-        // Search functionality
-        const searchInput = document.querySelector('.search-input');
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const noteCards = document.querySelectorAll('.note-card');
-            
-            noteCards.forEach(card => {
-                const title = card.querySelector('.note-title').textContent.toLowerCase();
-                const content = card.querySelector('.note-content').textContent.toLowerCase();
+        // Create starry background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 100;
+            const numberOfShootingStars = 1; // Reduced from 3 to 1 for rarity
+
+            // Clear existing stars
+            starsContainer.innerHTML = '';
+
+            // Create regular stars
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+
+            // Create shooting stars with trails
+            for (let i = 0; i < numberOfShootingStars; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.top = Math.random() * 30 + 10 + '%'; // Keep in upper portion
+                shootingStar.style.left = '-10px';
                 
-                if (title.includes(searchTerm) || content.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
+                // Much longer delay between shooting stars (10-30 seconds)
+                const delay = Math.random() * 20 + 10;
+                const duration = Math.random() * 2 + 3; // 3-5 seconds duration
+                
+                shootingStar.style.animationDelay = delay + 's';
+                shootingStar.style.animationDuration = duration + 's';
+                
+                // Set trail animation to match
+                shootingStar.style.setProperty('--trail-delay', delay + 's');
+                shootingStar.style.setProperty('--trail-duration', duration + 's');
+                
+                starsContainer.appendChild(shootingStar);
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const currentTheme = html.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.textContent = '☀️';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '🌙';
+            }
+        }
+
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = ['homepage', 'reading', 'writing', 'essay', 'algebra', 'geometry', 'trigonometry'];
+            pages.forEach(page => {
+                const pageElement = document.getElementById(page);
+                if (pageElement) {
+                    pageElement.classList.add('hidden');
                 }
             });
+
+            // Show selected page
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.remove('hidden');
+            }
+
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            if (pageId !== 'homepage') {
+                const activeLink = document.querySelector(`[data-page="${pageId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+
+            currentPage = pageId;
+
+            // Close sidebar on mobile after navigation
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('show');
+                }
+            }
+
+            // Clear search when switching pages
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+                resetSearch();
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('show');
+            }
+        }
+
+        function resetSearch() {
+            if (currentPage === 'homepage') return;
+            
+            const noteCards = document.querySelectorAll(`#${currentPage} .note-card`);
+            noteCards.forEach(card => {
+                card.style.display = 'block';
+            });
+        }
+
+        // Fixed search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase().trim();
+                    
+                    if (currentPage === 'homepage') return;
+                    
+                    const noteCards = document.querySelectorAll(`#${currentPage} .note-card`);
+                    
+                    if (searchTerm === '') {
+                        // Show all cards if search is empty
+                        noteCards.forEach(card => {
+                            card.style.display = 'block';
+                        });
+                        return;
+                    }
+                    
+                    noteCards.forEach(card => {
+                        const title = card.querySelector('.note-title');
+                        const content = card.querySelector('.note-content');
+                        
+                        if (title && content) {
+                            const titleText = title.textContent.toLowerCase();
+                            const contentText = content.textContent.toLowerCase();
+                            
+                            if (titleText.includes(searchTerm) || contentText.includes(searchTerm)) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            }
+        }
+
+        // Close sidebar when clicking outside on mobile
+        function initializeClickOutside() {
+            document.addEventListener('click', function(e) {
+                const sidebar = document.getElementById('sidebar');
+                const menuToggle = document.querySelector('.menu-toggle');
+                
+                if (sidebar && menuToggle && window.innerWidth <= 768 && 
+                    !sidebar.contains(e.target) && 
+                    !menuToggle.contains(e.target) && 
+                    sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                }
+            });
+        }
+
+        // Handle window resize
+        function initializeResize() {
+            window.addEventListener('resize', function() {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar && window.innerWidth > 768) {
+                    sidebar.classList.remove('show');
+                }
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure theme is set before any other initialization
+            const html = document.documentElement;
+            if (!html.getAttribute('data-theme')) {
+                html.setAttribute('data-theme', 'dark');
+            }
+            
+            // Initialize all components
+            createStars();
+            showPage('homepage');
+            initializeSearch();
+            initializeClickOutside();
+            initializeResize();
         });
 
-        function updateContent(section) {
-            // Update content title and description
-            const contentTitle = document.querySelector('.content-title');
-            const contentDescription = document.querySelector('.content-description');
-            
-            switch(section) {
-                case 'reading':
-                    contentTitle.textContent = 'Reading Comprehension';
-                    contentDescription.textContent = 'Master the art of understanding and analyzing complex texts';
-                    break;
-                case 'writing':
-                    contentTitle.textContent = 'Writing & Language';
-                    contentDescription.textContent = 'Learn grammar, usage, and effective writing techniques';
-                    break;
-                case 'essay':
-                    contentTitle.textContent = 'Essay Writing';
-                    contentDescription.textContent = 'Develop strong analytical writing skills';
-                    break;
-                case 'algebra':
-                    contentTitle.textContent = 'Algebra';
-                    contentDescription.textContent = 'Master algebraic concepts and problem-solving';
-                    break;
-                case 'geometry':
-                    contentTitle.textContent = 'Geometry';
-                    contentDescription.textContent = 'Learn geometric principles and applications';
-                    break;
-                case 'trigonometry':
-                    contentTitle.textContent = 'Trigonometry';
-                    contentDescription.textContent = 'Understand trigonometric functions and their applications';
-                    break;
+        // Fallback initialization if DOMContentLoaded already fired
+        if (document.readyState === 'loading') {
+            // DOM is still loading, wait for DOMContentLoaded
+        } else {
+            // DOM is already loaded
+            const html = document.documentElement;
+            if (!html.getAttribute('data-theme')) {
+                html.setAttribute('data-theme', 'dark');
             }
+            
+            createStars();
+            showPage('homepage');
+            initializeSearch();
+            initializeClickOutside();
+            initializeResize();
         }
     </script>
 </body>
-</html> 
+</html>
