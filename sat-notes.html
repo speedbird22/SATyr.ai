@@ -1,1728 +1,296 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 1600 - SAT Study Notes</title>
-    <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
-    
-    <!-- Load Configuration First -->
-    <script src="config.js"></script>
-    
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-        // Wait for config to be available
-        function initializeFirebase() {
-            if (!window.SATYR_CONFIG) {
-                console.error('Configuration not loaded');
-                return;
-            }
-
-            // Initialize Firebase with config
-            const app = initializeApp(window.SATYR_CONFIG.firebase);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
-            const googleProvider = new GoogleAuthProvider();
-
-            // Configure Google provider
-            googleProvider.addScope('email');
-            googleProvider.addScope('profile');
-
-            // Make Firebase functions globally available
-            window.firebaseAuth = {
-                auth,
-                db,
-                googleProvider,
-                signInWithPopup,
-                signOut,
-                onAuthStateChanged,
-                doc,
-                setDoc,
-                getDoc,
-                serverTimestamp
-            };
-
-            // Initialize auth state listener
-            initializeAuthState();
-        }
-
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeFirebase);
-        } else {
-            initializeFirebase();
-        }
-    </script>
-
-    <style>
-        :root {
-            --primary-color: #6366f1;
-            --secondary-color: #4f46e5;
-            --accent-color: #f59e0b;
-            --background-color: #0f172a;
-            --surface-color: #1e293b;
-            --card-bg: #334155;
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --border-color: #475569;
-            --hover-color: #7c3aed;
-            --success-color: #10b981;
-            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            --gradient-secondary: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
-        }
-
-        :root[data-theme="light"] {
-            --primary-color: #4f46e5;
-            --secondary-color: #6366f1;
-            --accent-color: #f59e0b;
-            --background-color: #f8fafc;
-            --surface-color: #ffffff;
-            --card-bg: #f1f5f9;
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --hover-color: #7c3aed;
-            --success-color: #10b981;
-            --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            --gradient-secondary: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Inter', 'Helvetica Neue', sans-serif;
-            background: var(--background-color);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            transition: all 0.3s ease;
-        }
-
-        /* Starry Night Background */
-        .starry-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: radial-gradient(ellipse at bottom, #1e293b 0%, #0f172a 100%);
-            overflow: hidden;
-        }
-
-        [data-theme="light"] .starry-background {
-            background: radial-gradient(ellipse at bottom, #e2e8f0 0%, #f8fafc 100%);
-        }
-
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
-        }
-
-        [data-theme="light"] .star {
-            background: #64748b;
-            opacity: 0.3;
-        }
-
-        .star:nth-child(odd) {
-            animation-delay: 1s;
-        }
-
-        .star:nth-child(3n) {
-            animation-delay: 2s;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        .shooting-star {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
-            animation: shoot linear infinite;
-        }
-
-        .shooting-star::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: 4px;
-            width: 0;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
-            transform: translateY(-50%);
-            animation: trail linear infinite;
-        }
-
-        [data-theme="light"] .shooting-star {
-            background: #64748b;
-            box-shadow: 0 0 6px 2px rgba(100, 116, 139, 0.6);
-        }
-
-        [data-theme="light"] .shooting-star::before {
-            background: linear-gradient(90deg, rgba(100, 116, 139, 0.6), transparent);
-        }
-
-        @keyframes shoot {
-            0% {
-                transform: translateX(-100px) translateY(100px);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(1200px) translateY(-200px);
-                opacity: 0;
-            }
-        }
-
-        @keyframes trail {
-            0% {
-                width: 0;
-            }
-            30% {
-                width: 100px;
-            }
-            100% {
-                width: 0;
-            }
-        }
-
-        /* Animated Background Overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
-            z-index: -1;
-            animation: backgroundShift 20s ease-in-out infinite;
-        }
-
-        [data-theme="light"] body::before {
-            background: radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
-        }
-
-        @keyframes backgroundShift {
-            0%, 100% { transform: translateX(0) translateY(0); }
-            25% { transform: translateX(-20px) translateY(-10px); }
-            50% { transform: translateX(20px) translateY(10px); }
-            75% { transform: translateX(-10px) translateY(20px); }
-        }
-
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Theme Toggle */
-        .theme-toggle {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 200;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 50px;
-            padding: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-        }
-
-        .theme-icon {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-
-        /* Configuration Status */
-        .config-status {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 200;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            display: none;
-        }
-
-        .config-status.error {
-            border-color: #ef4444;
-            color: #ef4444;
-            display: block;
-        }
-
-        .config-status.success {
-            border-color: var(--success-color);
-            color: var(--success-color);
-            display: block;
-        }
-
-        /* Sign In Page Styles */
-        .signin-page {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-        }
-
-        .signin-container {
-            background: var(--surface-color);
-            border-radius: 20px;
-            padding: 3rem;
-            border: 1px solid var(--border-color);
-            max-width: 450px;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(20px);
-            text-align: center;
-        }
-
-        .signin-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-primary);
-        }
-
-        .signin-header {
-            margin-bottom: 3rem;
-        }
-
-        .signin-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            object-fit: cover;
-            margin: 0 auto 1.5rem;
-            display: block;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        .signin-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.75rem;
-            line-height: 1.2;
-        }
-
-        .signin-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .signin-description {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .signin-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .btn-google {
-            background: white;
-            color: #1f2937;
-            border: 2px solid #e5e7eb;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-google:hover:not(:disabled) {
-            background: #f9fafb;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            border-color: #d1d5db;
-        }
-
-        .btn-google:active {
-            transform: translateY(0);
-        }
-
-        .btn-guest {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 2px solid var(--border-color);
-        }
-
-        .btn-guest:hover:not(:disabled) {
-            background: var(--card-bg);
-            color: var(--text-primary);
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        [data-theme="light"] .btn-google {
-            background: white;
-            color: #1f2937;
-            border: 2px solid #e5e7eb;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .google-icon {
-            width: 24px;
-            height: 24px;
-        }
-
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        .success-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            animation: bounce 0.6s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-20px);
-            }
-            60% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .success-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--success-color);
-            margin-bottom: 0.75rem;
-        }
-
-        .success-text {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .loading-spinner {
-            display: none;
-            width: 24px;
-            height: 24px;
-            border: 2px solid #e5e7eb;
-            border-top: 2px solid #1f2937;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .btn-google.loading .google-icon {
-            display: none;
-        }
-
-        .btn-google.loading .loading-spinner {
-            display: block;
-        }
-
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            color: #ef4444;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        /* User Info Display */
-        .user-info {
-            display: none;
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .user-info.show {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .user-details h3 {
-            font-size: 1rem;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .user-details p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .sign-out-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 0.9rem;
-            padding: 0.5rem;
-            margin-left: auto;
-            transition: color 0.3s ease;
-        }
-
-        .sign-out-btn:hover {
-            color: var(--text-primary);
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: 300px;
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--border-color);
-            padding: 2rem;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-
-        [data-theme="light"] .sidebar {
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .logo-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .nav-section {
-            margin-bottom: 2rem;
-        }
-
-        .nav-title {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .nav-list {
-            list-style: none;
-        }
-
-        .nav-item {
-            margin-bottom: 0.25rem;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .nav-link:hover {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--text-primary);
-            transform: translateX(4px);
-        }
-
-        .nav-link.active {
-            background: var(--gradient-primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        }
-
-        .nav-icon {
-            font-size: 1rem;
-        }
-
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            display: none;
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 200;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        /* Main Content Styles */
-        .main-content {
-            flex: 1;
-            margin-left: 300px;
-            min-height: 100vh;
-            transition: margin-left 0.3s ease;
-        }
-
-        .main-content.expanded {
-            margin-left: 0;
-        }
-
-        /* Homepage Styles */
-        .homepage {
-            padding: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .hero-section {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .hero-title {
-            font-size: 3rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-
-        .welcome-message {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
-            text-align: left;
-        }
-
-        .welcome-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .welcome-text {
-            color: var(--text-secondary);
-        }
-
-        .guest-banner {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--accent-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .guest-banner h3 {
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .guest-banner p {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .guest-banner button {
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-        }
-
-        .guest-banner button:hover {
-            transform: translateY(-2px);
-        }
-
-        /* SAT Structure Diagram */
-        .diagram-container {
-            background: var(--surface-color);
-            border-radius: 20px;
-            padding: 3rem;
-            margin-bottom: 3rem;
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .diagram-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-primary);
-        }
-
-        .diagram-title {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 2rem;
-        }
-
-        .sat-diagram {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .diagram-branches {
-            display: flex;
-            gap: 4rem;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .branch {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .branch-header {
-            background: var(--card-bg);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-            border: 2px solid var(--primary-color);
-            min-width: 200px;
-        }
-
-        .branch-title {
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .branch-questions {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .sub-topics {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            width: 100%;
-        }
-
-        .sub-topic {
-            background: var(--card-bg);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .sub-topic:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-        }
-
-        .sub-topic-title {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .sub-topic-percentage {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        .diagram-note {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--accent-color);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            color: var(--accent-color);
-            font-size: 0.9rem;
-            margin-top: 2rem;
-        }
-
-        /* Content Pages */
-        .content-page {
-            padding: 2rem 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .content-header {
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .content-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-        }
-
-        .content-description {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .notes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .note-card {
-            background: var(--surface-color);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .note-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient-primary);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .note-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: var(--primary-color);
-        }
-
-        [data-theme="light"] .note-card:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .note-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .note-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-
-        .note-content {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .note-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .note-tag {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .note-duration {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* Hidden class for page switching */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .diagram-branches {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .theme-toggle {
-                top: 4rem;
-            }
-
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .homepage,
-            .content-page {
-                padding: 2rem 1rem;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .diagram-container {
-                padding: 2rem 1rem;
-            }
-
-            .notes-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .signin-page {
-                padding: 1rem;
-            }
-
-            .signin-container {
-                padding: 2rem;
-            }
-
-            .signin-title {
-                font-size: 2rem;
-            }
-        }
-    </style>
-</head>
-<body data-theme="dark">
-    <!-- Starry Background -->
-    <div class="starry-background">
-        <div class="stars" id="stars"></div>
+<!-- Add these content pages after the existing reading page -->
+
+<!-- Standard English Conventions Page -->
+<div id="standard-english" class="content-page hidden">
+    <div class="content-header">
+        <h1 class="content-title">Standard English Conventions</h1>
+        <p class="content-description">Master grammar, punctuation, and language mechanics for the SAT</p>
     </div>
 
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" onclick="toggleTheme()">
-        <span class="theme-icon" id="themeIcon">🌙</span>
-    </button>
+    <div class="notes-grid">
+        <article class="note-card" data-topic="standard-english">
+            <h3 class="note-title">Punctuation Mastery</h3>
+            <p class="note-content">Learn proper use of commas, semicolons, colons, and dashes in various contexts.</p>
+            <div class="note-footer">
+                <span class="note-tag">Grammar</span>
+                <span class="note-duration">8 min read</span>
+            </div>
+        </article>
 
-    <!-- Configuration Status -->
-    <div id="configStatus" class="config-status">
-        Configuration loading...
+        <article class="note-card" data-topic="standard-english">
+            <h3 class="note-title">Subject-Verb Agreement</h3>
+            <p class="note-content">Master the rules of subject-verb agreement in simple and complex sentences.</p>
+            <div class="note-footer">
+                <span class="note-tag">Grammar</span>
+                <span class="note-duration">6 min read</span>
+            </div>
+        </article>
+
+        <article class="note-card" data-topic="standard-english">
+            <h3 class="note-title">Pronoun Usage</h3>
+            <p class="note-content">Understand pronoun agreement, clarity, and proper case usage.</p>
+            <div class="note-footer">
+                <span class="note-tag">Grammar</span>
+                <span class="note-duration">5 min read</span>
+            </div>
+        </article>
+
+        <article class="note-card" data-topic="standard-english">
+            <h3 class="note-title">Verb Tense & Mood</h3>
+            <p class="note-content">Learn consistent verb tense usage and understand indicative, subjunctive, and imperative moods.</p>
+            <div class="note-footer">
+                <span class="note-tag">Grammar</span>
+                <span class="note-duration">7 min read</span>
+            </div>
+        </article>
+    </div>
+</div>
+
+<!-- Expression of Ideas Page -->
+<div id="expression-ideas" class="content-page hidden">
+    <div class="content-header">
+        <h1 class="content-title">Expression of Ideas</h1>
+        <p class="content-description">Develop clear, effective, and engaging writing skills</p>
     </div>
 
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-
-    <!-- Sign In Page -->
-    <div id="signin" class="signin-page">
-        <div class="signin-container">
-            <!-- Login Form -->
-            <div id="loginForm" class="signin-form-container">
-                <div class="signin-header">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="Project 1600 Logo" class="signin-logo">
-                    <h1 class="signin-title">Project 1600</h1>
-                    <p class="signin-subtitle">Your path to SAT success</p>
-                    <p class="signin-description">Access comprehensive study materials, practice tests, and personalized learning tools to achieve your target score of 1600.</p>
-                </div>
-
-                <!-- User Info Display (for returning users) -->
-                <div id="userInfo" class="user-info">
-                    <img id="userAvatar" src="/placeholder.svg" alt="User Avatar" class="user-avatar">
-                    <div class="user-details">
-                        <h3 id="userName"></h3>
-                        <p id="userEmail"></p>
-                    </div>
-                    <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
-                </div>
-
-                <div class="signin-form">
-                    <button type="button" class="btn btn-google" onclick="handleGoogleSignIn()" id="googleBtn">
-                        <svg class="google-icon" viewBox="0 0 24 24" fill="none">
-                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                        </svg>
-                        <div class="loading-spinner"></div>
-                        <span id="btnText">Continue with Google</span>
-                    </button>
-
-                    <button type="button" class="btn btn-guest" onclick="handleGuestAccess()" id="guestBtn">
-                        <span>👤</span>
-                        Continue without an account
-                    </button>
-                </div>
-
-                <!-- Error Message -->
-                <div id="errorMessage" class="error-message">
-                    <span id="errorText"></span>
-                </div>
+    <div class="notes-grid">
+        <article class="note-card" data-topic="expression-ideas">
+            <h3 class="note-title">Development Strategies</h3>
+            <p class="note-content">Learn how to develop ideas with relevant details, examples, and evidence.</p>
+            <div class="note-footer">
+                <span class="note-tag">Writing</span>
+                <span class="note-duration">6 min read</span>
             </div>
+        </article>
 
-            <!-- Success Message -->
-            <div id="successMessage" class="success-message">
-                <div class="success-icon">🎉</div>
-                <h2 class="success-title">Welcome to Project 1600!</h2>
-                <p class="success-text">You've successfully signed in. Redirecting to your dashboard...</p>
+        <article class="note-card" data-topic="expression-ideas">
+            <h3 class="note-title">Organization & Structure</h3>
+            <p class="note-content">Master logical organization and effective paragraph structure.</p>
+            <div class="note-footer">
+                <span class="note-tag">Writing</span>
+                <span class="note-duration">5 min read</span>
             </div>
-        </div>
+        </article>
+
+        <article class="note-card" data-topic="expression-ideas">
+            <h3 class="note-title">Effective Language Use</h3>
+            <p class="note-content">Choose precise words and create engaging, clear prose.</p>
+            <div class="note-footer">
+                <span class="note-tag">Writing</span>
+                <span class="note-duration">7 min read</span>
+            </div>
+        </article>
+    </div>
+</div>
+
+<!-- Information and Ideas Page -->
+<div id="information-ideas" class="content-page hidden">
+    <div class="content-header">
+        <h1 class="content-title">Information and Ideas</h1>
+        <p class="content-description">Analyze and interpret complex texts and quantitative information</p>
     </div>
 
-    <div class="container hidden" id="mainApp">
-        <aside class="sidebar" id="sidebar">
-            <div class="logo-container">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="Project 1600 Logo" class="logo-img">
-                <a href="#" class="logo" onclick="showPage('homepage')">Project 1600</a>
+    <div class="notes-grid">
+        <article class="note-card" data-topic="information-ideas">
+            <h3 class="note-title">Central Ideas & Details</h3>
+            <p class="note-content">Identify main ideas and supporting details in complex passages.</p>
+            <div class="note-footer">
+                <span class="note-tag">Reading</span>
+                <span class="note-duration">6 min read</span>
             </div>
+        </article>
 
-            <nav class="nav-section">
-                <h2 class="nav-title">English</h2>
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('reading')" data-page="reading">
-                            <span class="nav-icon">📖</span>
-                            Reading Comprehension
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('writing')" data-page="writing">
-                            <span class="nav-icon">✍️</span>
-                            Writing & Language
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('essay')" data-page="essay">
-                            <span class="nav-icon">📝</span>
-                            Essay Writing
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <nav class="nav-section">
-                <h2 class="nav-title">Math</h2>
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('algebra')" data-page="algebra">
-                            <span class="nav-icon">🔢</span>
-                            Algebra
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('geometry')" data-page="geometry">
-                            <span class="nav-icon">📐</span>
-                            Geometry
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('trigonometry')" data-page="trigonometry">
-                            <span class="nav-icon">📊</span>
-                            Trigonometry
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
-
-        <main class="main-content" id="mainContent">
-            <!-- Homepage -->
-            <div id="homepage" class="homepage">
-                <!-- Welcome Message for Authenticated Users -->
-                <div id="welcomeMessage" class="welcome-message hidden">
-                    <h2 class="welcome-title">Welcome back, <span id="welcomeUserName"></span>!</h2>
-                    <p class="welcome-text">Ready to continue your SAT preparation journey? Your progress is automatically saved.</p>
-                </div>
-
-                <!-- Guest Banner -->
-                <div id="guestBanner" class="guest-banner hidden">
-                    <h3>📚 Browsing as Guest</h3>
-                    <p>Sign in with Google to save your progress, track your performance, and access personalized study recommendations.</p>
-                    <button onclick="showSignInPage()">Sign In Now</button>
-                </div>
-
-                <div class="hero-section">
-                    <h1 class="hero-title">Project 1600</h1>
-                    <p class="hero-subtitle">Comprehensive study notes and resources to help you achieve your target score</p>
-                </div>
-
-                <div class="diagram-container">
-                    <h2 class="diagram-title">SAT Test Structure</h2>
-                    <div class="sat-diagram">
-                        <div class="diagram-branches">
-                            <div class="branch">
-                                <div class="branch-header">
-                                    <div class="branch-title">Reading and Writing</div>
-                                    <div class="branch-questions">46-47 questions</div>
-                                </div>
-                                <div class="sub-topics">
-                                    <div class="sub-topic" onclick="showPage('reading')">
-                                        <div class="sub-topic-title">Standard English Conventions</div>
-                                        <div class="sub-topic-percentage">25-27%</div>
-                                    </div>
-                                    <div class="sub-topic" onclick="showPage('writing')">
-                                        <div class="sub-topic-title">Expression of Ideas</div>
-                                        <div class="sub-topic-percentage">20-22%</div>
-                                    </div>
-                                    <div class="sub-topic" onclick="showPage('reading')">
-                                        <div class="sub-topic-title">Information and Ideas</div>
-                                        <div class="sub-topic-percentage">26-28%</div>
-                                    </div>
-                                    <div class="sub-topic" onclick="showPage('writing')">
-                                        <div class="sub-topic-title">Craft and Structure</div>
-                                        <div class="sub-topic-percentage">21-23%</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="branch">
-                                <div class="branch-header">
-                                    <div class="branch-title">Math</div>
-                                    <div class="branch-questions">44 questions</div>
-                                </div>
-                                <div class="sub-topics">
-                                    <div class="sub-topic" onclick="showPage('algebra')">
-                                        <div class="sub-topic-title">Algebra</div>
-                                        <div class="sub-topic-percentage">35%</div>
-                                    </div>
-                                    <div class="sub-topic" onclick="showPage('algebra')">
-                                        <div class="sub-topic-title">Advanced Math</div>
-                                        <div class="sub-topic-percentage">35%</div>
-                                    </div>
-                                    <div class="sub-topic" onclick="showPage('geometry')">
-                                        <div class="sub-topic-title">Problem-Solving & Data Analysis</div>
-                                        <div class="sub-topic-percentage">15%</div>
-                                    </div>
-                                    <div class="sub-topic" onclick="showPage('geometry')">
-                                        <div class="sub-topic-title">Geometry & Trigonometry</div>
-                                        <div class="sub-topic-percentage">15%</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="diagram-note">
-                            ⚡ Adaptive Testing: Difficulty adjusts based on first module performance
-                        </div>
-                    </div>
-                </div>
+        <article class="note-card" data-topic="information-ideas">
+            <h3 class="note-title">Purpose & Point of View</h3>
+            <p class="note-content">Understand author's purpose and analyze different perspectives.</p>
+            <div class="note-footer">
+                <span class="note-tag">Reading</span>
+                <span class="note-duration">5 min read</span>
             </div>
+        </article>
 
-            <!-- Content Pages -->
-            <div id="reading" class="content-page hidden">
-                <div class="content-header">
-                    <h1 class="content-title">Reading Comprehension</h1>
-                    <p class="content-description">Master the art of understanding and analyzing complex texts with strategic reading techniques</p>
-                </div>
-
-                <div class="notes-grid">
-                    <article class="note-card">
-                        <h3 class="note-title">Main Idea & Purpose</h3>
-                        <p class="note-content">Learn how to identify the central theme and author's intent in passages. Master techniques for quickly finding the main point.</p>
-                        <div class="note-footer">
-                            <span class="note-tag">Reading</span>
-                            <span class="note-duration">5 min read</span>
-                        </div>
-                    </article>
-
-                    <article class="note-card">
-                        <h3 class="note-title">Supporting Details</h3>
-                        <p class="note-content">Understand how to find and analyze evidence that supports the main idea. Practice identifying key supporting information.</p>
-                        <div class="note-footer">
-                            <span class="note-tag">Reading</span>
-                            <span class="note-duration">4 min read</span>
-                        </div>
-                    </article>
-
-                    <article class="note-card">
-                        <h3 class="note-title">Making Inferences</h3>
-                        <p class="note-content">Develop skills to draw logical conclusions from text evidence. Learn to read between the lines effectively.</p>
-                        <div class="note-footer">
-                            <span class="note-tag">Reading</span>
-                            <span class="note-duration">6 min read</span>
-                        </div>
-                    </article>
-
-                    <article class="note-card">
-                        <h3 class="note-title">Author's Tone & Attitude</h3>
-                        <p class="note-content">Learn to identify the author's perspective and emotional stance. Understand how tone affects meaning.</p>
-                        <div class="note-footer">
-                            <span class="note-tag">Reading</span>
-                            <span class="note-duration">5 min read</span>
-                        </div>
-                    </article>
-
-                    <article class="note-card">
-                        <h3 class="note-title">Vocabulary in Context</h3>
-                        <p class="note-content">Master the skill of understanding word meanings from context. Learn strategies for tackling unfamiliar words.</p>
-                        <div class="note-footer">
-                            <span class="note-tag">Reading</span>
-                            <span class="note-duration">7 min read</span>
-                        </div>
-                    </article>
-
-                    <article class="note-card">
-                        <h3 class="note-title">Text Structure</h3>
-                        <p class="note-content">Understand how authors organize information in passages. Recognize common organizational patterns.</p>
-                        <div class="note-footer">
-                            <span class="note-tag">Reading</span>
-                            <span class="note-duration">4 min read</span>
-                        </div>
-                    </article>
-                </div>
+        <article class="note-card" data-topic="information-ideas">
+            <h3 class="note-title">Quantitative Information</h3>
+            <p class="note-content">Interpret graphs, charts, and data in reading passages.</p>
+            <div class="note-footer">
+                <span class="note-tag">Reading</span>
+                <span class="note-duration">8 min read</span>
             </div>
+        </article>
+    </div>
+</div>
 
-            <div id="writing" class="content-page hidden">
-                <div class="content-header">
-                    <h1 class="content-title">Writing & Language</h1>
-                    <p class="content-description">Master grammar, usage, and effective writing techniques for the SAT Writing section</p>
-                </div>
-
-                <div class="notes-grid">
-                    <article class="note-card">
-                        <h3 class="note-title">Grammar Fundamentals</h3>
-                        <p class="note-content">Review essential grammar rules including subject-verb agreement, pronoun usage, and sentence structure.</p>
-                        <div class="note-footer">
-                            <span class="note-tag">Writing</span>
-                            <span class="note-duration">8 min read</span>
-                        </div>
-                    </article>
-
-                    <article class="note-card">
-                        <h3 class="note-title">Punctuation Rules</h3>
-                        <p class="note-content">Master comma usage, semicolons, colons, and other punctuation marks for clear communication.</p>
-                        <div class="note-footer">
-                            <span class="note-tag">Writing</span>
-                            <span class="note-duration">6 min read</span>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </main>
+<!-- Craft and Structure Page -->
+<div id="craft-structure" class="content-page hidden">
+    <div class="content-header">
+        <h1 class="content-title">Craft and Structure</h1>
+        <p class="content-description">Analyze how authors craft their writing and structure their arguments</p>
     </div>
 
-    <script>
-        let currentPage = 'homepage';
-        let currentUser = null;
-        let isGuestMode = false;
+    <div class="notes-grid">
+        <article class="note-card" data-topic="craft-structure">
+            <h3 class="note-title">Word Choice Analysis</h3>
+            <p class="note-content">Understand how authors use specific words to create meaning and tone.</p>
+            <div class="note-footer">
+                <span class="note-tag">Analysis</span>
+                <span class="note-duration">6 min read</span>
+            </div>
+        </article>
 
-        // Configuration validation
-        function validateConfig() {
-            const configStatus = document.getElementById('configStatus');
-            
-            if (!window.SATYR_CONFIG) {
-                configStatus.textContent = 'Configuration file not found!';
-                configStatus.className = 'config-status error';
-                return false;
-            }
+        <article class="note-card" data-topic="craft-structure">
+            <h3 class="note-title">Text Structure</h3>
+            <p class="note-content">Analyze how authors organize information and arguments.</p>
+            <div class="note-footer">
+                <span class="note-tag">Analysis</span>
+                <span class="note-duration">5 min read</span>
+            </div>
+        </article>
 
-            if (!window.SATYR_CONFIG.firebase || !window.SATYR_CONFIG.firebase.apiKey) {
-                configStatus.textContent = 'Firebase configuration missing!';
-                configStatus.className = 'config-status error';
-                return false;
-            }
+        <article class="note-card" data-topic="craft-structure">
+            <h3 class="note-title">Rhetorical Analysis</h3>
+            <p class="note-content">Examine how authors use rhetorical devices to persuade and engage readers.</p>
+            <div class="note-footer">
+                <span class="note-tag">Analysis</span>
+                <span class="note-duration">7 min read</span>
+            </div>
+        </article>
+    </div>
+</div>
 
-            configStatus.textContent = 'Configuration loaded successfully';
-            configStatus.className = 'config-status success';
-            
-            // Hide status after 3 seconds
-            setTimeout(() => {
-                configStatus.style.display = 'none';
-            }, 3000);
-            
-            return true;
-        }
+<!-- Advanced Math Page -->
+<div id="advanced-math" class="content-page hidden">
+    <div class="content-header">
+        <h1 class="content-title">Advanced Math</h1>
+        <p class="content-description">Master complex mathematical concepts and problem-solving techniques</p>
+    </div>
 
-        // Create starry background
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const numberOfStars = 100;
-            const numberOfShootingStars = 1;
+    <div class="notes-grid">
+        <article class="note-card" data-topic="advanced-math">
+            <h3 class="note-title">Polynomial Functions</h3>
+            <p class="note-content">Understand polynomial operations, factoring, and graphing techniques.</p>
+            <div class="note-footer">
+                <span class="note-tag">Math</span>
+                <span class="note-duration">8 min read</span>
+            </div>
+        </article>
 
-            starsContainer.innerHTML = '';
+        <article class="note-card" data-topic="advanced-math">
+            <h3 class="note-title">Exponential Growth</h3>
+            <p class="note-content">Master exponential and logarithmic functions and their applications.</p>
+            <div class="note-footer">
+                <span class="note-tag">Math</span>
+                <span class="note-duration">7 min read</span>
+            </div>
+        </article>
 
-            for (let i = 0; i < numberOfStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = Math.random() * 3 + 1 + 'px';
-                star.style.height = star.style.width;
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
-            }
+        <article class="note-card" data-topic="advanced-math">
+            <h3 class="note-title">Complex Equations</h3>
+            <p class="note-content">Solve multi-step equations and systems with multiple variables.</p>
+            <div class="note-footer">
+                <span class="note-tag">Math</span>
+                <span class="note-duration">9 min read</span>
+            </div>
+        </article>
 
-            for (let i = 0; i < numberOfShootingStars; i++) {
-                const shootingStar = document.createElement('div');
-                shootingStar.className = 'shooting-star';
-                shootingStar.style.top = Math.random() * 30 + 10 + '%';
-                shootingStar.style.left = '-10px';
-                
-                const delay = Math.random() * 20 + 10;
-                const duration = Math.random() * 2 + 3;
-                
-                shootingStar.style.animationDelay = delay + 's';
-                shootingStar.style.animationDuration = duration + 's';
-                
-                starsContainer.appendChild(shootingStar);
-            }
-        }
+        <article class="note-card" data-topic="advanced-math">
+            <h3 class="note-title">Rational Functions</h3>
+            <p class="note-content">Work with rational expressions, equations, and their graphs.</p>
+            <div class="note-footer">
+                <span class="note-tag">Math</span>
+                <span class="note-duration">6 min read</span>
+            </div>
+        </article>
+    </div>
+</div>
 
-        function toggleTheme() {
-            const html = document.documentElement;
-            const themeIcon = document.getElementById('themeIcon');
-            const currentTheme = html.getAttribute('data-theme');
-            
-            if (currentTheme === 'dark') {
-                html.setAttribute('data-theme', 'light');
-                themeIcon.textContent = '☀️';
-            } else {
-                html.setAttribute('data-theme', 'dark');
-                themeIcon.textContent = '🌙';
-            }
-        }
+<!-- Problem Solving & Data Analysis Page -->
+<div id="problem-solving" class="content-page hidden">
+    <div class="content-header">
+        <h1 class="content-title">Problem Solving & Data Analysis</h1>
+        <p class="content-description">Analyze data, interpret statistics, and solve real-world problems</p>
+    </div>
 
-        // Initialize Firebase Auth State Listener
-        function initializeAuthState() {
-            if (!window.firebaseAuth) {
-                console.log('Firebase not initialized yet');
-                return;
-            }
+    <div class="notes-grid">
+        <article class="note-card" data-topic="problem-solving">
+            <h3 class="note-title">Ratios & Proportions</h3>
+            <p class="note-content">Master ratio relationships and proportional reasoning in various contexts.</p>
+            <div class="note-footer">
+                <span class="note-tag">Math</span>
+                <span class="note-duration">6 min read</span>
+            </div>
+        </article>
 
-            const { auth, onAuthStateChanged } = window.firebaseAuth;
-            
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    currentUser = user;
-                    isGuestMode = false;
-                    updateUIForAuthenticatedUser(user);
-                } else {
-                    currentUser = null;
-                    if (!isGuestMode) {
-                        showSignInPage();
-                    }
-                }
-            });
-        }
+        <article class="note-card" data-topic="problem-solving">
+            <h3 class="note-title">Statistics & Probability</h3>
+            <p class="note-content">Understand measures of central tendency, probability, and statistical analysis.</p>
+            <div class="note-footer">
+                <span class="note-tag">Math</span>
+                <span class="note-duration">8 min read</span>
+            </div>
+        </article>
 
-        // Update UI for authenticated user
-        function updateUIForAuthenticatedUser(user) {
-            // Update user info in sign-in page
-            document.getElementById('userAvatar').src = user.photoURL || '/placeholder-avatar.png';
-            document.getElementById('userName').textContent = user.displayName || 'User';
-            document.getElementById('userEmail').textContent = user.email;
-            document.getElementById('userInfo').classList.add('show');
-            
-            // Update welcome message
-            document.getElementById('welcomeUserName').textContent = user.displayName || 'User';
-            
-            // Save user data to Firestore
-            saveUserData(user);
-            
-            // Show success and redirect to main app
-            showSuccessMessage();
-            setTimeout(() => {
-                showMainApp();
-            }, 2000);
-        }
+        <article class="note-card" data-topic="problem-solving">
+            <h3 class="note-title">Data Interpretation</h3>
+            <p class="note-content">Analyze scatterplots, graphs, and tables to draw conclusions.</p>
+            <div class="note-footer">
+                <span class="note-tag">Math</span>
+                <span class="note-duration">7 min read</span>
+            </div>
+        </article>
 
-        // Save user data to Firestore
-        async function saveUserData(user) {
-            if (!window.firebaseAuth) return;
-            
-            const { db, doc, setDoc, getDoc, serverTimestamp } = window.firebaseAuth;
-            
-            try {
-                const userRef = doc(db, 'users', user.uid);
-                const userSnap = await getDoc(userRef);
-                
-                const userData = {
-                    uid: user.uid,
-                    email: user.email,
-                    displayName: user.displayName,
-                    photoURL: user.photoURL,
-                    lastLogin: serverTimestamp(),
-                };
-                
-                if (!userSnap.exists()) {
-                    // New user
-                    userData.createdAt = serverTimestamp();
-                    userData.studyProgress = {};
-                    userData.preferences = {
-                        theme: 'dark',
-                        notifications: true
-                    };
-                    console.log('Creating new user profile');
-                } else {
-                    console.log('Updating existing user profile');
-                }
-                
-                await setDoc(userRef, userData, { merge: true });
-                console.log('User data saved successfully');
-            } catch (error) {
-                console.error('Error saving user data:', error);
-                showError('Failed to save user data. Please try again.');
-            }
-        }
+        <article class="note-card" data-topic="problem-solving">
+            <h3 class="note-title">Percentages & Growth</h3>
+            <p class="note-content">Calculate percentages, percent change, and exponential growth problems.</p>
+            <div class="note-footer">
+                <span class="note-tag">Math</span>
+                <span class="note-duration">5 min read</span>
+            </div>
+        </article>
+    </div>
+</div>
 
-        // Google Sign In
-        async function handleGoogleSignIn() {
-            if (!window.firebaseAuth) {
-                showError('Authentication not initialized. Please refresh the page.');
-                return;
-            }
+<!-- Geometry & Trigonometry Page -->
+<div id="geometry-trig" class="content-page hidden">
+    <div class="content-header">
+        <h1 class="content-title">Geometry & Trigonometry</h1>
+        <p class="content-description">Master geometric concepts and trigonometric relationships</p>
+    </div>
 
-            const btn = document.getElementById('googleBtn');
-            const btnText = document.getElementById('btnText');
-            
-            // Show loading state
-            btn.classList.add('loading');
-            btnText.textContent = 'Signing in...';
-            btn.disabled = true;
-            hideError();
-            
-            try {
-                const { auth, googleProvider, signInWithPopup } = window.firebaseAuth;
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
-                
-                console.log('Google sign-in successful:', user.displayName);
-                // updateUIForAuthenticatedUser will be called by onAuthStateChanged
-                
-            } catch (error) {
-                console.error('Google sign-in error:', error);
-                
-                // Reset button state
-                btn.classList.remove('loading');
-                btnText.textContent = 'Continue with Google';
-                btn.disabled = false;
-                
-                // Show error message
-                let errorMessage = 'Sign-in failed. Please try again.';
-                if (error.code === 'auth/popup-closed-by-user') {
-                    errorMessage = 'Sign-in was cancelled.';
-                } else if (error.code === 'auth/popup-blocked') {
-                    errorMessage = 'Pop-up was blocked. Please allow pop-ups and try again.';
-                } else if (error.code === 'auth/network-request-failed') {
-                    errorMessage = 'Network error. Please check your connection.';
-                }
-                showError(errorMessage);
-            }
-        }
+    <div class="notes-grid">
+        <article class="note-card" data-topic="geometry-trig">
+            <h3 class="note-title">Area & Volume</h3>
+            <p class="note-content">Calculate areas of complex shapes and volumes of 3D figures.</p>
+            <div class="note-footer">
+                <span class="note-tag">Geometry</span>
+                <span class="note-duration">7 min read</span>
+            </div>
+        </article>
 
-        // Guest Access
-        function handleGuestAccess() {
-            isGuestMode = true;
-            console.log('User accessing as guest');
-            showMainApp();
-        }
+        <article class="note-card" data-topic="geometry-trig">
+            <h3 class="note-title">Right Triangle Trigonometry</h3>
+            <p class="note-content">Master sine, cosine, and tangent ratios and their applications.</p>
+            <div class="note-footer">
+                <span class="note-tag">Trigonometry</span>
+                <span class="note-duration">8 min read</span>
+            </div>
+        </article>
 
-        // Sign Out
-        async function handleSignOut() {
-            if (!window.firebaseAuth) return;
-            
-            try {
-                const { auth, signOut } = window.firebaseAuth;
-                await signOut(auth);
-                isGuestMode = false;
-                console.log('User signed out successfully');
-                showSignInPage();
-            } catch (error) {
-                console.error('Sign-out error:', error);
-                showError('Sign-out failed. Please try again.');
-            }
-        }
+        <article class="note-card" data-topic="geometry-trig">
+            <h3 class="note-title">Circle Theorems</h3>
+            <p class="note-content">Understand circle properties, arc length, and sector area calculations.</p>
+            <div class="note-footer">
+                <span class="note-tag">Geometry</span>
+                <span class="note-duration">6 min read</span>
+            </div>
+        </article>
 
-        // Show/Hide Error Messages
-        function showError(message) {
-            document.getElementById('errorText').textContent = message;
-            document.getElementById('errorMessage').classList.add('show');
-        }
-
-        function hideError() {
-            document.getElementById('errorMessage').classList.remove('show');
-        }
-
-        // Show Success Message
-        function showSuccessMessage() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('successMessage').classList.add('show');
-        }
-
-        // Show Sign In Page
-        function showSignInPage() {
-            document.getElementById('signin').classList.remove('hidden');
-            document.getElementById('mainApp').classList.add('hidden');
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('successMessage').classList.remove('show');
-            document.getElementById('userInfo').classList.remove('show');
-            
-            // Reset button state
-            const btn = document.getElementById('googleBtn');
-            const btnText = document.getElementById('btnText');
-            btn.classList.remove('loading');
-            btnText.textContent = 'Continue with Google';
-            btn.disabled = false;
-        }
-
-        // Show Main App
-        function showMainApp() {
-            document.getElementById('signin').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
-            
-            // Show appropriate welcome message
-            if (currentUser) {
-                document.getElementById('welcomeMessage').classList.remove('hidden');
-                document.getElementById('guestBanner').classList.add('hidden');
-            } else if (isGuestMode) {
-                document.getElementById('welcomeMessage').classList.add('hidden');
-                document.getElementById('guestBanner').classList.remove('hidden');
-            }
-            
-            showPage('homepage');
-        }
-
-        function showPage(pageId) {
-            const pages = ['homepage', 'reading', 'writing', 'essay', 'algebra', 'geometry', 'trigonometry'];
-            pages.forEach(page => {
-                const pageElement = document.getElementById(page);
-                if (pageElement) {
-                    pageElement.classList.add('hidden');
-                }
-            });
-
-            const selectedPage = document.getElementById(pageId);
-            if (selectedPage) {
-                selectedPage.classList.remove('hidden');
-            }
-
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-
-            if (pageId !== 'homepage') {
-                const activeLink = document.querySelector(`[data-page="${pageId}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active');
-                }
-            }
-
-            currentPage = pageId;
-
-            if (window.innerWidth <= 768) {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) {
-                    sidebar.classList.remove('show');
-                }
-            }
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) {
-                sidebar.classList.toggle('show');
-            }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            const html = document.documentElement;
-            if (!html.getAttribute('data-theme')) {
-                html.setAttribute('data-theme', 'dark');
-            }
-            
-            createStars();
-            
-            // Validate configuration
-            if (!validateConfig()) {
-                return;
-            }
-            
-            console.log('Project 1600 initialized with secure configuration');
-        });
-
-        if (document.readyState === 'loading') {
-            // DOM is still loading
-        } else {
-            const html = document.documentElement;
-            if (!html.getAttribute('data-theme')) {
-                html.setAttribute('data-theme', 'dark');
-            }
-            createStars();
-            validateConfig();
-        }
-    </script>
-</body>
-</html>
+        <article class="note-card" data-topic="geometry-trig">
+            <h3 class="note-title">Coordinate Geometry</h3>
+            <p class="note-content">Work with points, lines, and shapes in the coordinate plane.</p>
+            <div class="note-footer">
+                <span class="note-tag">Geometry</span>
+                <span class="note-duration">5 min read</span>
+            </div>
+        </article>
+    </div>
+</div>
