@@ -5,6 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project 1600 - SAT Study Notes</title>
     <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
+    
+    <!-- Load Configuration First -->
+    <script src="config.js"></script>
+    
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Wait for config to be available
+        function initializeFirebase() {
+            if (!window.SATYR_CONFIG) {
+                console.error('Configuration not loaded');
+                return;
+            }
+
+            // Initialize Firebase with config
+            const app = initializeApp(window.SATYR_CONFIG.firebase);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+            const googleProvider = new GoogleAuthProvider();
+
+            // Configure Google provider
+            googleProvider.addScope('email');
+            googleProvider.addScope('profile');
+
+            // Make Firebase functions globally available
+            window.firebaseAuth = {
+                auth,
+                db,
+                googleProvider,
+                signInWithPopup,
+                signOut,
+                onAuthStateChanged,
+                doc,
+                setDoc,
+                getDoc,
+                serverTimestamp
+            };
+
+            // Initialize auth state listener
+            initializeAuthState();
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeFirebase);
+        } else {
+            initializeFirebase();
+        }
+    </script>
+
     <style>
         :root {
             --primary-color: #6366f1;
@@ -222,6 +275,34 @@
             transition: transform 0.3s ease;
         }
 
+        /* Configuration Status */
+        .config-status {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .config-status.error {
+            border-color: #ef4444;
+            color: #ef4444;
+            display: block;
+        }
+
+        .config-status.success {
+            border-color: var(--success-color);
+            color: var(--success-color);
+            display: block;
+        }
+
         /* Sign In Page Styles */
         .signin-page {
             display: flex;
@@ -294,7 +375,7 @@
         .signin-form {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .btn {
@@ -313,6 +394,11 @@
             overflow: hidden;
         }
 
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .btn-google {
             background: white;
             color: #1f2937;
@@ -320,7 +406,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-google:hover {
+        .btn-google:hover:not(:disabled) {
             background: #f9fafb;
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -329,6 +415,19 @@
 
         .btn-google:active {
             transform: translateY(0);
+        }
+
+        .btn-guest {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-guest:hover:not(:disabled) {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
         }
 
         [data-theme="light"] .btn-google {
@@ -404,6 +503,70 @@
 
         .btn-google.loading .loading-spinner {
             display: block;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* User Info Display */
+        .user-info {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .user-info.show {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details h3 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .user-details p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .sign-out-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            margin-left: auto;
+            transition: color 0.3s ease;
+        }
+
+        .sign-out-btn:hover {
+            color: var(--text-primary);
         }
 
         /* Sidebar Styles */
@@ -559,6 +722,60 @@
             font-size: 1.2rem;
             color: var(--text-secondary);
             margin-bottom: 2rem;
+        }
+
+        .welcome-message {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .welcome-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text {
+            color: var(--text-secondary);
+        }
+
+        .guest-banner {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .guest-banner h3 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .guest-banner p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .guest-banner button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .guest-banner button:hover {
+            transform: translateY(-2px);
         }
 
         /* SAT Structure Diagram */
@@ -862,18 +1079,33 @@
         <span class="theme-icon" id="themeIcon">🌙</span>
     </button>
 
+    <!-- Configuration Status -->
+    <div id="configStatus" class="config-status">
+        Configuration loading...
+    </div>
+
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 
     <!-- Sign In Page -->
     <div id="signin" class="signin-page">
         <div class="signin-container">
-            <!-- Google Login Form -->
+            <!-- Login Form -->
             <div id="loginForm" class="signin-form-container">
                 <div class="signin-header">
                     <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="Project 1600 Logo" class="signin-logo">
                     <h1 class="signin-title">Project 1600</h1>
                     <p class="signin-subtitle">Your path to SAT success</p>
                     <p class="signin-description">Access comprehensive study materials, practice tests, and personalized learning tools to achieve your target score of 1600.</p>
+                </div>
+
+                <!-- User Info Display (for returning users) -->
+                <div id="userInfo" class="user-info">
+                    <img id="userAvatar" src="/placeholder.svg" alt="User Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <h3 id="userName"></h3>
+                        <p id="userEmail"></p>
+                    </div>
+                    <button class="sign-out-btn" onclick="handleSignOut()">Sign Out</button>
                 </div>
 
                 <div class="signin-form">
@@ -887,6 +1119,16 @@
                         <div class="loading-spinner"></div>
                         <span id="btnText">Continue with Google</span>
                     </button>
+
+                    <button type="button" class="btn btn-guest" onclick="handleGuestAccess()" id="guestBtn">
+                        <span>👤</span>
+                        Continue without an account
+                    </button>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="error-message">
+                    <span id="errorText"></span>
                 </div>
             </div>
 
@@ -958,6 +1200,19 @@
         <main class="main-content" id="mainContent">
             <!-- Homepage -->
             <div id="homepage" class="homepage">
+                <!-- Welcome Message for Authenticated Users -->
+                <div id="welcomeMessage" class="welcome-message hidden">
+                    <h2 class="welcome-title">Welcome back, <span id="welcomeUserName"></span>!</h2>
+                    <p class="welcome-text">Ready to continue your SAT preparation journey? Your progress is automatically saved.</p>
+                </div>
+
+                <!-- Guest Banner -->
+                <div id="guestBanner" class="guest-banner hidden">
+                    <h3>📚 Browsing as Guest</h3>
+                    <p>Sign in with Google to save your progress, track your performance, and access personalized study recommendations.</p>
+                    <button onclick="showSignInPage()">Sign In Now</button>
+                </div>
+
                 <div class="hero-section">
                     <h1 class="hero-title">Project 1600</h1>
                     <p class="hero-subtitle">Comprehensive study notes and resources to help you achieve your target score</p>
@@ -1089,7 +1344,6 @@
                 </div>
             </div>
 
-            <!-- Other content pages would go here (writing, essay, algebra, geometry, trigonometry) -->
             <div id="writing" class="content-page hidden">
                 <div class="content-header">
                     <h1 class="content-title">Writing & Language</h1>
@@ -1121,6 +1375,35 @@
 
     <script>
         let currentPage = 'homepage';
+        let currentUser = null;
+        let isGuestMode = false;
+
+        // Configuration validation
+        function validateConfig() {
+            const configStatus = document.getElementById('configStatus');
+            
+            if (!window.SATYR_CONFIG) {
+                configStatus.textContent = 'Configuration file not found!';
+                configStatus.className = 'config-status error';
+                return false;
+            }
+
+            if (!window.SATYR_CONFIG.firebase || !window.SATYR_CONFIG.firebase.apiKey) {
+                configStatus.textContent = 'Firebase configuration missing!';
+                configStatus.className = 'config-status error';
+                return false;
+            }
+
+            configStatus.textContent = 'Configuration loaded successfully';
+            configStatus.className = 'config-status success';
+            
+            // Hide status after 3 seconds
+            setTimeout(() => {
+                configStatus.style.display = 'none';
+            }, 3000);
+            
+            return true;
+        }
 
         // Create starry background
         function createStars() {
@@ -1171,8 +1454,96 @@
             }
         }
 
-        // Sign In Functions
-        function handleGoogleSignIn() {
+        // Initialize Firebase Auth State Listener
+        function initializeAuthState() {
+            if (!window.firebaseAuth) {
+                console.log('Firebase not initialized yet');
+                return;
+            }
+
+            const { auth, onAuthStateChanged } = window.firebaseAuth;
+            
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    isGuestMode = false;
+                    updateUIForAuthenticatedUser(user);
+                } else {
+                    currentUser = null;
+                    if (!isGuestMode) {
+                        showSignInPage();
+                    }
+                }
+            });
+        }
+
+        // Update UI for authenticated user
+        function updateUIForAuthenticatedUser(user) {
+            // Update user info in sign-in page
+            document.getElementById('userAvatar').src = user.photoURL || '/placeholder-avatar.png';
+            document.getElementById('userName').textContent = user.displayName || 'User';
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userInfo').classList.add('show');
+            
+            // Update welcome message
+            document.getElementById('welcomeUserName').textContent = user.displayName || 'User';
+            
+            // Save user data to Firestore
+            saveUserData(user);
+            
+            // Show success and redirect to main app
+            showSuccessMessage();
+            setTimeout(() => {
+                showMainApp();
+            }, 2000);
+        }
+
+        // Save user data to Firestore
+        async function saveUserData(user) {
+            if (!window.firebaseAuth) return;
+            
+            const { db, doc, setDoc, getDoc, serverTimestamp } = window.firebaseAuth;
+            
+            try {
+                const userRef = doc(db, 'users', user.uid);
+                const userSnap = await getDoc(userRef);
+                
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    lastLogin: serverTimestamp(),
+                };
+                
+                if (!userSnap.exists()) {
+                    // New user
+                    userData.createdAt = serverTimestamp();
+                    userData.studyProgress = {};
+                    userData.preferences = {
+                        theme: 'dark',
+                        notifications: true
+                    };
+                    console.log('Creating new user profile');
+                } else {
+                    console.log('Updating existing user profile');
+                }
+                
+                await setDoc(userRef, userData, { merge: true });
+                console.log('User data saved successfully');
+            } catch (error) {
+                console.error('Error saving user data:', error);
+                showError('Failed to save user data. Please try again.');
+            }
+        }
+
+        // Google Sign In
+        async function handleGoogleSignIn() {
+            if (!window.firebaseAuth) {
+                showError('Authentication not initialized. Please refresh the page.');
+                return;
+            }
+
             const btn = document.getElementById('googleBtn');
             const btnText = document.getElementById('btnText');
             
@@ -1180,24 +1551,106 @@
             btn.classList.add('loading');
             btnText.textContent = 'Signing in...';
             btn.disabled = true;
+            hideError();
             
-            // Simulate Google sign in process
-            setTimeout(() => {
-                showSuccessMessage();
-                setTimeout(() => {
-                    showMainApp();
-                }, 2500);
-            }, 1500);
+            try {
+                const { auth, googleProvider, signInWithPopup } = window.firebaseAuth;
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                
+                console.log('Google sign-in successful:', user.displayName);
+                // updateUIForAuthenticatedUser will be called by onAuthStateChanged
+                
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                
+                // Reset button state
+                btn.classList.remove('loading');
+                btnText.textContent = 'Continue with Google';
+                btn.disabled = false;
+                
+                // Show error message
+                let errorMessage = 'Sign-in failed. Please try again.';
+                if (error.code === 'auth/popup-closed-by-user') {
+                    errorMessage = 'Sign-in was cancelled.';
+                } else if (error.code === 'auth/popup-blocked') {
+                    errorMessage = 'Pop-up was blocked. Please allow pop-ups and try again.';
+                } else if (error.code === 'auth/network-request-failed') {
+                    errorMessage = 'Network error. Please check your connection.';
+                }
+                showError(errorMessage);
+            }
         }
 
+        // Guest Access
+        function handleGuestAccess() {
+            isGuestMode = true;
+            console.log('User accessing as guest');
+            showMainApp();
+        }
+
+        // Sign Out
+        async function handleSignOut() {
+            if (!window.firebaseAuth) return;
+            
+            try {
+                const { auth, signOut } = window.firebaseAuth;
+                await signOut(auth);
+                isGuestMode = false;
+                console.log('User signed out successfully');
+                showSignInPage();
+            } catch (error) {
+                console.error('Sign-out error:', error);
+                showError('Sign-out failed. Please try again.');
+            }
+        }
+
+        // Show/Hide Error Messages
+        function showError(message) {
+            document.getElementById('errorText').textContent = message;
+            document.getElementById('errorMessage').classList.add('show');
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+
+        // Show Success Message
         function showSuccessMessage() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('successMessage').classList.add('show');
         }
 
+        // Show Sign In Page
+        function showSignInPage() {
+            document.getElementById('signin').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('successMessage').classList.remove('show');
+            document.getElementById('userInfo').classList.remove('show');
+            
+            // Reset button state
+            const btn = document.getElementById('googleBtn');
+            const btnText = document.getElementById('btnText');
+            btn.classList.remove('loading');
+            btnText.textContent = 'Continue with Google';
+            btn.disabled = false;
+        }
+
+        // Show Main App
         function showMainApp() {
             document.getElementById('signin').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
+            
+            // Show appropriate welcome message
+            if (currentUser) {
+                document.getElementById('welcomeMessage').classList.remove('hidden');
+                document.getElementById('guestBanner').classList.add('hidden');
+            } else if (isGuestMode) {
+                document.getElementById('welcomeMessage').classList.add('hidden');
+                document.getElementById('guestBanner').classList.remove('hidden');
+            }
+            
             showPage('homepage');
         }
 
@@ -1251,6 +1704,13 @@
             }
             
             createStars();
+            
+            // Validate configuration
+            if (!validateConfig()) {
+                return;
+            }
+            
+            console.log('Project 1600 initialized with secure configuration');
         });
 
         if (document.readyState === 'loading') {
@@ -1261,6 +1721,7 @@
                 html.setAttribute('data-theme', 'dark');
             }
             createStars();
+            validateConfig();
         }
     </script>
 </body>
