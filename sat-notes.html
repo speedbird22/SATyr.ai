@@ -271,37 +271,6 @@
             cursor: pointer;
         }
 
-        .search-container {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
         .nav-section {
             margin-bottom: 2rem;
         }
@@ -704,11 +673,6 @@
             <div class="logo-container">
                 <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="SATyr Logo" class="logo-img">
                 <a href="#" class="logo" onclick="showPage('homepage')">SATyr</a>
-            </div>
-            
-            <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Search notes..." id="searchInput">
             </div>
 
             <nav class="nav-section">
@@ -1200,66 +1164,12 @@
                     sidebar.classList.remove('show');
                 }
             }
-
-            // Clear search when switching pages
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.value = '';
-                resetSearch();
-            }
         }
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             if (sidebar) {
                 sidebar.classList.toggle('show');
-            }
-        }
-
-        function resetSearch() {
-            if (currentPage === 'homepage') return;
-            
-            const noteCards = document.querySelectorAll(`#${currentPage} .note-card`);
-            noteCards.forEach(card => {
-                card.style.display = 'block';
-            });
-        }
-
-        // Fixed search functionality
-        function initializeSearch() {
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    const searchTerm = this.value.toLowerCase().trim();
-                    
-                    if (currentPage === 'homepage') return;
-                    
-                    const noteCards = document.querySelectorAll(`#${currentPage} .note-card`);
-                    
-                    if (searchTerm === '') {
-                        // Show all cards if search is empty
-                        noteCards.forEach(card => {
-                            card.style.display = 'block';
-                        });
-                        return;
-                    }
-                    
-                    noteCards.forEach(card => {
-                        const title = card.querySelector('.note-title');
-                        const content = card.querySelector('.note-content');
-                        
-                        if (title && content) {
-                            const titleText = title.textContent.toLowerCase();
-                            const contentText = content.textContent.toLowerCase();
-                            
-                            if (titleText.includes(searchTerm) || contentText.includes(searchTerm)) {
-                                card.style.display = 'block';
-                            } else {
-                                card.style.display = 'none';
-                            }
-                        }
-                    });
-                });
             }
         }
 
@@ -1299,7 +1209,6 @@
             // Initialize all components
             createStars();
             showPage('homepage');
-            initializeSearch();
             initializeClickOutside();
             initializeResize();
         });
@@ -1316,7 +1225,6 @@
             
             createStars();
             showPage('homepage');
-            initializeSearch();
             initializeClickOutside();
             initializeResize();
         }
