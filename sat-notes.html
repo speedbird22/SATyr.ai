@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Wait for config to be available
         function initializeFirebase() {
@@ -43,6 +44,7 @@
                 doc,
                 setDoc,
                 getDoc,
+                deleteDoc,
                 serverTimestamp
             };
 
@@ -56,6 +58,81 @@
         } else {
             initializeFirebase();
         }
+
+// Listen for messages from notes window
+window.addEventListener('message', function(event) {
+    // Verify origin for security (in production, check against your domain)
+    if (event.data && event.data.type === 'TOPIC_COMPLETED') {
+        const topic = event.data.topic;
+        console.log('Received topic completion from notes window:', topic);
+        
+        // Mark topic as complete
+        completedTopics.add(topic);
+        saveProgress();
+        updateProgressDisplay();
+        updateNavLinks();
+        
+        // Show a notification in the main window
+        showTopicCompletedNotification(topic);
+    }
+});
+
+// Show notification when topic is completed from notes window
+function showTopicCompletedNotification(topic) {
+    // Create a temporary notification
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--success-color);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        z-index: 1000;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        animation: slideIn 0.3s ease-out;
+    `;
+    notification.innerHTML = `✓ ${topic.charAt(0).toUpperCase() + topic.slice(1)} completed!`;
+    
+    // Add slide-in animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideIn 0.3s ease-out reverse';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+            document.head.removeChild(style);
+        }, 300);
+    }, 3000);
+}
+
+// Open notes function - now opens PDFs directly
+let notesWindows = new Set();
+
+function openNotes(noteId) {
+    // Open the notes.html page with the specific note ID
+    const notesWindow = window.open(`notes.html#${noteId}`, '_blank', 'width=1200,height=800');
+    notesWindows.add(notesWindow);
+    
+    // Clean up closed windows
+    if (notesWindow) {
+        notesWindow.addEventListener('beforeunload', () => {
+            notesWindows.delete(notesWindow);
+        });
+    }
+}
     </script>
 
     <style>
@@ -273,11 +350,6 @@
         .theme-icon {
             font-size: 1.2rem;
             transition: transform 0.3s ease;
-        }
-
-        /* Remove the old sidebar toggle button */
-        .sidebar-toggle {
-            display: none;
         }
 
         /* Sidebar Edge Toggle Button */
@@ -636,6 +708,54 @@
             cursor: pointer;
         }
 
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-title {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .progress-bar:hover {
+            height: 10px;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
         .nav-section {
             margin-bottom: 2rem;
         }
@@ -655,6 +775,7 @@
 
         .nav-item {
             margin-bottom: 0.25rem;
+            position: relative;
         }
 
         .nav-link {
@@ -682,8 +803,198 @@
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
+        .nav-link.completed::after {
+            content: '✓';
+            position: absolute;
+            right: 0.5rem;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
         .nav-icon {
             font-size: 1rem;
+        }
+
+        /* Settings Button */
+        .settings-section {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .settings-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+        }
+
+        .settings-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .settings-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-content {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            max-width: 400px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .settings-modal.show .settings-content {
+            transform: scale(1);
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .settings-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+
+        .settings-option-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .settings-option-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .theme-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .theme-switch.active {
+            background: var(--primary-color);
+        }
+
+        .theme-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-switch.active::after {
+            transform: translateX(26px);
+        }
+
+        .danger-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .danger-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .logout-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--secondary-color);
         }
 
         /* Mobile Menu Toggle */
@@ -987,6 +1298,7 @@
             display: block;
             opacity: 1;
             visibility: visible;
+            cursor: pointer;
         }
 
         .note-card::before {
@@ -1046,6 +1358,42 @@
         .note-duration {
             color: var(--text-muted);
             font-size: 0.9rem;
+        }
+
+        /* Finished Button */
+        .finished-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .finished-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .finished-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .finished-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* Hidden class for page switching */
@@ -1112,76 +1460,190 @@
             }
         }
 
-        /* Hover Panel Styles */
-        .topic-hover-panel {
-            position: absolute;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+        /* Progress Report Modal Styles */
+        .progress-report-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .progress-overview {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
             padding: 1rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-            min-width: 250px;
-            max-width: 300px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
         }
 
-        [data-theme="light"] .topic-hover-panel {
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-color) 0deg, var(--border-color) 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
         }
 
-        .topic-hover-panel.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        .progress-circle-inner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--surface-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        .topic-hover-panel h4 {
-            color: var(--primary-color);
-            font-size: 1.1rem;
+        .progress-percentage {
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
+            color: var(--primary-color);
         }
 
-        .topic-hover-panel .subtopic-item {
+        .progress-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .progress-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .topic-breakdown h3,
+        .recommendations h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .topic-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 0.75rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
         }
 
-        .topic-hover-panel .subtopic-item:last-child {
-            border-bottom: none;
+        .topic-item.completed {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.1);
         }
 
-        .topic-hover-panel .subtopic-item:hover {
-            color: var(--primary-color);
-            transform: translateX(4px);
+        .topic-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .topic-hover-panel .subtopic-name {
+        .topic-icon {
+            font-size: 1rem;
+        }
+
+        .topic-name {
             font-weight: 600;
             color: var(--text-primary);
             font-size: 0.9rem;
         }
 
-        .topic-hover-panel .subtopic-percentage {
-            color: var(--text-muted);
+        .topic-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             font-size: 0.8rem;
-            font-weight: 500;
         }
 
-        .nav-link {
-            position: relative;
+        .status-completed {
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            color: var(--text-muted);
+        }
+
+        .recommendation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .recommendation-item {
+            padding: 0.75rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .recommendation-text {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .progress-overview {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .progress-stats {
+                justify-content: center;
+            }
+            
+            .settings-content {
+                max-height: 90vh;
+                padding: 1.5rem;
+            }
+            
+            .progress-circle {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .progress-circle-inner {
+                width: 50px;
+                height: 50px;
+            }
         }
     </style>
 </head>
@@ -1254,11 +1716,99 @@
         </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2 class="settings-title">Settings</h2>
+                <button class="close-btn" onclick="closeSettings()">×</button>
+            </div>
+            
+            <div class="settings-option">
+                <div>
+                    <div class="settings-option-label">Dark Mode</div>
+                    <div class="settings-option-description">Toggle between light and dark themes</div>
+                </div>
+                <div class="theme-switch" id="themeSwitch" onclick="toggleTheme()"></div>
+            </div>
+            
+            <div class="settings-option" id="logoutOption">
+                <div>
+                    <div class="settings-option-label">Sign Out</div>
+                    <div class="settings-option-description">Sign out of your account</div>
+                </div>
+                <button class="logout-btn" onclick="handleSignOut()">Sign Out</button>
+            </div>
+            
+            <div class="settings-option" id="deleteOption">
+                <div>
+                    <div class="settings-option-label">Delete Account</div>
+                    <div class="settings-option-description">Permanently delete your account and all data</div>
+                </div>
+                <button class="danger-btn" onclick="deleteAccount()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Report Modal -->
+    <div id="progressModal" class="settings-modal">
+        <div class="settings-content" style="max-width: 600px;">
+            <div class="settings-header">
+                <h2 class="settings-title">Study Progress Report</h2>
+                <button class="close-btn" onclick="closeProgressReport()">×</button>
+            </div>
+            
+            <div class="progress-report-content">
+                <div class="progress-overview">
+                    <div class="progress-circle">
+                        <div class="progress-circle-inner">
+                            <span class="progress-percentage" id="reportPercentage">0%</span>
+                            <span class="progress-label">Complete</span>
+                        </div>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="completedCount">0</span>
+                            <span class="stat-label">Completed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="remainingCount">6</span>
+                            <span class="stat-label">Remaining</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="topic-breakdown">
+                    <h3>Topic Breakdown</h3>
+                    <div class="topic-list" id="topicBreakdown">
+                        <!-- Topics will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="recommendations" id="recommendations">
+                    <h3>Recommendations</h3>
+                    <div class="recommendation-list" id="recommendationList">
+                        <!-- Recommendations will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container hidden" id="mainApp">
         <aside class="sidebar" id="sidebar">
             <div class="logo-container">
                 <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="SATyr Logo" class="logo-img">
                 <a href="#" class="logo" onclick="showPage('homepage')">SATyr</a>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section" onclick="showProgressReport()" style="cursor: pointer;" title="Click for detailed progress report">
+                <div class="progress-title">Study Progress</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 of 6 topics completed</div>
             </div>
 
             <nav class="nav-section">
@@ -1308,6 +1858,14 @@
                     </li>
                 </ul>
             </nav>
+
+            <!-- Settings Section -->
+            <div class="settings-section">
+                <button class="settings-btn" onclick="openSettings()">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </button>
+            </div>
         </aside>
         <button class="sidebar-edge-toggle" onclick="toggleSidebar()" id="sidebarEdgeToggle">←</button>
 
@@ -1405,7 +1963,7 @@
                 </div>
 
                 <div class="notes-grid">
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('reading-main-idea')">
                         <h3 class="note-title">Main Idea & Purpose</h3>
                         <p class="note-content">Learn how to identify the central theme and author's intent in passages. Master techniques for quickly finding the main point.</p>
                         <div class="note-footer">
@@ -1414,7 +1972,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('reading-supporting-details')">
                         <h3 class="note-title">Supporting Details</h3>
                         <p class="note-content">Understand how to find and analyze evidence that supports the main idea. Practice identifying key supporting information.</p>
                         <div class="note-footer">
@@ -1423,7 +1981,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('reading-inferences')">
                         <h3 class="note-title">Making Inferences</h3>
                         <p class="note-content">Develop skills to draw logical conclusions from text evidence. Learn to read between the lines effectively.</p>
                         <div class="note-footer">
@@ -1432,7 +1990,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('reading-tone-attitude')">
                         <h3 class="note-title">Author's Tone & Attitude</h3>
                         <p class="note-content">Learn to identify the author's perspective and emotional stance. Understand how tone affects meaning.</p>
                         <div class="note-footer">
@@ -1441,7 +1999,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('reading-vocabulary')">
                         <h3 class="note-title">Vocabulary in Context</h3>
                         <p class="note-content">Master the skill of understanding word meanings from context. Learn strategies for tackling unfamiliar words.</p>
                         <div class="note-footer">
@@ -1450,7 +2008,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('reading-text-structure')">
                         <h3 class="note-title">Text Structure</h3>
                         <p class="note-content">Understand how authors organize information in passages. Recognize common organizational patterns.</p>
                         <div class="note-footer">
@@ -1458,6 +2016,15 @@
                             <span class="note-duration">4 min read</span>
                         </div>
                     </article>
+                </div>
+
+                <div class="finished-section">
+                    <h3>Completed Reading Comprehension?</h3>
+                    <p>Mark this section as finished to track your progress</p>
+                    <button class="finished-btn" onclick="markTopicComplete('reading')">
+                        <span>✓</span>
+                        Mark as Finished
+                    </button>
                 </div>
             </div>
 
@@ -1468,7 +2035,7 @@
                 </div>
 
                 <div class="notes-grid">
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('writing-grammar')">
                         <h3 class="note-title">Grammar Fundamentals</h3>
                         <p class="note-content">Review essential grammar rules including subject-verb agreement, pronoun usage, and sentence structure.</p>
                         <div class="note-footer">
@@ -1477,7 +2044,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('writing-punctuation')">
                         <h3 class="note-title">Punctuation Rules</h3>
                         <p class="note-content">Master comma usage, semicolons, colons, and other punctuation marks for clear communication.</p>
                         <div class="note-footer">
@@ -1486,7 +2053,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('writing-sentence-structure')">
                         <h3 class="note-title">Sentence Structure</h3>
                         <p class="note-content">Learn to construct clear, concise sentences and avoid common structural errors.</p>
                         <div class="note-footer">
@@ -1495,7 +2062,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('writing-rhetorical')">
                         <h3 class="note-title">Rhetorical Skills</h3>
                         <p class="note-content">Develop skills in organization, style, and strategy for effective written communication.</p>
                         <div class="note-footer">
@@ -1503,6 +2070,15 @@
                             <span class="note-duration">9 min read</span>
                         </div>
                     </article>
+                </div>
+
+                <div class="finished-section">
+                    <h3>Completed Writing & Language?</h3>
+                    <p>Mark this section as finished to track your progress</p>
+                    <button class="finished-btn" onclick="markTopicComplete('writing')">
+                        <span>✓</span>
+                        Mark as Finished
+                    </button>
                 </div>
             </div>
 
@@ -1513,7 +2089,7 @@
                 </div>
 
                 <div class="notes-grid">
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('essay-structure')">
                         <h3 class="note-title">Essay Structure</h3>
                         <p class="note-content">Learn the fundamental structure of a strong SAT essay with introduction, body, and conclusion.</p>
                         <div class="note-footer">
@@ -1522,7 +2098,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('essay-rhetorical-analysis')">
                         <h3 class="note-title">Rhetorical Analysis</h3>
                         <p class="note-content">Understand how to analyze an author's use of evidence, reasoning, and stylistic elements.</p>
                         <div class="note-footer">
@@ -1530,6 +2106,15 @@
                             <span class="note-duration">8 min read</span>
                         </div>
                     </article>
+                </div>
+
+                <div class="finished-section">
+                    <h3>Completed Essay Writing?</h3>
+                    <p>Mark this section as finished to track your progress</p>
+                    <button class="finished-btn" onclick="markTopicComplete('essay')">
+                        <span>✓</span>
+                        Mark as Finished
+                    </button>
                 </div>
             </div>
 
@@ -1540,7 +2125,7 @@
                 </div>
 
                 <div class="notes-grid">
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('algebra-linear-equations')">
                         <h3 class="note-title">Linear Equations</h3>
                         <p class="note-content">Solve and graph linear equations in one and two variables. Master slope-intercept form and systems of equations.</p>
                         <div class="note-footer">
@@ -1549,7 +2134,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('algebra-quadratic-functions')">
                         <h3 class="note-title">Quadratic Functions</h3>
                         <p class="note-content">Understand quadratic equations, factoring, and the quadratic formula. Learn to analyze parabolas.</p>
                         <div class="note-footer">
@@ -1558,7 +2143,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('algebra-exponential-functions')">
                         <h3 class="note-title">Exponential Functions</h3>
                         <p class="note-content">Master exponential growth and decay problems. Understand logarithms and their applications.</p>
                         <div class="note-footer">
@@ -1567,7 +2152,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('algebra-polynomial-operations')">
                         <h3 class="note-title">Polynomial Operations</h3>
                         <p class="note-content">Learn to add, subtract, multiply, and divide polynomials. Understand factoring techniques.</p>
                         <div class="note-footer">
@@ -1575,6 +2160,15 @@
                             <span class="note-duration">6 min read</span>
                         </div>
                     </article>
+                </div>
+
+                <div class="finished-section">
+                    <h3>Completed Algebra?</h3>
+                    <p>Mark this section as finished to track your progress</p>
+                    <button class="finished-btn" onclick="markTopicComplete('algebra')">
+                        <span>✓</span>
+                        Mark as Finished
+                    </button>
                 </div>
             </div>
 
@@ -1585,7 +2179,7 @@
                 </div>
 
                 <div class="notes-grid">
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('geometry-area-perimeter')">
                         <h3 class="note-title">Area and Perimeter</h3>
                         <p class="note-content">Calculate area and perimeter of various shapes including triangles, rectangles, circles, and complex figures.</p>
                         <div class="note-footer">
@@ -1594,7 +2188,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('geometry-volume-surface-area')">
                         <h3 class="note-title">Volume and Surface Area</h3>
                         <p class="note-content">Master 3D geometry with cylinders, spheres, cones, and rectangular prisms.</p>
                         <div class="note-footer">
@@ -1603,7 +2197,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('geometry-coordinate-geometry')">
                         <h3 class="note-title">Coordinate Geometry</h3>
                         <p class="note-content">Work with points, lines, and shapes on the coordinate plane. Calculate distances and midpoints.</p>
                         <div class="note-footer">
@@ -1612,7 +2206,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('geometry-similar-triangles')">
                         <h3 class="note-title">Similar Triangles</h3>
                         <p class="note-content">Understand similarity, proportions, and scaling in geometric figures.</p>
                         <div class="note-footer">
@@ -1620,6 +2214,15 @@
                             <span class="note-duration">8 min read</span>
                         </div>
                     </article>
+                </div>
+
+                <div class="finished-section">
+                    <h3>Completed Geometry?</h3>
+                    <p>Mark this section as finished to track your progress</p>
+                    <button class="finished-btn" onclick="markTopicComplete('geometry')">
+                        <span>✓</span>
+                        Mark as Finished
+                    </button>
                 </div>
             </div>
 
@@ -1630,7 +2233,7 @@
                 </div>
 
                 <div class="notes-grid">
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('trigonometry-basic-ratios')">
                         <h3 class="note-title">Basic Trigonometric Ratios</h3>
                         <p class="note-content">Understand sine, cosine, and tangent ratios in right triangles. Master SOH-CAH-TOA.</p>
                         <div class="note-footer">
@@ -1639,7 +2242,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('trigonometry-unit-circle')">
                         <h3 class="note-title">Unit Circle</h3>
                         <p class="note-content">Learn the unit circle and how to find trigonometric values for common angles.</p>
                         <div class="note-footer">
@@ -1648,7 +2251,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('trigonometry-applications')">
                         <h3 class="note-title">Trigonometric Applications</h3>
                         <p class="note-content">Apply trigonometry to solve real-world problems involving angles and distances.</p>
                         <div class="note-footer">
@@ -1657,7 +2260,7 @@
                         </div>
                     </article>
 
-                    <article class="note-card">
+                    <article class="note-card" onclick="openNotes('trigonometry-radians-degrees')">
                         <h3 class="note-title">Radians and Degrees</h3>
                         <p class="note-content">Convert between radians and degrees. Understand when to use each unit of measurement.</p>
                         <div class="note-footer">
@@ -1665,6 +2268,15 @@
                             <span class="note-duration">5 min read</span>
                         </div>
                     </article>
+                </div>
+
+                <div class="finished-section">
+                    <h3>Completed Trigonometry?</h3>
+                    <p>Mark this section as finished to track your progress</p>
+                    <button class="finished-btn" onclick="markTopicComplete('trigonometry')">
+                        <span>✓</span>
+                        Mark as Finished
+                    </button>
                 </div>
             </div>
         </main>
@@ -1674,6 +2286,91 @@
         let currentPage = 'homepage';
         let currentUser = null;
         let isGuestMode = false;
+        let completedTopics = new Set();
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('satyr-progress');
+            if (saved) {
+                completedTopics = new Set(JSON.parse(saved));
+                updateProgressDisplay();
+                updateNavLinks();
+            }
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('satyr-progress', JSON.stringify([...completedTopics]));
+        }
+
+        // Update progress bar and text
+        function updateProgressDisplay() {
+            const totalTopics = 6;
+            const completed = completedTopics.size;
+            const percentage = (completed / totalTopics) * 100;
+            
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+            }
+            
+            if (progressText) {
+                progressText.textContent = `${completed} of ${totalTopics} topics completed`;
+            }
+        }
+
+        // Update navigation links to show completion
+        function updateNavLinks() {
+            const topics = ['reading', 'writing', 'essay', 'algebra', 'geometry', 'trigonometry'];
+            topics.forEach(topic => {
+                const link = document.querySelector(`[data-page="${topic}"]`);
+                if (link) {
+                    if (completedTopics.has(topic)) {
+                        link.classList.add('completed');
+                    } else {
+                        link.classList.remove('completed');
+                    }
+                }
+            });
+        }
+
+        // Mark topic as complete
+        function markTopicComplete(topic) {
+            // Add to completed topics set
+            completedTopics.add(topic);
+            
+            // Save progress immediately
+            saveProgress();
+            
+            // Update all UI elements
+            updateProgressDisplay();
+            updateNavLinks();
+            
+            // Check if all topics are completed
+            const totalTopics = 6;
+            if (completedTopics.size === totalTopics) {
+                setTimeout(() => {
+                    showCongratulationsModal();
+                }, 2500); // Show after the success message
+            }
+            
+            // Show success message on button
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span>🎉</span> Completed!';
+            btn.disabled = true;
+            
+            // Log for debugging
+            console.log('Topic completed:', topic);
+            console.log('All completed topics:', [...completedTopics]);
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        }
 
         // Configuration validation
         function validateConfig() {
@@ -1728,15 +2425,143 @@
         function toggleTheme() {
             const html = document.documentElement;
             const themeIcon = document.getElementById('themeIcon');
+            const themeSwitch = document.getElementById('themeSwitch');
             const currentTheme = html.getAttribute('data-theme');
             
             if (currentTheme === 'dark') {
                 html.setAttribute('data-theme', 'light');
                 themeIcon.textContent = '☀️';
+                if (themeSwitch) themeSwitch.classList.remove('active');
             } else {
                 html.setAttribute('data-theme', 'dark');
                 themeIcon.textContent = '🌙';
+                if (themeSwitch) themeSwitch.classList.add('active');
             }
+        }
+
+        // Settings functions
+        function openSettings() {
+            const modal = document.getElementById('settingsModal');
+            const themeSwitch = document.getElementById('themeSwitch');
+            const logoutOption = document.getElementById('logoutOption');
+            const deleteOption = document.getElementById('deleteOption');
+            
+            // Update theme switch state
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                themeSwitch.classList.add('active');
+            } else {
+                themeSwitch.classList.remove('active');
+            }
+            
+            // Show/hide options based on user state
+            if (isGuestMode) {
+                logoutOption.style.display = 'none';
+                deleteOption.style.display = 'none';
+            } else {
+                logoutOption.style.display = 'flex';
+                deleteOption.style.display = 'flex';
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('show');
+        }
+
+        async function deleteAccount() {
+            if (!currentUser) {
+                showError('No user is currently signed in.');
+                return;
+            }
+            
+            const confirmMessage = `Are you sure you want to delete your account? This will permanently delete:
+            
+• Your account and all personal information
+• Your study progress and completed topics
+• All saved preferences and settings
+
+This action cannot be undone.`;
+            
+            if (confirm(confirmMessage)) {
+                try {
+                    const { auth, db, doc, deleteDoc } = window.firebaseAuth;
+                    const user = auth.currentUser;
+                    
+                    if (!user) {
+                        showError('Authentication error. Please sign in again.');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    const deleteBtn = document.querySelector('.danger-btn');
+                    const originalText = deleteBtn.textContent;
+                    deleteBtn.textContent = 'Deleting...';
+                    deleteBtn.disabled = true;
+                    
+                    // Step 1: Delete user data from Firestore
+                    console.log('Deleting user data from Firestore...');
+                    const userDocRef = doc(db, 'users', user.uid);
+                    await deleteDoc(userDocRef);
+                    console.log('User data deleted from Firestore successfully');
+                    
+                    // Step 2: Delete the user's authentication account
+                    console.log('Deleting user authentication account...');
+                    await user.delete();
+                    console.log('User authentication account deleted successfully');
+                    
+                    // Clear local data
+                    localStorage.removeItem('satyr-progress');
+                    localStorage.removeItem('welcomeMessageDismissed');
+                    completedTopics.clear();
+                    
+                    // Reset UI state
+                    currentUser = null;
+                    isGuestMode = false;
+                    
+                    // Close settings modal
+                    closeSettings();
+                    
+                    // Show success message and redirect
+                    alert('Your account has been successfully deleted. You will now be redirected to the sign-in page.');
+                    showSignInPage();
+                    
+                } catch (error) {
+                    console.error('Error deleting account:', error);
+                    
+                    // Reset button state
+                    const deleteBtn = document.querySelector('.danger-btn');
+                    deleteBtn.textContent = originalText;
+                    deleteBtn.disabled = false;
+                    
+                    // Handle specific error cases
+                    let errorMessage = 'Failed to delete account. Please try again.';
+                    
+                    if (error.code === 'auth/requires-recent-login') {
+                        errorMessage = 'For security reasons, please sign out and sign back in, then try deleting your account again.';
+                    } else if (error.code === 'auth/network-request-failed') {
+                        errorMessage = 'Network error. Please check your connection and try again.';
+                    } else if (error.code === 'permission-denied') {
+                        errorMessage = 'Permission denied. Unable to delete user data.';
+                    }
+                    
+                    showError(errorMessage);
+                }
+            }
+        }
+
+        // Open notes function
+        let notesWindows = new Set();
+
+        function openNotes(noteId) {
+            const notesWindow = window.open(`notes.html#${noteId}`, '_blank');
+            notesWindows.add(notesWindow);
+            
+            // Clean up closed windows
+            notesWindow.addEventListener('beforeunload', () => {
+                notesWindows.delete(notesWindow);
+            });
         }
 
         // Initialize Firebase Auth State Listener
@@ -1883,6 +2708,7 @@
                 await signOut(auth);
                 isGuestMode = false;
                 console.log('User signed out successfully');
+                closeSettings();
                 showSignInPage();
             } catch (error) {
                 console.error('Sign-out error:', error);
@@ -1936,6 +2762,7 @@
                 document.getElementById('guestBanner').classList.remove('hidden');
             }
             
+            loadProgress();
             showPage('homepage');
         }
 
@@ -2038,154 +2865,219 @@
             }
         });
 
-        // Hover panel functionality
-        let hoverTimeout;
-        let currentPanel = null;
-
-        function createHoverPanel(topic, element) {
-            const panels = {
-                reading: {
-                    title: "Reading Comprehension",
-                    subtopics: [
-                        { name: "Standard English Conventions", percentage: "25-27%" },
-                        { name: "Information and Ideas", percentage: "26-28%" },
-                        { name: "Craft and Structure", percentage: "21-23%" }
-                    ]
-                },
-                writing: {
-                    title: "Writing & Language",
-                    subtopics: [
-                        { name: "Expression of Ideas", percentage: "20-22%" },
-                        { name: "Standard English Conventions", percentage: "25-27%" },
-                        { name: "Language Usage", percentage: "15-17%" }
-                    ]
-                },
-                essay: {
-                    title: "Essay Writing",
-                    subtopics: [
-                        { name: "Reading", percentage: "33%" },
-                        { name: "Analysis", percentage: "33%" },
-                        { name: "Writing", percentage: "34%" }
-                    ]
-                },
-                algebra: {
-                    title: "Algebra & Advanced Math",
-                    subtopics: [
-                        { name: "Algebra", percentage: "35%" },
-                        { name: "Advanced Math", percentage: "35%" },
-                        { name: "Functions", percentage: "15%" }
-                    ]
-                },
-                geometry: {
-                    title: "Geometry & Data Analysis",
-                    subtopics: [
-                        { name: "Problem-Solving & Data Analysis", percentage: "15%" },
-                        { name: "Geometry & Trigonometry", percentage: "15%" },
-                        { name: "Coordinate Geometry", percentage: "10%" }
-                    ]
-                },
-                trigonometry: {
-                    title: "Trigonometry",
-                    subtopics: [
-                        { name: "Basic Trigonometric Ratios", percentage: "40%" },
-                        { name: "Unit Circle", percentage: "30%" },
-                        { name: "Trigonometric Applications", percentage: "30%" }
-                    ]
-                }
-            };
-
-            const panelData = panels[topic];
-            if (!panelData) return null;
-
-            // Remove existing panel
-            if (currentPanel) {
-                currentPanel.remove();
-                currentPanel = null;
+        // Close settings modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('settingsModal');
+            if (e.target === modal) {
+                closeSettings();
             }
+        });
 
-            const panel = document.createElement('div');
-            panel.className = 'topic-hover-panel';
-            panel.innerHTML = `
-                <h4>${panelData.title}</h4>
-                ${panelData.subtopics.map(subtopic => `
-                    <div class="subtopic-item" onclick="showPage('${topic}')">
-                        <span class="subtopic-name">${subtopic.name}</span>
-                        <span class="subtopic-percentage">${subtopic.percentage}</span>
+        // Show progress report modal
+        function showProgressReport() {
+            const modal = document.getElementById('progressModal');
+            const topics = [
+                { id: 'reading', name: 'Reading Comprehension', icon: '📖', category: 'English' },
+                { id: 'writing', name: 'Writing & Language', icon: '✍️', category: 'English' },
+                { id: 'essay', name: 'Essay Writing', icon: '📝', category: 'English' },
+                { id: 'algebra', name: 'Algebra', icon: '🔢', category: 'Math' },
+                { id: 'geometry', name: 'Geometry', icon: '📐', category: 'Math' },
+                { id: 'trigonometry', name: 'Trigonometry', icon: '🌀', category: 'Math' }
+            ];
+            
+            const totalTopics = topics.length;
+            const completed = completedTopics.size;
+            const percentage = Math.round((completed / totalTopics) * 100);
+            
+            console.log('Progress Report - Completed topics:', [...completedTopics]);
+            
+            console.log('Progress Report - Total completed:', completed);
+            
+            // Update progress circle
+            const progressCircle = document.querySelector('.progress-circle');
+            const angle = (completed / totalTopics) * 360;
+            progressCircle.style.background = `conic-gradient(var(--primary-color) ${angle}deg, var(--border-color) ${angle}deg)`;
+            
+            // Update stats
+            document.getElementById('reportPercentage').textContent = percentage + '%';
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('remainingCount').textContent = totalTopics - completed;
+            
+            // Update topic breakdown
+            const topicBreakdown = document.getElementById('topicBreakdown');
+            topicBreakdown.innerHTML = topics.map(topic => {
+                const isCompleted = completedTopics.has(topic.id);
+                return `
+                    <div class="topic-item ${isCompleted ? 'completed' : ''}">
+                        <div class="topic-info">
+                            <span class="topic-icon">${topic.icon}</span>
+                            <div>
+                                <div class="topic-name">${topic.name}</div>
+                                <div style="font-size: 0.7rem; color: var(--text-muted);">${topic.category}</div>
+                            </div>
+                        </div>
+                        <div class="topic-status">
+                            ${isCompleted ? 
+                                '<span class="status-completed">✓ Completed</span>' : 
+                                '<span class="status-pending">○ Pending</span>'
+                            }
+                        </div>
                     </div>
-                `).join('')}
-            `;
-
-            document.body.appendChild(panel);
-            currentPanel = panel;
-
-            // Position the panel
-            const rect = element.getBoundingClientRect();
-            const panelRect = panel.getBoundingClientRect();
+                `;
+            }).join('');
             
-            let left = rect.right + 10;
-            let top = rect.top;
+            // Generate recommendations
+            generateRecommendations(topics, completed, totalTopics);
 
-            // Adjust if panel goes off screen
-            if (left + panelRect.width > window.innerWidth) {
-                left = rect.left - panelRect.width - 10;
+            // Check if all topics are completed and show congratulations
+            if (completed === totalTopics) {
+                setTimeout(() => {
+                    showCongratulationsModal();
+                }, 1000);
             }
             
-            if (top + panelRect.height > window.innerHeight) {
-                top = window.innerHeight - panelRect.height - 10;
-            }
-
-            panel.style.left = left + 'px';
-            panel.style.top = top + 'px';
-
-            // Show panel with animation
-            setTimeout(() => {
-                panel.classList.add('show');
-            }, 10);
-
-            return panel;
+            modal.classList.add('show');
         }
 
-        function hideHoverPanel() {
-            if (currentPanel) {
-                currentPanel.classList.remove('show');
+        // Generate personalized recommendations
+        function generateRecommendations(topics, completed, total) {
+            const recommendationList = document.getElementById('recommendationList');
+            const recommendations = [];
+            
+            if (completed === 0) {
+                recommendations.push({
+                    title: "Start with Reading Comprehension",
+                    text: "Begin your SAT journey with Reading Comprehension. It builds critical thinking skills that help with all other sections."
+                });
+            } else if (completed < total / 2) {
+                const englishCompleted = topics.filter(t => t.category === 'English' && completedTopics.has(t.id)).length;
+                const mathCompleted = topics.filter(t => t.category === 'Math' && completedTopics.has(t.id)).length;
+                
+                if (englishCompleted > mathCompleted) {
+                    recommendations.push({
+                        title: "Focus on Math Sections",
+                        text: "You're doing great with English! Now balance your preparation by tackling the Math sections."
+                    });
+                } else if (mathCompleted > englishCompleted) {
+                    recommendations.push({
+                        title: "Strengthen English Skills",
+                        text: "Your math progress is excellent! Consider focusing on the remaining English sections for a well-rounded preparation."
+                    });
+                } else {
+                    recommendations.push({
+                        title: "Maintain Balanced Progress",
+                        text: "You're maintaining good balance between English and Math. Keep up the steady progress!"
+                    });
+                }
+            } else if (completed === total - 1) {
+                const remaining = topics.find(t => !completedTopics.has(t.id));
+                recommendations.push({
+                    title: `Complete ${remaining.name}`,
+                    text: `You're almost done! Finish ${remaining.name} to complete your SAT preparation journey.`
+                });
+            } else if (completed === total) {
+                recommendations.push({
+                    title: "Congratulations! 🎉",
+                    text: "You've completed all SAT topics! Consider reviewing challenging areas and taking practice tests."
+                });
+            }
+            
+            // Add study tips based on progress
+            if (completed > 0 && completed < total) {
+                recommendations.push({
+                    title: "Study Tip",
+                    text: "Review completed topics weekly to maintain retention while learning new material."
+                });
+            }
+            
+            recommendationList.innerHTML = recommendations.map(rec => `
+                <div class="recommendation-item">
+                    <div class="recommendation-title">${rec.title}</div>
+                    <div class="recommendation-text">${rec.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // Close progress report modal
+        function closeProgressReport() {
+            document.getElementById('progressModal').classList.remove('show');
+        }
+
+        // Show congratulations modal when all topics are completed
+        function showCongratulationsModal() {
+            // Create congratulations modal
+            const congratsModal = document.createElement('div');
+            congratsModal.id = 'congratulationsModal';
+            congratsModal.className = 'settings-modal show';
+            congratsModal.innerHTML = `
+                <div class="settings-content" style="max-width: 500px; text-align: center;">
+                    <div class="congratulations-header" style="margin-bottom: 2rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+                        <h2 style="font-size: 2rem; font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem;">
+                            Congratulations!
+                        </h2>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem;">
+                            You have successfully completed all SAT topics! You're now ready to put your knowledge to the test.
+                        </p>
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+                            <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">🏆 Achievement Unlocked</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">SAT Master - Completed all study topics</p>
+                        </div>
+                        
+                        <p style="color: var(--text-primary); font-weight: 600; margin-bottom: 1rem;">
+                            Ready to test your knowledge?
+                        </p>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                            Take our comprehensive practice test to see how well you've mastered the material and identify any areas that might need review.
+                        </p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <button class="btn" onclick="goToTestZone()" style="background: var(--gradient-primary); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease;">
+                            🚀 Start Practice Test
+                        </button>
+                        <button class="btn" onclick="closeCongratulationsModal()" style="background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 1rem 2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                            Maybe Later
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(congratsModal);
+            
+            // Add hover effects
+            const buttons = congratsModal.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    btn.style.transform = 'translateY(-2px)';
+                    btn.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.3)';
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translateY(0)';
+                    btn.style.boxShadow = 'none';
+                });
+            });
+        }
+
+        // Go to test zone
+        function goToTestZone() {
+            window.open('test-zone.html', '_blank');
+            closeCongratulationsModal();
+        }
+
+        // Close congratulations modal
+        function closeCongratulationsModal() {
+            const modal = document.getElementById('congratulationsModal');
+            if (modal) {
+                modal.classList.remove('show');
                 setTimeout(() => {
-                    if (currentPanel) {
-                        currentPanel.remove();
-                        currentPanel = null;
-                    }
+                    document.body.removeChild(modal);
                 }, 300);
             }
         }
-
-        // Add event listeners to navigation links
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('.nav-link[data-page]');
-            
-            navLinks.forEach(link => {
-                const topic = link.getAttribute('data-page');
-                
-                link.addEventListener('mouseenter', function() {
-                    clearTimeout(hoverTimeout);
-                    hoverTimeout = setTimeout(() => {
-                        createHoverPanel(topic, this);
-                    }, 300);
-                });
-                
-                link.addEventListener('mouseleave', function() {
-                    clearTimeout(hoverTimeout);
-                    hoverTimeout = setTimeout(() => {
-                        hideHoverPanel();
-                    }, 200);
-                });
-            });
-
-            // Hide panel when clicking elsewhere
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.nav-link') && !e.target.closest('.topic-hover-panel')) {
-                    hideHoverPanel();
-                }
-            });
-        });
     </script>
 </body>
 </html>
