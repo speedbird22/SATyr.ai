@@ -609,9 +609,53 @@
             margin-bottom: 10px;
         }
 
-        .auth-button.otp-btn {
+        .auth-button.guest-btn {
             background: linear-gradient(135deg, #667eea, #764ba2);
             margin-bottom: 10px;
+        }
+
+        /* Guest mode warning */
+        .guest-warning {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            color: #f59e0b;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        /* Message limit warning */
+        .message-limit-warning {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            color: #ef4444;
+            text-align: center;
+            margin: 16px 0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .message-limit-warning .create-account-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .message-limit-warning .create-account-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-1px);
         }
 
         /* Terms and Conditions Text */
@@ -641,55 +685,6 @@
 
         [data-theme="light"] .terms-text a {
             color: var(--primary-color);
-        }
-
-        /* OTP Form Styles */
-        .otp-form {
-            display: none;
-        }
-
-        .otp-form.active {
-            display: block;
-        }
-
-        .back-button {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: rgba(255, 255, 255, 0.8);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .back-button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .otp-info {
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            color: #60a5fa;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        /* Cooldown message styles */
-        .cooldown-message {
-            background: rgba(245, 158, 11, 0.2);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            color: #f59e0b;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 14px;
         }
 
         /* Welcome Modal Styles */
@@ -2035,61 +2030,24 @@
                     Continue with Google
                 </button>
 
-                <button type="button" class="auth-button otp-btn" onclick="showOTPForm()">
+                <button type="button" class="auth-button guest-btn" onclick="continueAsGuest()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; margin-right: 8px;">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                        <polyline points="22,6 12,13 2,6"></polyline>
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    Continue with OTP
+                    Continue as Guest
                 </button>
+
+                <!-- Guest mode warning -->
+                <div class="guest-warning">
+                    <strong>Guest Mode:</strong> Limited to 5 messages. Chat history won't be saved. Create an account for unlimited access and saved conversations.
+                </div>
 
                 <!-- Terms and Conditions Text -->
                 <div class="terms-text">
-                    By logging in, you accept our <a href="terms.html" target="_blank">Terms and Conditions</a>
+                    By using SATyr, you accept our <a href="terms.html" target="_blank">Terms and Conditions</a>
                 </div>
             </form>
-
-            <!-- OTP Email Form -->
-            <form id="otp-form" class="otp-form" onsubmit="sendOTPEmail(event)">
-                <button type="button" class="back-button" onclick="showMainForm()">
-                    ← Back
-                </button>
-
-                <div class="otp-info">
-                    We'll send you a secure login link to your email address. Click the link to create your account and sign in.
-                </div>
-
-                <!-- Cooldown message (initially hidden) -->
-                <div class="cooldown-message" id="cooldown-message" style="display: none;">
-                    <span id="cooldown-text"></span>
-                </div>
-
-                <div class="form-group">
-                    <label class="auth-label" for="otp-email">Email Address</label>
-                    <input type="email" id="otp-email" class="auth-input" placeholder="Enter your email address" required>
-                    <div class="error-message" id="otp-email-error"></div>
-                </div>
-
-                <button type="submit" class="auth-button" id="otp-btn">
-                    Send Login Link
-                </button>
-
-                <!-- Terms and Conditions Text for OTP -->
-                <div class="terms-text">
-                    By logging in, you accept our <a href="terms.html" target="_blank">Terms and Conditions</a>
-                </div>
-            </form>
-
-            <!-- OTP Sent Confirmation -->
-            <div id="otp-sent" class="otp-form">
-                <div class="success-message">
-                    📧 Login link sent! Check your email and click the link to sign in.
-                </div>
-                
-                <button type="button" class="back-button" onclick="showMainForm()">
-                    ← Back to Login
-                </button>
-            </div>
         </div>
     </div>
 
@@ -2363,12 +2321,10 @@
         let userPreferences = {};
         let chatSessions = new Map(); // Store chat sessions with context
 
-        // Email cooldown management
-        let emailCooldownData = {
-            lastSentTime: 0,
-            attemptCount: 0,
-            cooldownDuration: 0
-        };
+        // Guest mode state
+        let isGuestMode = false;
+        let guestMessageCount = 0;
+        const GUEST_MESSAGE_LIMIT = 5;
 
         // Firebase Services (will be available after Firebase loads)
         let auth, firestore, firebaseServices;
@@ -2419,8 +2375,8 @@
                     if (response.ok) {
                         const responseData = await response.json();
                         
-                        // Store/update session data for this chat
-                        if (chatId) {
+                        // Store/update session data for this chat (only if not guest mode)
+                        if (chatId && !isGuestMode) {
                             this.sessions.set(chatId, {
                                 sessionId: responseData.SessionId,
                                 context: responseData.ai_message,
@@ -2460,7 +2416,7 @@
             }
 
             loadChatSession(chatId, sessionData) {
-                if (sessionData && sessionData.sessionId) {
+                if (sessionData && sessionData.sessionId && !isGuestMode) {
                     this.sessions.set(chatId, sessionData);
                     console.log("Loaded existing session for chat:", chatId);
                 }
@@ -2500,6 +2456,9 @@
 
             // Debounced save function to batch rapid saves
             debouncedSave(chatId, title, messages, sessionData = null) {
+                // Don't save in guest mode
+                if (isGuestMode) return;
+                
                 if (this.saveTimeout) {
                     clearTimeout(this.saveTimeout);
                 }
@@ -2511,6 +2470,9 @@
 
             // Save with retry mechanism
             async saveWithRetry(chatId, title, messages, sessionData = null, retryCount = 0) {
+                // Don't save in guest mode
+                if (isGuestMode) return false;
+                
                 try {
                     console.log(`💾 Attempting to save chat (attempt ${retryCount + 1}):`, { chatId, title, messageCount: messages.length });
                     
@@ -2540,8 +2502,8 @@
             }
 
             async saveChatToFirestore(chatId, title, messages, sessionData = null) {
-                if (!currentUser) {
-                    console.log('⚠️ No current user, cannot save chat');
+                if (!currentUser || isGuestMode) {
+                    console.log('⚠️ No current user or guest mode, cannot save chat');
                     return false;
                 }
                 
@@ -2606,6 +2568,9 @@
 
             // Update local chat history after successful save
             updateLocalChatHistory(chatId, title, messages, sessionData = null) {
+                // Don't update local history in guest mode
+                if (isGuestMode) return;
+                
                 const existingIndex = chatHistory.findIndex(chat => chat.id === chatId);
                 const chatData = {
                     id: chatId,
@@ -2634,7 +2599,7 @@
             }
 
             async incrementUserChatCount() {
-                if (!currentUser) return;
+                if (!currentUser || isGuestMode) return;
                 
                 try {
                     const userRef = firebaseServices.doc(firestore, `users/${currentUser.uid}`);
@@ -2651,7 +2616,7 @@
 
             // Auto-save current chat with session data
             autoSaveCurrentChat() {
-                if (!currentChatId) return;
+                if (!currentChatId || isGuestMode) return;
                 
                 const messages = getCurrentChatMessages();
                 if (messages.length === 0) return;
@@ -2663,7 +2628,7 @@
 
             // FIXED: Update chat name function with better conflict resolution
             async updateChatName(chatId, newTitle) {
-                if (!currentUser) return false;
+                if (!currentUser || isGuestMode) return false;
                 
                 try {
                     console.log('🏷️ Updating chat name:', { chatId, newTitle });
@@ -2723,6 +2688,8 @@
 
             // Helper method to reload a specific chat from Firestore
             async reloadChatFromFirestore(chatId) {
+                if (isGuestMode) return;
+                
                 try {
                     const chatRef = firebaseServices.doc(firestore, `users/${currentUser.uid}/chats/${chatId}`);
                     const chatDoc = await firebaseServices.getDoc(chatRef);
@@ -2781,7 +2748,7 @@
             }
 
             async loadUserTheme() {
-                if (!currentUser) return;
+                if (!currentUser || isGuestMode) return;
                 
                 try {
                     const userRef = firebaseServices.doc(firestore, `users/${currentUser.uid}`);
@@ -2804,7 +2771,7 @@
             }
 
             async saveUserTheme() {
-                if (!currentUser) return;
+                if (!currentUser || isGuestMode) return;
                 
                 try {
                     const userRef = firebaseServices.doc(firestore, `users/${currentUser.uid}`);
@@ -2861,103 +2828,100 @@
         // Initialize theme manager
         const themeManager = new ThemeManager();
 
-        // Email Cooldown Management
-        class EmailCooldownManager {
-            constructor() {
-                this.loadCooldownData();
-            }
+        // MISSING FUNCTIONS - Adding all the missing function implementations
 
-            loadCooldownData() {
-                const saved = localStorage.getItem('satyr_email_cooldown');
-                if (saved) {
-                    try {
-                        emailCooldownData = JSON.parse(saved);
-                    } catch (error) {
-                        console.error('Error loading cooldown data:', error);
-                        this.resetCooldown();
-                    }
-                }
-            }
-
-            saveCooldownData() {
-                localStorage.setItem('satyr_email_cooldown', JSON.stringify(emailCooldownData));
-            }
-
-            calculateCooldown(attemptCount) {
-                // Progressive cooldown: 30s, 1m, 2m, 5m, 10m, then 15m for subsequent attempts
-                const cooldowns = [0, 30, 60, 120, 300, 600]; // in seconds
-                if (attemptCount >= cooldowns.length) {
-                    return 900; // 15 minutes for attempts beyond the defined array
-                }
-                return cooldowns[attemptCount] * 1000; // convert to milliseconds
-            }
-
-            canSendEmail() {
-                const now = Date.now();
-                const timeSinceLastSent = now - emailCooldownData.lastSentTime;
-                return timeSinceLastSent >= emailCooldownData.cooldownDuration;
-            }
-
-            getRemainingCooldown() {
-                const now = Date.now();
-                const timeSinceLastSent = now - emailCooldownData.lastSentTime;
-                const remaining = emailCooldownData.cooldownDuration - timeSinceLastSent;
-                return Math.max(0, remaining);
-            }
-
-            recordEmailSent() {
-                emailCooldownData.lastSentTime = Date.now();
-                emailCooldownData.attemptCount += 1;
-                emailCooldownData.cooldownDuration = this.calculateCooldown(emailCooldownData.attemptCount);
-                this.saveCooldownData();
-            }
-
-            resetCooldown() {
-                emailCooldownData = {
-                    lastSentTime: 0,
-                    attemptCount: 0,
-                    cooldownDuration: 0
-                };
-                this.saveCooldownData();
-            }
-
-            formatTime(milliseconds) {
-                const seconds = Math.ceil(milliseconds / 1000);
-                if (seconds < 60) {
-                    return `${seconds} second${seconds !== 1 ? 's' : ''}`;
-                }
-                const minutes = Math.ceil(seconds / 60);
-                return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
-            }
-
-            updateCooldownDisplay() {
-                const cooldownMessage = document.getElementById('cooldown-message');
-                const cooldownText = document.getElementById('cooldown-text');
-                const otpButton = document.getElementById('otp-btn');
-
-                if (!this.canSendEmail()) {
-                    const remaining = this.getRemainingCooldown();
-                    const timeText = this.formatTime(remaining);
-                    
-                    cooldownText.textContent = `Please wait ${timeText} before requesting another login link.`;
-                    cooldownMessage.style.display = 'block';
-                    otpButton.disabled = true;
-                    otpButton.textContent = `Wait ${timeText}`;
-
-                    // Update every second
-                    setTimeout(() => this.updateCooldownDisplay(), 1000);
-                } else {
-                    cooldownMessage.style.display = 'none';
-                    otpButton.disabled = false;
-                    otpButton.textContent = 'Send Login Link';
-                }
-            }
+        // Guest Mode Functions
+        function continueAsGuest() {
+            console.log('👤 Starting guest mode...');
+            
+            // Set guest mode state
+            isGuestMode = true;
+            isLoggedIn = false;
+            currentUser = null;
+            guestMessageCount = 0;
+            
+            // Set AI chat user name
+            aiChat.setUserName("Guest");
+            
+            // Show chat interface
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('chat-interface').classList.add('active');
+            
+            // Update UI for guest mode
+            document.getElementById('user-display').textContent = '👋 Guest User';
+            
+            // Hide chat history section in guest mode
+            const chatHistoryContainer = document.getElementById('chat-history');
+            chatHistoryContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 20px;">Chat history not available in guest mode</div>';
+            
+            // Focus chat input
+            setTimeout(() => {
+                document.getElementById('chat-input').focus();
+            }, 500);
+            
+            showNotification('Welcome! You\'re using guest mode with limited features.', 'info');
+            console.log('✅ Guest mode activated');
         }
 
-        // Initialize email cooldown manager
-        const emailCooldownManager = new EmailCooldownManager();
+        function checkGuestMessageLimit() {
+            if (!isGuestMode) return false;
+            
+            if (guestMessageCount >= GUEST_MESSAGE_LIMIT) {
+                // Show message limit warning
+                showMessageLimitWarning();
+                return true;
+            }
+            
+            return false;
+        }
 
-        // MISSING FUNCTIONS - Adding all the missing function implementations
+        function showMessageLimitWarning() {
+            const messagesContainer = document.getElementById('chat-messages');
+            
+            // Remove existing warning if present
+            const existingWarning = messagesContainer.querySelector('.message-limit-warning');
+            if (existingWarning) {
+                existingWarning.remove();
+            }
+            
+            const warningDiv = document.createElement('div');
+            warningDiv.className = 'message-limit-warning';
+            warningDiv.innerHTML = `
+                <div>
+                    <strong>Message limit reached!</strong><br>
+                    You've used all ${GUEST_MESSAGE_LIMIT} free messages in guest mode.
+                </div>
+                <button class="create-account-btn" onclick="showCreateAccountPrompt()">
+                    Create Account to Continue
+                </button>
+            `;
+            
+            messagesContainer.appendChild(warningDiv);
+            
+            // Scroll to show the warning
+            setTimeout(() => {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 100);
+            
+            // Disable input
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+            chatInput.disabled = true;
+            chatInput.placeholder = 'Create an account to continue chatting...';
+            sendButton.disabled = true;
+        }
+
+        function showCreateAccountPrompt() {
+            // Hide chat interface and show auth
+            document.getElementById('chat-interface').classList.remove('active');
+            document.getElementById('auth-container').style.display = 'flex';
+            
+            // Reset guest mode
+            isGuestMode = false;
+            guestMessageCount = 0;
+            
+            showNotification('Create an account to continue with unlimited messages and saved chat history!', 'info');
+        }
 
         // Authentication Functions
         async function signInWithGoogle() {
@@ -2973,89 +2937,21 @@
             }
         }
 
-        function showOTPForm() {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('otp-form').classList.add('active');
-            document.getElementById('otp-sent').style.display = 'none';
-            
-            // Update cooldown display
-            emailCooldownManager.updateCooldownDisplay();
-        }
-
-        function showMainForm() {
-            document.getElementById('login-form').style.display = 'block';
-            document.getElementById('otp-form').classList.remove('active');
-            document.getElementById('otp-sent').style.display = 'none';
-        }
-
-        async function sendOTPEmail(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('otp-email').value.trim();
-            const errorElement = document.getElementById('otp-email-error');
-            
-            // Clear previous errors
-            errorElement.textContent = '';
-            
-            if (!email) {
-                errorElement.textContent = 'Please enter your email address.';
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                errorElement.textContent = 'Please enter a valid email address.';
-                return;
-            }
-            
-            // Check cooldown
-            if (!emailCooldownManager.canSendEmail()) {
-                const remaining = emailCooldownManager.getRemainingCooldown();
-                const timeText = emailCooldownManager.formatTime(remaining);
-                errorElement.textContent = `Please wait ${timeText} before sending another email.`;
-                return;
-            }
-            
-            try {
-                const otpButton = document.getElementById('otp-btn');
-                otpButton.disabled = true;
-                otpButton.textContent = 'Sending...';
-                
-                const actionCodeSettings = {
-                    url: window.location.href,
-                    handleCodeInApp: true,
-                };
-                
-                await firebaseServices.sendSignInLinkToEmail(auth, email, actionCodeSettings);
-                
-                // Store email for completion
-                window.localStorage.setItem('emailForSignIn', email);
-                
-                // Record email sent for cooldown
-                emailCooldownManager.recordEmailSent();
-                
-                // Show success state
-                document.getElementById('otp-form').classList.remove('active');
-                document.getElementById('otp-sent').style.display = 'block';
-                
-                console.log('✅ OTP email sent successfully');
-                showNotification('Login link sent! Check your email.', 'success');
-                
-            } catch (error) {
-                console.error('❌ Error sending OTP email:', error);
-                errorElement.textContent = 'Failed to send login link. Please try again.';
-                showNotification('Failed to send login link. Please try again.', 'error');
-            } finally {
-                const otpButton = document.getElementById('otp-btn');
-                otpButton.disabled = false;
-                otpButton.textContent = 'Send Login Link';
-            }
-        }
-
         async function logout() {
             try {
-                await firebaseServices.signOut(auth);
-                console.log('👋 User signed out successfully');
-                showNotification('Signed out successfully', 'success');
+                if (isGuestMode) {
+                    // For guest mode, just reset the application
+                    isGuestMode = false;
+                    guestMessageCount = 0;
+                    resetUIToInitialState();
+                    document.getElementById('chat-interface').classList.remove('active');
+                    document.getElementById('auth-container').style.display = 'flex';
+                    showNotification('Logged out from guest mode', 'success');
+                } else {
+                    await firebaseServices.signOut(auth);
+                    console.log('👋 User signed out successfully');
+                    showNotification('Signed out successfully', 'success');
+                }
             } catch (error) {
                 console.error('❌ Error signing out:', error);
                 showNotification('Error signing out. Please try again.', 'error');
@@ -3063,7 +2959,7 @@
         }
 
         async function deleteUserAccount() {
-            if (!currentUser) return;
+            if (!currentUser || isGuestMode) return;
             
             const confirmed = confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your chat history and personal data.');
             
@@ -3134,9 +3030,6 @@
                     chatHistoryListener = null;
                 }
                 
-                // Reset email cooldown
-                emailCooldownManager.resetCooldown();
-                
                 // Step 5: Delete the Firebase Auth user account (this must be last)
                 console.log('🗑️ Deleting Firebase Auth account...');
                 await currentUser.delete();
@@ -3179,35 +3072,9 @@
                         // User is signed in
                         currentUser = user;
                         isLoggedIn = true;
+                        isGuestMode = false; // Ensure guest mode is disabled
                         
                         console.log('✅ User authenticated:', user.email);
-                        
-                        // Check if signing in with email link
-                        if (firebaseServices.isSignInWithEmailLink(auth, window.location.href)) {
-                            console.log('📧 Completing email link sign-in...');
-                            
-                            let email = window.localStorage.getItem('emailForSignIn');
-                            if (!email) {
-                                email = window.prompt('Please provide your email for confirmation');
-                            }
-                            
-                            if (email) {
-                                try {
-                                    await firebaseServices.signInWithEmailLink(auth, email, window.location.href);
-                                    window.localStorage.removeItem('emailForSignIn');
-                                    
-                                    // Reset email cooldown on successful login
-                                    emailCooldownManager.resetCooldown();
-                                    
-                                    console.log('✅ Email link sign-in completed');
-                                    showNotification('Successfully signed in!', 'success');
-                                } catch (error) {
-                                    console.error('❌ Email link sign-in error:', error);
-                                    showNotification('Failed to complete sign-in. Please try again.', 'error');
-                                    return;
-                                }
-                            }
-                        }
                         
                         // Load or create user profile
                         let userData = await loadUserProfile();
@@ -3249,44 +3116,47 @@
                         currentUser = null;
                         isLoggedIn = false;
                         
-                        // Clean up listeners
-                        if (chatHistoryListener) {
-                            try {
-                                chatHistoryListener();
-                                console.log('✅ Chat history listener cleaned up');
-                            } catch (error) {
-                                console.warn('⚠️ Error cleaning up chat history listener:', error);
+                        // Don't reset guest mode if user is in guest mode
+                        if (!isGuestMode) {
+                            // Clean up listeners
+                            if (chatHistoryListener) {
+                                try {
+                                    chatHistoryListener();
+                                    console.log('✅ Chat history listener cleaned up');
+                                } catch (error) {
+                                    console.warn('⚠️ Error cleaning up chat history listener:', error);
+                                }
+                                chatHistoryListener = null;
                             }
-                            chatHistoryListener = null;
+                            
+                            // Reset ALL application state
+                            chatHistory = [];
+                            currentChatId = null;
+                            hasStartedTyping = false;
+                            userPreferences = {};
+                            currentEditingChatId = null;
+                            
+                            // Clear AI chat sessions completely
+                            aiChat.sessions.clear();
+                            aiChat.setUserName("Guest");
+                            
+                            // Reset UI to initial state
+                            resetUIToInitialState();
+                            
+                            // Show auth interface
+                            document.getElementById('chat-interface').classList.remove('active');
+                            document.getElementById('auth-container').style.display = 'flex';
+                            
+                            // Close any open modals
+                            document.querySelectorAll('.modal.show, .welcome-modal.show').forEach(modal => {
+                                modal.classList.remove('show');
+                            });
+                            
+                            // Close settings panel
+                            document.getElementById('settings-panel').classList.remove('open');
+                            
+                            console.log('✅ Complete application cleanup finished');
                         }
-                        
-                        // Reset ALL application state
-                        chatHistory = [];
-                        currentChatId = null;
-                        hasStartedTyping = false;
-                        userPreferences = {};
-                        currentEditingChatId = null;
-                        
-                        // Clear AI chat sessions completely
-                        aiChat.sessions.clear();
-                        aiChat.setUserName("Guest");
-                        
-                        // Reset UI to initial state
-                        resetUIToInitialState();
-                        
-                        // Show auth interface
-                        document.getElementById('chat-interface').classList.remove('active');
-                        document.getElementById('auth-container').style.display = 'flex';
-                        
-                        // Close any open modals
-                        document.querySelectorAll('.modal.show, .welcome-modal.show').forEach(modal => {
-                            modal.classList.remove('show');
-                        });
-                        
-                        // Close settings panel
-                        document.getElementById('settings-panel').classList.remove('open');
-                        
-                        console.log('✅ Complete application cleanup finished');
                     }
                 } catch (error) {
                     console.error('❌ Error in auth state change handler:', error);
@@ -3319,24 +3189,27 @@
             const welcomeSection = document.getElementById('welcome-section');
             welcomeSection.classList.remove('fade-out');
             
-            // Clear chat input
-            document.getElementById('chat-input').value = '';
+            // Clear chat input and re-enable it
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+            chatInput.value = '';
+            chatInput.disabled = false;
+            chatInput.placeholder = 'Ask me anything about SAT preparation...';
+            sendButton.disabled = false;
             
             // Reset user display
             document.getElementById('user-display').textContent = '👋 Guest User';
             
             // Clear chat history sidebar
             const chatHistoryContainer = document.getElementById('chat-history');
-            chatHistoryContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 20px;">No chat history yet</div>';
+            if (isGuestMode) {
+                chatHistoryContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 20px;">Chat history not available in guest mode</div>';
+            } else {
+                chatHistoryContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 20px;">No chat history yet</div>';
+            }
             
             // Reset form states
             document.getElementById('login-form').style.display = 'block';
-            document.getElementById('otp-form').classList.remove('active');
-            document.getElementById('otp-sent').style.display = 'none';
-            
-            // Clear form inputs
-            document.getElementById('otp-email').value = '';
-            document.getElementById('otp-email-error').textContent = '';
             
             // Reset welcome form
             const welcomeForm = document.getElementById('welcome-form');
@@ -3352,8 +3225,6 @@
             hasStartedTyping = false;
             isLoading = false;
             
-            const sendButton = document.getElementById('send-button');
-            sendButton.disabled = false;
             sendButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"></path></svg>';
             
             console.log('✅ UI reset to initial state completed');
@@ -3398,6 +3269,9 @@
             const messages = [];
             
             messageElements.forEach(element => {
+                // Skip message limit warnings
+                if (element.classList.contains('message-limit-warning')) return;
+                
                 if (element.classList.contains('user')) {
                     messages.push({
                         role: 'user',
@@ -3418,7 +3292,7 @@
 
         // User Profile Management
         async function loadUserProfile() {
-            if (!currentUser) return null;
+            if (!currentUser || isGuestMode) return null;
             
             try {
                 const userRef = firebaseServices.doc(firestore, `users/${currentUser.uid}`);
@@ -3452,6 +3326,8 @@
         }
 
         async function saveUserProfile(user, firstName, lastName, additionalData = {}) {
+            if (isGuestMode) return null;
+            
             try {
                 const userData = {
                     uid: user.uid,
@@ -3493,7 +3369,7 @@
 
         // Welcome Modal Functions
         async function checkAndShowWelcomeModal() {
-            if (!currentUser) return;
+            if (!currentUser || isGuestMode) return;
             
             try {
                 const userRef = firebaseServices.doc(firestore, `users/${currentUser.uid}`);
@@ -3521,6 +3397,8 @@
         }
 
         async function saveWelcomeInfo() {
+            if (isGuestMode) return;
+            
             const name = document.getElementById('user-name').value.trim();
             const satDate = document.getElementById('sat-date').value;
             const targetScore = document.getElementById('target-score').value;
@@ -3580,7 +3458,7 @@
 
         // Chat History Functions
         async function loadChatHistory() {
-            if (!currentUser) return;
+            if (!currentUser || isGuestMode) return;
             
             try {
                 console.log('📚 Loading chat history...');
@@ -3661,6 +3539,11 @@
         function renderChatHistory() {
             const chatHistoryContainer = document.getElementById('chat-history');
             
+            if (isGuestMode) {
+                chatHistoryContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 20px;">Chat history not available in guest mode</div>';
+                return;
+            }
+            
             if (chatHistory.length === 0) {
                 chatHistoryContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 20px;">No chat history yet</div>';
                 return;
@@ -3691,7 +3574,7 @@
         }
 
         async function loadChat(chatId) {
-            if (chatId === currentChatId) return;
+            if (chatId === currentChatId || isGuestMode) return;
             
             try {
                 console.log('📖 Loading chat:', chatId);
@@ -3747,8 +3630,10 @@
             currentChatId = generateChatId();
             hasStartedTyping = false;
             
-            // Clear AI session for new chat
-            aiChat.startNewSession(currentChatId);
+            // Clear AI session for new chat (only if not guest mode)
+            if (!isGuestMode) {
+                aiChat.startNewSession(currentChatId);
+            }
             
             // Reset header
             document.getElementById('chat-title').textContent = 'New Chat';
@@ -3788,17 +3673,29 @@
             
             if (!message || isLoading) return;
             
+            // Check guest mode message limit
+            if (checkGuestMessageLimit()) {
+                return;
+            }
+            
             console.log('💬 Sending message:', message);
             
             // Ensure we have a chat ID
             if (!currentChatId) {
                 currentChatId = generateChatId();
-                aiChat.startNewSession(currentChatId);
+                if (!isGuestMode) {
+                    aiChat.startNewSession(currentChatId);
+                }
             }
             
             // Add user message to chat
             addMessageToChat(message, 'user');
             input.value = '';
+            
+            // Increment guest message count
+            if (isGuestMode) {
+                guestMessageCount++;
+            }
             
             // Hide welcome section on first message
             if (!hasStartedTyping) {
@@ -3815,14 +3712,16 @@
             
             try {
                 // Send to Personal AI
-                const response = await aiChat.sendRequest(message, currentChatId);
+                const response = await aiChat.sendRequest(message, isGuestMode ? null : currentChatId);
                 
                 if (response && response.ai_message) {
                     // Add AI response to chat
                     addMessageToChat(response.ai_message, 'ai');
                     
-                    // Auto-save chat
-                    chatHistoryManager.autoSaveCurrentChat();
+                    // Auto-save chat (only if not guest mode)
+                    if (!isGuestMode) {
+                        chatHistoryManager.autoSaveCurrentChat();
+                    }
                     
                     console.log('✅ Message sent and response received');
                 } else {
@@ -3870,8 +3769,8 @@
                 document.getElementById('chat-title').textContent = title;
             }
             
-            // Auto-save if needed
-            if (shouldSave && currentChatId) {
+            // Auto-save if needed (only if not guest mode)
+            if (shouldSave && currentChatId && !isGuestMode) {
                 setTimeout(() => {
                     chatHistoryManager.autoSaveCurrentChat();
                 }, 500);
@@ -3927,6 +3826,8 @@
 
         // Chat Management Functions
         function editChatName(chatId, currentTitle) {
+            if (isGuestMode) return;
+            
             currentEditingChatId = chatId;
             
             // Store original title for potential revert
@@ -3945,7 +3846,7 @@
         }
 
         async function saveEditedChatName() {
-            if (!currentEditingChatId) return;
+            if (!currentEditingChatId || isGuestMode) return;
             
             const newTitle = document.getElementById('edit-chat-input').value.trim();
             if (!newTitle) {
@@ -3968,6 +3869,8 @@
         }
 
         async function deleteChat(chatId) {
+            if (isGuestMode) return;
+            
             if (!confirm('Are you sure you want to delete this chat? This action cannot be undone.')) {
                 return;
             }
@@ -4119,11 +4022,6 @@
             // Setup authentication state listener
             setupAuthStateListener();
             
-            // Check for email link sign-in
-            if (firebaseServices.isSignInWithEmailLink(auth, window.location.href)) {
-                console.log('📧 Email link sign-in detected');
-            }
-            
             // Clean up old AI sessions periodically
             setInterval(() => {
                 aiChat.cleanupSessions();
@@ -4135,9 +4033,9 @@
         // Make initializeApp available globally
         window.initializeApp = initializeApp;
         
-        // Auto-save current chat periodically
+        // Auto-save current chat periodically (only if not guest mode)
         setInterval(() => {
-            if (currentChatId && hasStartedTyping) {
+            if (currentChatId && hasStartedTyping && !isGuestMode) {
                 chatHistoryManager.autoSaveCurrentChat();
             }
         }, 30000); // Every 30 seconds
