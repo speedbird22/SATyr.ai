@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra - SATyr Study Notes</title>
+    <!-- Updated to minimalistic fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\$$', '\$$']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            /* Minimalistic math theme colors */
+            --bg-primary: #fafafa;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+            --border-light: #e5e5e5;
+            --border-medium: #d4d4d4;
+            --math-accent: #2563eb;
+            --math-bg: #eff6ff;
+            --math-hover: #dbeafe;
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-medium: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            /* Dark mode minimalistic colors for math */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --text-muted: #737373;
+            --border-light: #262626;
+            --border-medium: #404040;
+            --math-accent: #3b82f6;
+            --math-bg: #1e3a8a;
+            --math-hover: #1e40af;
+            --shadow-light: rgba(255, 255, 255, 0.05);
+            --shadow-medium: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            /* Simple solid background instead of complex gradients */
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            /* Clean container design without complex effects */
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            /* Simple button design */
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        .back-button:hover {
+            background: var(--math-bg);
+            color: var(--math-accent);
+            transform: translateY(-1px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            /* Clean typography with math accent color */
+            color: var(--math-accent);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 12px 20px;
+            /* Clean navigation buttons */
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .nav-button:hover {
+            background: var(--math-bg);
+            color: var(--math-accent);
+            transform: translateY(-1px);
+        }
+
+        .nav-button.active {
+            background: var(--math-accent);
+            color: white;
+            border-color: var(--math-accent);
+        }
+
+        .nav-button.completed {
+            background: var(--math-bg);
+            color: var(--math-accent);
+            border-color: var(--math-accent);
+        }
+
+        .content {
+            /* Simple content area */
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 30px;
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--math-accent);
+        }
+
+        .subsection {
+            /* Clean subsection design */
+            background: var(--math-bg);
+            border-left: 4px solid var(--math-accent);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .subsection h3 {
+            color: var(--math-accent);
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .subsection p, .subsection li {
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .subsection ul, .subsection ol {
+            margin: 16px 0 16px 24px;
+        }
+
+        .formula {
+            /* Clean formula display */
+            background: var(--bg-primary);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--math-accent);
+        }
+
+        .graph-container {
+            width: 100%;
+            height: 300px;
+            /* Simple graph container */
+            background: var(--bg-primary);
+            border: 1px solid var(--border-medium);
+            border-radius: 12px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coordinate-system {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Simple grid pattern */
+            background-image: 
+                linear-gradient(var(--border-light) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .x-axis, .y-axis {
+            position: absolute;
+            background: var(--math-accent);
+        }
+
+        .x-axis {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+        }
+
+        .y-axis {
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+        }
+
+        .axis-label {
+            position: absolute;
+            color: var(--math-accent);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .x-label { bottom: -25px; right: 10px; }
+        .y-label { top: 10px; left: 10px; }
+
+        .linear-line {
+            position: absolute;
+            height: 3px;
+            background: var(--math-accent);
+            border-radius: 2px;
+            transform-origin: left center;
+        }
+
+        .parabola-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 160px;
+        }
+
+        .parabola {
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--math-accent);
+            border-radius: 50% 50% 0 0;
+            border-bottom: none;
+            transform: rotate(180deg);
+        }
+
+        .vertex-point {
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--math-accent);
+            border-radius: 50%;
+        }
+
+        .polynomial-svg, .exponential-curve {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .nav-controls button {
+            padding: 12px 24px;
+            /* Clean control buttons */
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-medium);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        .nav-controls button:hover:not(:disabled) {
+            background: var(--math-bg);
+            color: var(--math-accent);
+            transform: translateY(-1px);
+        }
+
+        .nav-controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: var(--bg-primary);
+        }
+
+        .progress-indicator {
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 0 16px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .container { padding: 24px; }
+            .main-title { font-size: 2rem; }
+            .back-button { top: 16px; left: 16px; }
+            .graph-container { height: 250px; }
+            .navigation { gap: 12px; }
+            .nav-button { min-width: 120px; padding: 10px 16px; }
+        }
+
+        /* Removed all complex animations, gradients, and visual effects */
+    </style>
+</head>
+
+<body data-theme="light">
+    <div class="container">
+        <a href="math-topics.html" class="back-button">← Back to Math Topics</a>
+        
+        <div class="header">
+            <h1 class="main-title">Algebra</h1>
+            <p class="subtitle">Master linear equations, quadratic functions, polynomials, and exponential functions</p>
+        </div>
+
+        <div class="navigation" id="navigation">
+            <!-- Navigation buttons will be populated by JavaScript -->
+        </div>
+
+        <div class="content" id="content">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+
+        <div class="nav-controls">
+            <button id="prevBtn" onclick="changeSubtopic(-1)">← Previous</button>
+            <span class="progress-indicator" id="progressIndicator">1 / 4</span>
+            <button id="nextBtn" onclick="changeSubtopic(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSubtopic = 0;
+        
+        const subtopics = [
+    {
+        title: "Linear Equations",
+        content: `
+            <div class="content-section">
+                <h2 class="section-title">Linear Equations</h2>
+                <p>Linear equations are fundamental algebraic expressions where the highest power of the variable is 1. They form straight lines when graphed and are essential for solving many real-world problems.</p>
+                
+                <div class="subsection">
+                    <h3>Visual: Two Linear Functions</h3>
+                    <div id="desmos-linear" class="graph-container"></div>
+                    <p><strong>Key Observations:</strong> One line has a positive slope (goes up from left to right) while the other has a negative slope (goes down from left to right). The steeper the slope, the more vertical the line appears.</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Standard Form</h3>
+                    <p>A linear equation in one variable has the form:</p>
+                    <div class="formula">$$ax + b = 0$$</div>
+                    <p>Where $a$ and $b$ are constants, and $a \\neq 0$.</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Slope-Intercept Form</h3>
+                    <p>The most common form for graphing:</p>
+                    <div class="formula">$$y = mx + b$$</div>
+                    <p>Where $m$ is the slope and $b$ is the y-intercept.</p>
+                    <ul>
+                        <li><strong>Slope (m):</strong> Rise over run - how much y changes for each unit change in x</li>
+                        <li><strong>Y-intercept (b):</strong> The point where the line crosses the y-axis</li>
+                        <li><strong>Positive slope:</strong> Line goes up from left to right</li>
+                        <li><strong>Negative slope:</strong> Line goes down from left to right</li>
+                        <li><strong>Zero slope:</strong> Horizontal line</li>
+                        <li><strong>Undefined slope:</strong> Vertical line</li>
+                    </ul>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Solving Linear Equations</h3>
+                    <p>To solve linear equations, follow these steps:</p>
+                    <ol>
+                        <li>Simplify both sides of the equation (distribute, combine like terms)</li>
+                        <li>Move all terms with variables to one side</li>
+                        <li>Move all constant terms to the other side</li>
+                        <li>Divide both sides by the coefficient of the variable</li>
+                    </ol>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Example: Solving a Linear Equation</h3>
+                    <p>Solve: $3x + 7 = 22$</p>
+                    <p>Step 1: Subtract 7 from both sides: $3x = 22 - 7$</p>
+                    <p>Step 2: Simplify: $3x = 15$</p>
+                    <p>Step 3: Divide by 3: $x = 5$</p>
+                    <p><strong>Check:</strong> $3(5) + 7 = 15 + 7 = 22$ ✓</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Systems of Linear Equations</h3>
+                    <p>When you have multiple linear equations with multiple variables:</p>
+                    <ul>
+                        <li><strong>Substitution method:</strong> Solve one equation for a variable, substitute into the other</li>
+                        <li><strong>Elimination method:</strong> Add or subtract equations to eliminate a variable</li>
+                        <li><strong>Graphing method:</strong> Find where the lines intersect</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Quadratic Functions",
+        content: `
+            <div class="content-section">
+                <h2 class="section-title">Quadratic Functions</h2>
+                <p>Quadratic functions are polynomial equations of the second degree, typically in the form $ax^2 + bx + c = 0$. Their graphs are parabolas that open upward or downward.</p>
+                
+                <div class="subsection">
+                    <h3>Visual: Quadratic Function (Parabola)</h3>
+                    <div id="desmos-quadratic" class="graph-container"></div>
+                    <p><strong>Key Features:</strong> This parabola opens upward because the coefficient of x² is positive. The vertex (dot) is the lowest point. The parabola is symmetric about the vertical line through the vertex.</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Standard Forms of Quadratic Functions</h3>
+                    <div class="formula">$$\\text{Standard Form: } y = ax^2 + bx + c$$</div>
+                    <div class="formula">$$\\text{Vertex Form: } y = a(x - h)^2 + k$$</div>
+                    <div class="formula">$$\\text{Factored Form: } y = a(x - r_1)(x - r_2)$$</div>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Key Properties of Parabolas</h3>
+                    <ul>
+                        <li><strong>Vertex:</strong> The highest or lowest point. For $y = ax^2 + bx + c$, x-coordinate is $x = -\\frac{b}{2a}$</li>
+                        <li><strong>Axis of Symmetry:</strong> Vertical line through vertex: $x = -\\frac{b}{2a}$</li>
+                        <li><strong>Y-intercept:</strong> Point where parabola crosses y-axis: $(0, c)$</li>
+                        <li><strong>X-intercepts (Roots):</strong> Points where parabola crosses x-axis (where $y = 0$)</li>
+                        <li><strong>Direction:</strong> Opens up if $a > 0$, opens down if $a < 0$</li>
+                        <li><strong>Width:</strong> Larger $|a|$ makes parabola narrower, smaller $|a|$ makes it wider</li>
+                    </ul>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Methods for Solving Quadratic Equations</h3>
+                    <p><strong>1. Factoring:</strong> When the quadratic can be written as $(x - r_1)(x - r_2) = 0$</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Example: Factoring</h3>
+                    <p>Solve: $x^2 - 5x + 6 = 0$</p>
+                    <p>Factor: $(x - 2)(x - 3) = 0$</p>
+                    <p>Solutions: $x = 2$ or $x = 3$</p>
+                </div>
+                
+                <div class="subsection">
+                    <p><strong>2. Quadratic Formula:</strong> Works for any quadratic equation</p>
+                    <div class="formula">$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$</div>
+                </div>
+                
+                <div class="subsection">
+                    <p><strong>3. Completing the Square:</strong> Useful for converting to vertex form</p>
+                </div>
+                
+                <div class="subsection">
+                    <p><strong>4. Taking Square Roots:</strong> For equations like $ax^2 + c = 0$</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>The Discriminant</h3>
+                    <p>The discriminant $\\Delta = b^2 - 4ac$ tells us about the roots:</p>
+                    <ul>
+                        <li>$\\Delta > 0$: Two distinct real roots</li>
+                        <li>$\\Delta = 0$: One repeated real root (vertex touches x-axis)</li>
+                        <li>$\\Delta < 0$: No real roots (parabola doesn't cross x-axis)</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Polynomials",
+        content: `
+            <div class="content-section">
+                <h2 class="section-title">Polynomials</h2>
+                <p>Polynomials are expressions with variables raised to non-negative integer powers. Higher-degree polynomials create more complex curves with multiple turning points.</p>
+                
+                <div class="subsection">
+                    <h3>Visual: Polynomial Functions Comparison</h3>
+                    <div id="desmos-polynomial" class="graph-container"></div>
+                    <p><strong>Key Observations:</strong> Higher-degree polynomials have more complex shapes with multiple turning points. Different polynomial degrees create different curve patterns.</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Polynomial Terminology</h3>
+                    <div class="formula">$$P(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_1 x + a_0$$</div>
+                    <ul>
+                        <li><strong>Degree:</strong> The highest power of x (n)</li>
+                        <li><strong>Leading Coefficient:</strong> The coefficient of the highest degree term ($a_n$)</li>
+                        <li><strong>Constant Term:</strong> The term without x ($a_0$)</li>
+                        <li><strong>Standard Form:</strong> Terms arranged in descending order of degree</li>
+                    </ul>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Operations with Polynomials</h3>
+                    <p><strong>Addition/Subtraction:</strong> Combine like terms (same variable and exponent)</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Example: Adding Polynomials</h3>
+                    <p>$(3x^2 + 2x - 1) + (x^2 - 4x + 5)$</p>
+                    <p>$= (3x^2 + x^2) + (2x - 4x) + (-1 + 5)$</p>
+                    <p>$= 4x^2 - 2x + 4$</p>
+                </div>
+                
+                <div class="subsection">
+                    <p><strong>Multiplication:</strong> Use distributive property</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Example: Multiplying Polynomials</h3>
+                    <p>$(x + 2)(x^2 - 3x + 1)$</p>
+                    <p>$= x(x^2 - 3x + 1) + 2(x^2 - 3x + 1)$</p>
+                    <p>$= x^3 - 3x^2 + x + 2x^2 - 6x + 2$</p>
+                    <p>$= x^3 - x^2 - 5x + 2$</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Finding Roots and Factors</h3>
+                    <p><strong>Factor Theorem:</strong> $(x - a)$ is a factor of $P(x)$ if and only if $P(a) = 0$</p>
+                    <p><strong>Remainder Theorem:</strong> When $P(x)$ is divided by $(x - a)$, the remainder is $P(a)$</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Example: Using Factor Theorem</h3>
+                    <p>Is $(x - 2)$ a factor of $P(x) = x^3 - 6x^2 + 11x - 6$?</p>
+                    <p>Check: $P(2) = 2^3 - 6(2^2) + 11(2) - 6 = 8 - 24 + 22 - 6 = 0$</p>
+                    <p>Since $P(2) = 0$, yes, $(x - 2)$ is a factor.</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>End Behavior</h3>
+                    <p>The end behavior of a polynomial is determined by its leading term:</p>
+                    <ul>
+                        <li><strong>Even degree, positive leading coefficient:</strong> Both ends go up</li>
+                        <li><strong>Even degree, negative leading coefficient:</strong> Both ends go down</li>
+                        <li><strong>Odd degree, positive leading coefficient:</strong> Left end down, right end up</li>
+                        <li><strong>Odd degree, negative leading coefficient:</strong> Left end up, right end down</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "Exponential Functions",
+        content: `
+            <div class="content-section">
+                <h2 class="section-title">Exponential Functions</h2>
+                <p>Exponential functions have the form $y = a \\cdot b^x$ where the variable is in the exponent. They model rapid growth or decay and have distinctive curved shapes.</p>
+                
+                <div class="subsection">
+                    <h3>Visual: Exponential Growth vs Decay</h3>
+                    <div id="desmos-exponential" class="graph-container"></div>
+                    <p><strong>Key Features:</strong> One curve shows exponential growth (base > 1) - it increases rapidly as x increases. The other shows exponential decay (0 < base < 1) - it decreases rapidly and approaches zero but never reaches it.</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Forms of Exponential Functions</h3>
+                    <div class="formula">$$y = a \\cdot b^x \\text{ (General form)}$$</div>
+                    <div class="formula">$$y = a(1 + r)^t \\text{ (Growth: r > 0)}$$</div>
+                    <div class="formula">$$y = a(1 - r)^t \\text{ (Decay: 0 < r < 1)}$$</div>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Key Properties</h3>
+                    <ul>
+                        <li><strong>Domain:</strong> All real numbers</li>
+                        <li><strong>Range:</strong> $(0, \\infty)$ if $a > 0$</li>
+                        <li><strong>Y-intercept:</strong> $(0, a)$</li>
+                        <li><strong>Horizontal Asymptote:</strong> $y = 0$ (x-axis)</li>
+                        <li><strong>Growth vs Decay:</strong> If $b > 1$, growth; if $0 < b < 1$, decay</li>
+                    </ul>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Exponential Growth</h3>
+                    <p>Occurs when $b > 1$. The quantity increases by a fixed percentage over equal intervals.</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Example: Population Growth</h3>
+                    <p>A bacteria population doubles every hour. Starting with 100 bacteria:</p>
+                    <p>$P(t) = 100 \\cdot 2^t$ where t is time in hours</p>
+                    <p>After 3 hours: $P(3) = 100 \\cdot 2^3 = 100 \\cdot 8 = 800$ bacteria</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Exponential Decay</h3>
+                    <p>Occurs when $0 < b < 1$. The quantity decreases by a fixed percentage over equal intervals.</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Example: Radioactive Decay</h3>
+                    <p>A substance has a half-life of 5 years. Starting with 200g:</p>
+                    <p>$A(t) = 200 \\cdot (\\frac{1}{2})^{t/5}$ where t is time in years</p>
+                    <p>After 10 years: $A(10) = 200 \\cdot (\\frac{1}{2})^{10/5} = 200 \\cdot (\\frac{1}{2})^2 = 50$g</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Solving Exponential Equations</h3>
+                    <p><strong>Method 1:</strong> Make bases the same</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Example: Same Base Method</h3>
+                    <p>Solve: $2^x = 8$</p>
+                    <p>Rewrite: $2^x = 2^3$</p>
+                    <p>Therefore: $x = 3$</p>
+                </div>
+                
+                <div class="subsection">
+                    <p><strong>Method 2:</strong> Use logarithms (for more complex equations)</p>
+                    <p><strong>Method 3:</strong> Guess and check (for simple SAT problems)</p>
+                </div>
+                
+                <div class="subsection">
+                    <h3>Applications</h3>
+                    <ul>
+                        <li><strong>Compound Interest:</strong> $A = P(1 + r/n)^{nt}$</li>
+                        <li><strong>Population Growth:</strong> $P(t) = P_0 e^{rt}$</li>
+                        <li><strong>Radioactive Decay:</strong> $N(t) = N_0 e^{-\\lambda t}$</li>
+                        <li><strong>Cooling/Heating:</strong> Newton's Law of Cooling</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    }
+];
+
+        function isSubtopicCompleted(subtopicTitle) {
+            const progress = JSON.parse(localStorage.getItem('satProgress') || '{}');
+            return progress.math && progress.math['Algebra'] && progress.math['Algebra'][subtopicTitle];
+        }
+
+        function createNavigation() {
+            const nav = document.getElementById('navigation');
+            nav.innerHTML = '';
+            
+            subtopics.forEach((subtopic, index) => {
+                const button = document.createElement('button');
+                button.className = 'nav-button';
+                button.textContent = subtopic.title;
+                button.onclick = () => showSubtopic(index);
+                
+                if (index === currentSubtopic) {
+                    button.classList.add('active');
+                }
+                
+                if (isSubtopicCompleted(subtopic.title)) {
+                    button.classList.add('completed');
+                }
+                
+                nav.appendChild(button);
+            });
+        }
+
+        function showSubtopic(index) {
+            currentSubtopic = index;
+            document.getElementById('content').innerHTML = subtopics[index].content;
+            document.getElementById('progressIndicator').textContent = `${index + 1} / ${subtopics.length}`;
+            
+            createNavigation();
+            
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === subtopics.length - 1;
+            
+            markSubtopicCompleted('math', 'Algebra', subtopics[index].title);
+
+            initGraphsForSubtopic(index);
+            
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise().catch((err) => {
+                    console.log('MathJax error:', err);
+                });
+            }
+        }
+
+        function changeSubtopic(direction) {
+            const newIndex = currentSubtopic + direction;
+            if (newIndex >= 0 && newIndex < subtopics.length) {
+                showSubtopic(newIndex);
+            }
+        }
+
+        function markSubtopicCompleted(subject, topic, subtopic) {
+            const progress = JSON.parse(localStorage.getItem('satProgress') || '{}');
+            
+            if (!progress[subject]) progress[subject] = {};
+            if (!progress[subject][topic]) progress[subject][topic] = {};
+            progress[subject][topic][subtopic] = true;
+            
+            localStorage.setItem('satProgress', JSON.stringify(progress));
+            
+            const mainProgress = JSON.parse(localStorage.getItem('satNotesProgress') || '{}');
+            
+            if (!mainProgress[subject]) mainProgress[subject] = {};
+            if (!mainProgress[subject][topic]) mainProgress[subject][topic] = {};
+            mainProgress[subject][topic][subtopic] = true;
+            
+            localStorage.setItem('satNotesProgress', JSON.stringify(mainProgress));
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+
+        let desmosCalcs = [];
+
+        function destroyDesmos() {
+            try {
+                desmosCalcs.forEach(c => c && c.destroy && c.destroy());
+            } catch (e) {
+                console.log("[v0] Desmos destroy error:", e);
+            }
+            desmosCalcs = [];
+        }
+
+        function ensureDesmosLoaded(cb) {
+            if (window.Desmos) return cb();
+            let script = document.getElementById('desmos-api');
+            if (!script) {
+                script = document.createElement('script');
+                script.id = 'desmos-api';
+                script.src = 'https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6';
+                script.async = true;
+                script.onload = cb;
+                document.head.appendChild(script);
+            } else {
+                script.addEventListener('load', cb, { once: true });
+            }
+        }
+
+        function initGraphsForSubtopic(index) {
+            // Clean up old calculators if switching tabs
+            destroyDesmos();
+
+            ensureDesmosLoaded(() => {
+                // Linear: y = 0.5x + 1 and y = -0.3x + 4
+                const linearEl = document.getElementById('desmos-linear');
+                if (linearEl) {
+                    const calc = Desmos.GraphingCalculator(linearEl, {
+                        expressions: false,
+                        settingsMenu: false,
+                        zoomButtons: false,
+                        expressionsCollapsed: true
+                    });
+                    calc.setExpression({ id: 'l1', latex: 'y=0.5x+1' });
+                    calc.setExpression({ id: 'l2', latex: 'y=-0.3x+4' });
+                    calc.setMathBounds({ left: -10, right: 10, bottom: -10, top: 10 });
+                    desmosCalcs.push(calc);
+                }
+
+                // Quadratic: y = x^2 - 4x + 3 with vertex marking
+                const quadEl = document.getElementById('desmos-quadratic');
+                if (quadEl) {
+                    const calc = Desmos.GraphingCalculator(quadEl, {
+                        expressions: false,
+                        settingsMenu: false,
+                        zoomButtons: false
+                    });
+                    calc.setExpression({ id: 'q', latex: 'y=x^2-4x+3' });
+                    // Vertex at (2, -1)
+                    calc.setExpression({ id: 'v', latex: '(2,-1)', showLabel: true, label: 'vertex' });
+                    calc.setMathBounds({ left: -2, right: 8, bottom: -5, top: 8 });
+                    desmosCalcs.push(calc);
+                }
+
+                // Polynomial comparison: cubic and quartic
+                const polyEl = document.getElementById('desmos-polynomial');
+                if (polyEl) {
+                    const calc = Desmos.GraphingCalculator(polyEl, {
+                        expressions: false,
+                        settingsMenu: false,
+                        zoomButtons: false
+                    });
+                    // Smooth examples to show turning points
+                    calc.setExpression({ id: 'p1', latex: 'y=\\frac{1}{50}(x+2)(x-1)(x-5)' });
+                    calc.setExpression({ id: 'p2', latex: 'y=\\frac{1}{500}(x+3)(x+1)(x-2)(x-6)' });
+                    calc.setMathBounds({ left: -8, right: 8, bottom: -6, top: 6 });
+                    desmosCalcs.push(calc);
+                }
+
+                // Exponential growth vs decay
+                const expEl = document.getElementById('desmos-exponential');
+                if (expEl) {
+                    const calc = Desmos.GraphingCalculator(expEl, {
+                        expressions: false,
+                        settingsMenu: false,
+                        zoomButtons: false
+                    });
+                    calc.setExpression({ id: 'g', latex: 'y=2^x' });
+                    calc.setExpression({ id: 'd', latex: 'y=(1/2)^x' });
+                    calc.setMathBounds({ left: -5, right: 5, bottom: -1, top: 8 });
+                    desmosCalcs.push(calc);
+                }
+            });
+        }
+
+        // Initialize page
+        createNavigation();
+        showSubtopic(0);
+    </script>
+</body>
+</html>

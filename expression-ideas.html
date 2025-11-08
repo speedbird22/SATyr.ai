@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expression of Ideas - SAT Study Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        html, body { height: 100%; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(5, 164, 191, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(14, 166, 116, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(4, 135, 94, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 60% 10%, rgba(30, 58, 138, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 10% 60%, rgba(67, 56, 202, 0.06) 0%, transparent 70%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 20%, #0e7490 35%, #0f766e 50%, #115e59 65%, #134e4a 80%, #064e3b 100%);
+            min-height: 100%;
+            height: auto;
+            padding: 40px;
+            overflow-x: hidden;
+            position: relative;
+            background-attachment: fixed;
+        }
+        
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: #f8fafc; border-radius: 50%; animation: twinkle 3s infinite; box-shadow: 0 0 6px rgba(248, 250, 252, 0.8); }
+        .star.small { width: 1px; height: 1px; }
+        .star.medium { width: 2px; height: 2px; box-shadow: 0 0 8px rgba(248, 250, 252, 0.9); }
+        .star.large { width: 3px; height: 3px; box-shadow: 0 0 12px rgba(248, 250, 252, 1); }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            25% { opacity: 0.8; transform: scale(1.2); }
+            50% { opacity: 1; transform: scale(1.5); }
+            75% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            margin: 40px auto;
+            width: 90%;
+            max-width: 1000px;
+            background: 
+                linear-gradient(135deg, rgba(5, 164, 191, 0.07), rgba(14, 166, 116, 0.07), rgba(4, 135, 94, 0.05)),
+                linear-gradient(45deg, rgba(18, 165, 149, 0.04), rgba(11, 133, 122, 0.04)),
+                linear-gradient(225deg, rgba(30, 58, 138, 0.03), rgba(67, 56, 202, 0.02));
+            border: 2px solid rgba(5, 164, 191, 0.25);
+            border-radius: 20px;
+            padding: 40px;
+            color: #f8fafc;
+            z-index: 100;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba(5, 164, 191, 0.12),
+                inset 0 1px 0 rgba(5, 164, 191, 0.08);
+            backdrop-filter: blur(20px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #0891b2, #0d9488, #047857);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(5, 164, 191, 0.25);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.8;
+            color: #a7f3d0;
+            font-weight: 300;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(5, 164, 191, 0.12), rgba(14, 166, 116, 0.12), rgba(4, 135, 94, 0.10));
+            border: 2px solid rgba(5, 164, 191, 0.35);
+            border-radius: 12px;
+            color: #f8fafc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(5, 164, 191, 0.7);
+            background: linear-gradient(135deg, rgba(5, 164, 191, 0.22), rgba(14, 166, 116, 0.22), rgba(4, 135, 94, 0.20));
+        }
+
+        .subtopic-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .subtopic-button {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(5, 164, 191, 0.3);
+            border-radius: 8px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .subtopic-button:hover, .subtopic-button.active {
+            background: rgba(5, 164, 191, 0.18);
+            border-color: rgba(5, 164, 191, 0.5);
+            color: #0891b2;
+            transform: translateY(-1px);
+        }
+
+        .subtopic-button.completed {
+            background: rgba(34, 197, 94, 0.18);
+            border-color: rgba(34, 197, 94, 0.35);
+            color: #16a34a;
+        }
+
+        .subtopic-button.completed:hover {
+            background: rgba(34, 197, 94, 0.25);
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+
+        .content-area {
+            min-height: 400px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 15px;
+            border: 1px solid rgba(5, 164, 191, 0.18);
+        }
+
+        .subtopic-content {
+            display: none;
+        }
+
+        .subtopic-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subtopic-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #0891b2;
+        }
+
+        .content-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+        }
+
+        .content-text {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+        }
+
+        .example-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+
+        .list-item {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .list-item::before {
+            content: "•";
+            color: #06b6d4;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 20px; }
+            .container { padding: 20px; }
+            .title { font-size: 2em; }
+            .navigation { justify-content: center; }
+            .subtopic-nav { gap: 10px; }
+            .subtopic-button { padding: 8px 16px; font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Expression of Ideas</h1>
+            <p class="subtitle">Effective Communication and Language Use</p>
+        </div>
+        
+        <div class="navigation">
+            <a href="english-topics.html" class="nav-button">← Back to English Topics</a>
+            <a href="sat-notes.html" class="nav-button">🏠 Home</a>
+        </div>
+        
+        <div class="subtopic-nav">
+            <button class="subtopic-button active" onclick="showSubtopic('organization')">Organization</button>
+            <button class="subtopic-button" onclick="showSubtopic('development')">Development</button>
+            <button class="subtopic-button" onclick="showSubtopic('language-use')">Effective Language Use</button>
+            <button class="subtopic-button" onclick="showSubtopic('advanced-techniques')">Advanced Writing Techniques</button>
+        </div>
+        
+        <div class="content-area">
+            <div id="organization" class="subtopic-content active">
+                <h2 class="subtopic-title">Organization</h2>
+                
+                <div class="content-section">
+                    <h3 class="section-title">Logical Sequence</h3>
+                    <p class="content-text">
+                        Effective organization ensures that ideas flow logically from one to the next. This involves:
+                    </p>
+                    <div  class="list-item">Arranging ideas in a clear, logical order</div>
+                    <div  class="list-item">Using appropriate transitions between paragraphs</div>
+                    <div  class="list-item">Maintaining focus on the main topic</div>
+                    <div  class="list-item">Creating smooth connections between related ideas</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Example: Improving Organization</div>
+                    <p><strong>Poor:</strong> The environment is important. Pollution causes problems. We should recycle. Global warming is happening.</p>
+                    <p><strong>Better:</strong> Environmental protection is crucial for our future. First, pollution threatens both human health and ecosystems. Additionally, recycling helps reduce waste and conserve resources. Most importantly, addressing global warming requires immediate action from individuals and governments alike.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Introduction and Conclusion</h3>
+                    <p class="content-text">
+                        Strong introductions and conclusions frame your argument effectively:
+                    </p>
+                    <div  class="list-item">Introductions should establish context and present the main idea</div>
+                    <div  class="list-item">Conclusions should synthesize key points and provide closure</div>
+                    <div  class="list-item">Both should be proportionate to the overall length</div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">Organization Tip</div>
+                    <p>Use topic sentences at the beginning of paragraphs to signal the main idea and help readers follow your argument.</p>
+                </div>
+            </div>
+            
+            <div id="development" class="subtopic-content">
+                <h2 class="subtopic-title">Development</h2>
+                
+                <div class="content-section">
+                    <h3 class="section-title">Supporting Evidence</h3>
+                    <p class="content-text">
+                        Strong development requires adequate support for your claims:
+                    </p>
+                    <div  class="list-item">Use specific examples and details</div>
+                    <div  class="list-item">Provide relevant evidence and data</div>
+                    <div  class="list-item">Include expert opinions or authoritative sources</div>
+                    <div  class="list-item">Explain how evidence supports your main points</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Elaboration Techniques</h3>
+                    <p class="content-text">
+                        Effective elaboration helps readers understand your ideas fully:
+                    </p>
+                    <div  class="list-item">Define key terms and concepts</div>
+                    <div  class="list-item">Provide context and background information</div>
+                    <div  class="list-item">Use analogies and comparisons</div>
+                    <div  class="list-item">Address potential counterarguments</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Example: Strong Development</div>
+                    <p><strong>Weak:</strong> Social media is bad for teenagers.</p>
+                    <p><strong>Strong:</strong> Social media platforms can negatively impact teenage mental health. According to a 2023 study by the American Psychological Association, teenagers who spend more than three hours daily on social media show 60% higher rates of anxiety and depression. This occurs because constant comparison with others' curated posts creates unrealistic expectations and feelings of inadequacy.</p>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">Development Tip</div>
+                    <p>Always ask "So what?" after making a claim. If you can't explain why your point matters, you need stronger development.</p>
+                </div>
+            </div>
+            
+            <div id="language-use" class="subtopic-content">
+                <h2 class="subtopic-title">Effective Language Use</h2>
+                
+                <div class="content-section">
+                    <h3 class="section-title">Precision and Clarity</h3>
+                    <p class="content-text">
+                        Choose words that convey your meaning precisely:
+                    </p>
+                    <div  class="list-item">Use specific rather than vague language</div>
+                    <div  class="list-item">Choose active voice over passive when possible</div>
+                    <div  class="list-item">Eliminate unnecessary words and phrases</div>
+                    <div  class="list-item">Ensure pronoun references are clear</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Style and Tone</h3>
+                    <p class="content-text">
+                        Maintain appropriate style and tone throughout:
+                    </p>
+                    <div  class="list-item">Match formality level to the audience and purpose</div>
+                    <div  class="list-item">Use consistent verb tenses</div>
+                    <div  class="list-item">Vary sentence structure for engagement</div>
+                    <div  class="list-item">Maintain objective tone in academic writing</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Example: Improving Language Use</div>
+                    <p><strong>Wordy:</strong> Due to the fact that there are many different reasons why students might not succeed in their academic endeavors, it is important to consider various factors.</p>
+                    <p><strong>Concise:</strong> Student academic failure has multiple causes that deserve consideration.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Transitions and Flow</h3>
+                    <p class="content-text">
+                        Use transitions to create smooth connections:
+                    </p>
+                    <div  class="list-item">Sequence: first, next, finally, meanwhile</div>
+                    <div  class="list-item">Contrast: however, nevertheless, on the other hand</div>
+                    <div  class="list-item">Addition: furthermore, moreover, in addition</div>
+                    <div  class="list-item">Cause/Effect: therefore, consequently, as a result</div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">Language Use Tip</div>
+                    <p>Read your writing aloud to identify awkward phrasing, unclear references, and areas where transitions would improve flow.</p>
+                </div>
+            </div>
+            <div id="advanced-techniques" class="subtopic-content">
+                <h2 class="subtopic-title">Advanced Writing Techniques</h2>
+                
+                <div class="content-section">
+                    <h3 class="section-title">Synthesis and Integration</h3>
+                    <p class="content-text">
+                        Advanced writing requires combining information from multiple sources effectively:
+                    </p>
+                    <div  class="list-item">Identify connections between different sources or ideas</div>
+                    <div  class="list-item">Use sources to support rather than replace your own analysis</div>
+                    <div  class="list-item">Acknowledge counterarguments and address them thoughtfully</div>
+                    <div  class="list-item">Create smooth transitions between different pieces of evidence</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Sophisticated Sentence Structure</h3>
+                    <p class="content-text">
+                        Vary your sentence patterns to create engaging, mature prose:
+                    </p>
+                    <div  class="list-item">Use subordinate clauses to show relationships between ideas</div>
+                    <div  class="list-item">Employ parallel structure for emphasis and clarity</div>
+                    <div  class="list-item">Combine short sentences to avoid choppy writing</div>
+                    <div  class="list-item">Use periodic sentences to build suspense or emphasis</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Example: Sentence Variety</div>
+                    <p><strong>Basic:</strong> The study was important. It showed new results. Scientists were surprised.</p>
+                    <p><strong>Advanced:</strong> The groundbreaking study, which revealed unexpected results that challenged conventional wisdom, surprised scientists across the field.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Advanced Vocabulary and Diction</h3>
+                    <p class="content-text">
+                        Choose words that enhance meaning and demonstrate sophistication:
+                    </p>
+                    <div  class="list-item">Use precise verbs instead of generic ones (analyze vs. look at)</div>
+                    <div  class="list-item">Choose specific nouns over vague terms (legislation vs. thing)</div>
+                    <div  class="list-item">Employ varied vocabulary to avoid repetition</div>
+                    <div  class="list-item">Use academic language appropriately without being pretentious</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Rhetorical Sophistication</h3>
+                    <p class="content-text">
+                        Demonstrate awareness of audience, purpose, and context:
+                    </p>
+                    <div  class="list-item">Adjust tone and formality level to match the writing situation</div>
+                    <div  class="list-item">Use rhetorical questions strategically for engagement</div>
+                    <div  class="list-item">Employ metaphors and analogies to clarify complex ideas</div>
+                    <div  class="list-item">Create emphasis through repetition and parallel structure</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Example: Rhetorical Techniques</div>
+                    <p><strong>Metaphor:</strong> "The internet serves as the nervous system of modern society, connecting distant parts and enabling rapid communication."</p>
+                    <p><strong>Parallel Structure:</strong> "Education empowers individuals, strengthens communities, and transforms societies."</p>
+                    <p><strong>Rhetorical Question:</strong> "How can we expect students to succeed when we fail to provide them with adequate resources?"</p>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Advanced Organization Patterns</h3>
+                    <p class="content-text">
+                        Move beyond basic five-paragraph structure:
+                    </p>
+                    <div  class="list-item">Use thematic organization to group related ideas</div>
+                    <div  class="list-item">Employ chronological structure for process or historical analysis</div>
+                    <div  class="list-item">Create comparison/contrast patterns for analytical writing</div>
+                    <div  class="list-item">Use problem/solution structure for persuasive essays</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Nuanced Argumentation</h3>
+                    <p class="content-text">
+                        Develop sophisticated reasoning and analysis:
+                    </p>
+                    <div  class="list-item">Acknowledge complexity and avoid oversimplification</div>
+                    <div  class="list-item">Address potential objections to strengthen your argument</div>
+                    <div  class="list-item">Use qualifiers to show nuanced thinking (often, typically, generally)</div>
+                    <div  class="list-item">Distinguish between correlation and causation</div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">Advanced Writing Tip</div>
+                    <p>The strongest writing demonstrates original thinking while building on established ideas. Don't just summarize sources—analyze, synthesize, and evaluate them to create new insights.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Revision Strategies for Advanced Writers</h3>
+                    <p class="content-text">
+                        Polish your writing through strategic revision:
+                    </p>
+                    <div  class="list-item">Read your work aloud to identify awkward phrasing</div>
+                    <div  class="list-item">Check for logical flow between paragraphs and ideas</div>
+                    <div  class="list-item">Eliminate unnecessary words and redundant phrases</div>
+                    <div  class="list-item">Ensure each paragraph advances your main argument</div>
+                    <div  class="list-item">Verify that your conclusion synthesizes rather than just summarizes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = `star ${['small', 'medium', 'large'][Math.floor(Math.random() * 3)]}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function showSubtopic(subtopicId) {
+            // Hide all subtopic content
+            const allContent = document.querySelectorAll('.subtopic-content');
+            allContent.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const allButtons = document.querySelectorAll('.subtopic-button');
+            allButtons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected subtopic content
+            document.getElementById(subtopicId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            const expectedSubtopics = ['organization', 'development', 'language-use'];
+            if (expectedSubtopics.includes(subtopicId)) {
+                markSubtopicCompleted('english', 'Expression of Ideas', getSubtopicTitle(subtopicId));
+            }
+        }
+
+        // Helper function to get subtopic title
+        function getSubtopicTitle(subtopicId) {
+            const titles = {
+                'organization': 'Organization',
+                'development': 'Development',
+                'language-use': 'Effective Language Use',
+                'advanced-techniques': 'Advanced Writing Techniques'
+            };
+            return titles[subtopicId] || subtopicId;
+        }
+
+        // Progress tracking function
+        function markSubtopicCompleted(subject, topic, subtopic) {
+            console.log(`[v0] DEBUG: Marking subtopic completed - ${subject}/${topic}/${subtopic}`);
+            
+            const progress = JSON.parse(localStorage.getItem('satProgress') || '{}');
+            console.log("[v0] DEBUG: Current progress before update:", progress);
+            
+            if (!progress[subject]) progress[subject] = {};
+            if (!progress[subject][topic]) progress[subject][topic] = {};
+            progress[subject][topic][subtopic] = true;
+            
+            localStorage.setItem('satProgress', JSON.stringify(progress));
+            console.log("[v0] DEBUG: Progress updated and saved:", progress);
+            
+            const mainProgress = JSON.parse(localStorage.getItem('satNotesProgress') || '{}');
+            console.log("[v0] DEBUG: Main progress before update:", mainProgress);
+            
+            if (!mainProgress[subject]) mainProgress[subject] = {};
+            if (!mainProgress[subject][topic]) mainProgress[subject][topic] = {};
+            mainProgress[subject][topic][subtopic] = true;
+            
+            localStorage.setItem('satNotesProgress', JSON.stringify(mainProgress));
+            console.log("[v0] DEBUG: Main progress updated and saved:", mainProgress);
+            
+            // Update button appearance
+            updateButtonAppearance();
+            
+            // Trigger progress update on main page
+            if (window.parent && window.parent.updateProgressBar) {
+                window.parent.updateProgressBar();
+            }
+        }
+
+        // Function to update button appearance based on completion status
+        function updateButtonAppearance() {
+            const progress = JSON.parse(localStorage.getItem('satProgress') || '{}');
+            const topicProgress = progress.english && progress.english['Expression of Ideas'] ? progress.english['Expression of Ideas'] : {};
+            
+            const expectedSubtopics = ['organization', 'development', 'language-use'];
+            const buttons = document.querySelectorAll('.subtopic-button');
+            buttons.forEach(button => {
+                const subtopicId = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (expectedSubtopics.includes(subtopicId)) {
+                    const subtopicTitle = getSubtopicTitle(subtopicId);
+                    if (topicProgress[subtopicTitle] === true) {
+                        button.classList.add('completed');
+                    }
+                }
+            });
+        }
+
+        // Initialization on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure the default visible subtopic ("Organization") is counted as completed
+            markSubtopicCompleted('english', 'Expression of Ideas', 'Organization');
+            updateButtonAppearance();
+        });
+
+        createStars();
+    </script>
+</body>
+</html>

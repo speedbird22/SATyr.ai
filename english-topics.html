@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Topics - SAT Study Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="icon" type="image/png" href="public/logo.png">
+    <style>
+        html, body { height: 100%; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(5, 150, 105, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #0f766e 50%, #134e4a 75%, #064e3b 100%);
+            min-height: 100%;
+            height: auto;
+            padding: 40px;
+            overflow-x: hidden;
+            position: relative;
+            background-attachment: fixed;
+        }
+        
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: #f8fafc; border-radius: 50%; animation: twinkle 3s infinite; box-shadow: 0 0 6px rgba(248, 250, 252, 0.8); }
+        .star.small { width: 1px; height: 1px; }
+        .star.medium { width: 2px; height: 2px; box-shadow: 0 0 8px rgba(248, 250, 252, 0.9); }
+        .star.large { width: 3px; height: 3px; box-shadow: 0 0 12px rgba(248, 250, 252, 1); }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            25% { opacity: 0.8; transform: scale(1.2); }
+            50% { opacity: 1; transform: scale(1.5); }
+            75% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .main-container {
+            position: relative;
+            margin: 80px auto;
+            width: 90%;
+            max-width: 1000px;
+            background: 
+                linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.06)),
+                linear-gradient(45deg, rgba(20, 184, 166, 0.05), rgba(13, 148, 136, 0.05));
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 20px;
+            padding: 60px 40px;
+            color: #f8fafc;
+            z-index: 100;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba(6, 182, 212, 0.15),
+                inset 0 1px 0 rgba(6, 182, 212, 0.1);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 500px;
+        }
+        
+        .main-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #06b6d4, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 60px;
+            opacity: 0.9;
+            color: #a7f3d0;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            padding: 12px 24px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 12px;
+            color: #f8fafc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(6, 182, 212, 0.3);
+            border-color: rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.2);
+        }
+        
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .topic-card {
+            background: 
+                linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(16, 185, 129, 0.08)),
+                linear-gradient(45deg, rgba(20, 184, 166, 0.06), rgba(13, 148, 136, 0.06));
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            text-decoration: none;
+            color: #f8fafc;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(15px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(6, 182, 212, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 40px rgba(6, 182, 212, 0.25),
+                inset 0 1px 0 rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.6);
+            background: 
+                linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(16, 185, 129, 0.12)),
+                linear-gradient(45deg, rgba(20, 184, 166, 0.1), rgba(13, 148, 136, 0.1));
+        }
+
+        .topic-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: inline-block;
+            position: relative;
+            background: linear-gradient(135deg, rgba(6,182,212,0.14), rgba(13,148,136,0.12));
+            border: 1px solid rgba(6,182,212,0.35);
+            box-shadow: 0 6px 20px rgba(6,182,212,0.15);
+        }
+        .topic-icon.book::before, .topic-icon.book::after {
+            content: "";
+            position: absolute;
+            inset: 7px 9px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 6px;
+        }
+        .topic-icon.book::after {
+            left: 50%;
+            width: 2px;
+            background: rgba(6,182,212,0.6);
+        }
+        .topic-icon.book .bookmark {
+            position: absolute;
+            right: 12px;
+            top: 7px;
+            width: 8px;
+            height: 14px;
+            background: rgba(6,182,212,0.85);
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
+            border-radius: 2px;
+        }
+
+        /* High-fidelity CSS book icon */
+        .topic-icon.book {
+          width: 56px; height: 56px; position: relative; border-radius: 6px;
+          background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 6px 16px rgba(0,0,0,0.25);
+        }
+        .topic-icon.book::before{ /* spine */
+          content:""; position:absolute; left:0; top:0; bottom:0; width:10px;
+          background: linear-gradient(180deg, rgba(6,182,212,0.5), rgba(6,182,212,0.25));
+          border-top-left-radius:6px; border-bottom-left-radius:6px;
+        }
+        .topic-icon.book::after{ /* page edges */
+          content:""; position:absolute; right:6px; top:8px; bottom:8px; width:30px;
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.3)) padding-box,
+            repeating-linear-gradient(180deg, rgba(0,0,0,0.08) 0 2px, rgba(0,0,0,0.02) 2px 4px) border-box;
+          border-radius:3px;
+        }
+        .topic-icon.book .bookmark{
+          position:absolute; right:10px; top:-2px; width:10px; height:16px;
+          background: #f59e0b; clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 20px; }
+            .main-container { padding: 40px 20px; margin: 40px auto; }
+            .topics-grid { grid-template-columns: 1fr; gap: 20px; }
+            .main-title { font-size: 2.5em; }
+            .subtitle { font-size: 1.1em; margin-bottom: 40px; }
+            .back-button { position: static; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="main-container">
+        <!-- Updated reference from index.html to sat-notes.html -->
+        <a href="sat-notes.html" class="back-button">← Back to Home</a>
+        <h1 class="main-title">English</h1>
+        <p class="subtitle">Develop critical reading, writing, and language skills for SAT success</p>
+        
+        <div class="topics-grid">
+            <a href="information-ideas.html" class="topic-card">
+                <div class="topic-icon book"><span class="bookmark"></span></div>
+                <div class="topic-title">Information & Ideas</div>
+                <div class="topic-description">Reading comprehension, main ideas, supporting details, and inferences</div>
+                <div class="topic-subtopics">3 subtopics available</div>
+            </a>
+            
+            <a href="craft-structure.html" class="topic-card">
+                <div class="topic-icon book"><span class="bookmark"></span></div>
+                <div class="topic-title">Craft & Structure</div>
+                <div class="topic-description">Text structure, word choice, point of view, and rhetorical purpose</div>
+                <div class="topic-subtopics">3 subtopics available</div>
+            </a>
+            
+            <a href="expression-ideas.html" class="topic-card">
+                <div class="topic-icon book"><span class="bookmark"></span></div>
+                <div class="topic-title">Expression of Ideas</div>
+                <div class="topic-description">Organization, development, and effective language use in writing</div>
+                <div class="topic-subtopics">3 subtopics available</div>
+            </a>
+            
+            <a href="standard-english.html" class="topic-card">
+                <div class="topic-icon book"><span class="bookmark"></span></div>
+                <div class="topic-title">Standard English</div>
+                <div class="topic-description">Grammar, punctuation, sentence structure, and usage conventions</div>
+                <div class="topic-subtopics">3 subtopics available</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = `star ${['small', 'medium', 'large'][Math.floor(Math.random() * 3)]}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+    </script>
+</body>
+</html>

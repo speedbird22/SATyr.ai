@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematics Topics - SAT Study Notes</title>
+    <link rel="stylesheet" href="theme.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="public/logo.png">
+    <style>
+        html, body { height: 100%; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Updated to liminal space gradient background with ethereal purple tones */
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0f0f23 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
+            min-height: 100%;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            padding: 40px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        /* Updated star colors to match liminal space theme */
+        .star { position: absolute; background: rgba(196, 181, 253, 0.8); border-radius: 50%; animation: twinkle 3s infinite; box-shadow: 0 0 6px rgba(196, 181, 253, 0.6); }
+        .star.small { width: 1px; height: 1px; }
+        .star.medium { width: 2px; height: 2px; box-shadow: 0 0 8px rgba(196, 181, 253, 0.7); }
+        .star.large { width: 3px; height: 3px; box-shadow: 0 0 12px rgba(196, 181, 253, 0.9); }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            25% { opacity: 0.8; transform: scale(1.2); }
+            50% { opacity: 1; transform: scale(1.5); }
+            75% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .main-container {
+            position: relative;
+            margin: 80px auto;
+            width: 90%;
+            max-width: 1000px;
+            /* Updated to liminal space frosted glass with purple gradients */
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 50%, rgba(109, 40, 217, 0.1) 100%),
+                linear-gradient(45deg, rgba(196, 181, 253, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 60px 40px;
+            color: #f8fafc;
+            z-index: 100;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba(139, 92, 246, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 500px;
+        }
+        
+        .main-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            /* Updated to liminal space gradient text */
+            background: linear-gradient(135deg, #c4b5fd, #a78bfa, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 60px;
+            opacity: 0.9;
+            /* Updated subtitle color to match liminal theme */
+            color: #ddd6fe;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            padding: 12px 24px;
+            /* Updated back button to liminal space styling */
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            border-radius: 12px;
+            color: #f8fafc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            /* Updated hover state for liminal theme */
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .topic-card {
+            /* Updated topic cards to liminal space frosted glass design */
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%),
+                linear-gradient(45deg, rgba(196, 181, 253, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            text-decoration: none;
+            color: #f8fafc;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(15px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(139, 92, 246, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            /* Enhanced hover effects with liminal space glow */
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 30px rgba(139, 92, 246, 0.3),
+                0 0 60px rgba(139, 92, 246, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: rgba(139, 92, 246, 0.6);
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%),
+                linear-gradient(45deg, rgba(196, 181, 253, 0.08) 0%, rgba(167, 139, 250, 0.08) 100%);
+        }
+
+        .topic-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: inline-block;
+            position: relative;
+            background: linear-gradient(135deg, rgba(6,182,212,0.14), rgba(13,148,136,0.12));
+            border: 1px solid rgba(6,182,212,0.35);
+            box-shadow: 0 6px 20px rgba(6,182,212,0.15);
+        }
+        .topic-icon.math::before, .topic-icon.math::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 70%;
+            height: 2px;
+            background: rgba(6,182,212,0.7);
+            transform: translate(-50%, -50%);
+        }
+        .topic-icon.math::after {
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+
+        .topic-icon.calculator {
+            width: 56px;
+            height: 56px;
+            position: relative;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+        .topic-icon.calculator::before { /* bezel highlight */
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            box-shadow: inset 0 0 24px rgba(255, 255, 255, 0.05);
+        }
+        .topic-icon.calculator .display {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            top: 10px;
+            height: 12px;
+            background: linear-gradient(180deg, rgba(6, 182, 212, 0.5), rgba(6, 182, 212, 0.2));
+            border-radius: 3px;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+        }
+        .topic-icon.calculator .btn {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+        .topic-icon.calculator .btn:nth-child(2) { left: 10px; top: 28px; }
+        .topic-icon.calculator .btn:nth-child(3) { left: 22px; top: 28px; }
+        .topic-icon.calculator .btn:nth-child(4) { left: 34px; top: 28px; }
+        .topic-icon.calculator .btn:nth-child(5) { left: 10px; top: 40px; }
+        .topic-icon.calculator .btn:nth-child(6) { left: 22px; top: 40px; }
+        .topic-icon.calculator .btn:nth-child(7) { left: 34px; top: 40px; }
+        .topic-icon.calculator .btn:nth-child(8) { left: 10px; top: 52px; }
+        .topic-icon.calculator .btn:nth-child(9) { left: 22px; top: 52px; }
+        .topic-icon.calculator .btn:nth-child(10) { left: 34px; top: 52px; }
+        /* operator key accent */
+        .topic-icon.calculator .btn.op { background: rgba(245, 158, 11, 0.45); }
+
+        .topic-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            /* Updated topic title color to match liminal theme */
+            color: #ddd6fe;
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .topic-description {
+            font-size: 1em;
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .topic-subtopics {
+            font-size: 0.9em;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 20px; }
+            .main-container { padding: 40px 20px; margin: 40px auto; }
+            .topics-grid { grid-template-columns: 1fr; gap: 20px; }
+            .main-title { font-size: 2.5em; }
+            .subtitle { font-size: 1.1em; margin-bottom: 40px; }
+            .back-button { position: static; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="main-container">
+        <!-- Updated reference from index.html to sat-notes.html -->
+        <a href="sat-notes.html" class="back-button">← Back to Home</a>
+        <h1 class="main-title">Mathematics</h1>
+        <p class="subtitle">Master the mathematical concepts essential for SAT success</p>
+        
+        <div class="topics-grid">
+            <a href="algebra.html" class="topic-card">
+                <div class="topic-icon calculator">
+                    <span class="display"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                </div>
+                <div class="topic-title">Algebra</div>
+                <div class="topic-description">Linear equations, quadratic functions, polynomials, and exponential functions</div>
+                <div class="topic-subtopics">4 subtopics available</div>
+            </a>
+            
+            <a href="advanced-math.html" class="topic-card">
+                <div class="topic-icon calculator">
+                    <span class="display"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                </div>
+                <div class="topic-title">Advanced Math</div>
+                <div class="topic-description">Complex functions, advanced algebraic concepts, and mathematical modeling</div>
+                <div class="topic-subtopics">4 subtopics available</div>
+            </a>
+            
+            <a href="problem-solving.html" class="topic-card">
+                <div class="topic-icon calculator">
+                    <span class="display"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                </div>
+                <div class="topic-title">Problem Solving</div>
+                <div class="topic-description">Data analysis, statistics, probability, and quantitative reasoning</div>
+                <div class="topic-subtopics">4 subtopics available</div>
+            </a>
+            
+            <a href="geometry.html" class="topic-card">
+                <div class="topic-icon calculator">
+                    <span class="display"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                    <span class="btn"></span><span class="btn"></span><span class="btn"></span>
+                </div>
+                <div class="topic-title">Geometry</div>
+                <div class="topic-description">Coordinate geometry, trigonometry, and geometric relationships</div>
+                <div class="topic-subtopics">4 subtopics available</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = `star ${['small', 'medium', 'large'][Math.floor(Math.random() * 3)]}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+    </script>
+</body>
+</html>

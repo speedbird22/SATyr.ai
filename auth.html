@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In · SATyr Notes</title>
+  <link rel="icon" href="public/logo.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    :root{
+      --bg1:#0f172a; --bg2:#1e293b; --bg3:#0b1529;
+      --primary:#06b6d4; --accent:#10b981; --glass:rgba(255,255,255,0.06); --border:rgba(255,255,255,0.14);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Inter',system-ui,sans-serif;
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(6,182,212,0.15), transparent 60%),
+                  radial-gradient(900px 700px at 90% 90%, rgba(16,185,129,0.15), transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2) 50%, var(--bg3));
+      color:#f8fafc; overflow:hidden;
+    }
+    .container{
+      position:relative; width:min(720px, 94vw); display:flex; flex-direction:column; gap:18px; padding:18px;
+    }
+
+    .panel{
+      background: linear-gradient(135deg, rgba(6,182,212,0.10), rgba(8,145,178,0.06));
+      border:1px solid var(--border);
+      border-radius:24px; padding:28px; backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35), 0 8px 24px rgba(6,182,212,0.15) inset;
+      position: relative; overflow: hidden;
+    }
+    .hero{
+      display:flex; flex-direction:column; gap:10px; justify-content:center;
+      background: linear-gradient(160deg, rgba(6,182,212,0.12), rgba(16,185,129,0.08));
+    }
+    .hero h1{
+      font-family:'Playfair Display',serif; font-size:clamp(2.2rem,4vw,3rem); font-weight:700;
+      background: linear-gradient(135deg, #ffffff, var(--primary));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .hero p{ color:#cbd5e1; line-height:1.6; font-size:1.05rem}
+    .logo{
+      width:64px; height:64px; border-radius:16px; display:grid; place-items:center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06)); 
+      border:1px solid rgba(255,255,255,0.16); box-shadow: 0 10px 30px rgba(6,182,212,0.25);
+      overflow:hidden;
+    }
+    .logo img{ width:100%; height:100%; object-fit:cover }
+
+    .auth{
+      display:flex; flex-direction:column; gap:18px;
+      position: relative; z-index: 2;
+    }
+    .field{ display:flex; flex-direction:column; gap:8px }
+    .label{ font-weight:600; color:#e2e8f0 }
+    .input{
+      width:100%; padding:14px 16px; border-radius:12px; background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.14); color:#f8fafc; outline:none;
+    }
+    .row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap }
+    .btn{
+      appearance:none; border:none; cursor:pointer; font-weight:700; letter-spacing:.2px;
+      padding:12px 16px; border-radius:12px; color:#0b1220;
+      background:linear-gradient(135deg, #67e8f9, #06b6d4);
+      box-shadow: 0 10px 24px rgba(6,182,212,0.25);
+    }
+    .btn:disabled{ opacity:.6; cursor:not-allowed }
+    .btn.secondary{
+      color:#f8fafc; background: linear-gradient(135deg, rgba(6,182,212,0.18), rgba(13,148,136,0.14));
+      border:1px solid rgba(6,182,212,0.35);
+    }
+    .note{ color:#94a3b8; font-size:.95rem }
+    .or{ text-align:center; color:#94a3b8; margin:4px 0 }
+    .success{ color:#22c55e; font-weight:700 }
+    .error{ color:#ef4444; font-weight:700 }
+
+    .footer{ color:#94a3b8; text-align:center; font-size:.9rem; margin-top:6px }
+
+    /* equal-size button group + refined glowing and Google styles */
+    .btn-group{
+      display:flex; flex-direction:column; gap:12px;
+    }
+    @media (max-width:640px){ .btn-group{ grid-template-columns:1fr; } }
+
+    .btn.glow, .btn.google {
+      height: 56px; width:100%; border-radius:999px; display:flex; align-items:center; justify-content:center;
+      gap:10px; font-weight:800; letter-spacing:.2px;
+    }
+
+    .btn.glow{
+      color:#06121f;
+      background: linear-gradient(135deg, #67e8f9 0%, #06b6d4 60%, #10b981);
+      box-shadow: 0 10px 28px rgba(6,182,212,.35), 0 0 0 2px rgba(255,255,255,0.06) inset;
+    }
+    .btn.glow:hover{
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 2px rgba(255,255,255,0.08) inset,
+        0 16px 38px rgba(6,182,212,0.45),
+        0 0 30px rgba(6,182,212,0.55);
+    }
+
+    .btn.google{
+      color:#f8fafc;
+      background: linear-gradient(135deg, rgba(2,6,23,.92), rgba(15,23,42,.92));
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      transition: transform .2s ease, box-shadow .3s ease, filter .3s ease;
+    }
+    .btn.google:hover{ transform: translateY(-2px); filter: brightness(1.03); }
+
+    .btn-icon{ width:18px; height:18px; display:inline-grid; place-items:center; }
+
+    /* liquid background that reacts to pointer */
+    .liquid-bg{ position:absolute; inset:0; z-index:1; border-radius:inherit; pointer-events:none; }
+    #liquidCanvas{ width:100%; height:100%; display:block; opacity:.85; mix-blend-mode: screen; filter: saturate(120%); }
+  </style>
+  <script src="config-loader.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <section class="panel hero">
+      <div class="logo"><img src="public/logo.png" alt="SATyr Logo"></div>
+      <h1>Welcome to SATyr Notes</h1>
+      <p>Sign in to sync your progress and access your personalized study dashboard.</p>
+      <p class="note note-long">By continuing you agree to our terms and privacy policy.</p>
+    </section>
+
+    <section class="panel">
+      <div class="liquid-bg" aria-hidden="true">
+        <canvas id="liquidCanvas"></canvas>
+      </div>
+      <div class="auth">
+        <div class="field">
+          <label class="label" for="email">Email</label>
+          <input id="email" class="input" type="email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="btn-group">
+          <button id="emailLinkBtn" class="btn glow">
+            <span class="btn-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" stroke="#052332" stroke-width="1.5"/>
+                <path d="M3.5 7.5 12 13l8.5-5.5" stroke="#052332" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span>Continue with Magic Link</span>
+          </button>
+          <button id="googleBtn" class="btn google">
+            <span class="btn-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.827 32.657 29.277 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.957 3.043l5.657-5.657C34.676 6.053 29.627 4 24 4 12.954 4 4 12.954 4 24s8.954 20 20 20c10.493 0 19-8.507 19-19 0-1.341-.138-2.651-.389-3.917Z"/>
+                <path fill="#FF3D00" d="M6.306 14.691 12.928 19.51C14.7 15.195 18.995 12 24 12c3.059 0 5.842 1.154 7.957 3.043l5.657-5.657C34.676 6.053 29.627 4 24 4 16.318 4 9.689 8.337 6.306 14.691Z"/>
+                <path fill="#4CAF50" d="M24 44c5.192 0 9.871-1.985 13.398-5.23l-6.168-5.217C29.151 35.606 26.704 36 24 36c-5.255 0-9.793-3.317-11.282-7.95l-6.35 4.897C9.712 39.54 16.292 44 24 44Z"/>
+                <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-1.088 3.124-3.381 5.653-6.071 7.07l6.168 5.218C37.164 41.087 43 35.5 43 25c0-1.341-.138-2.651-.389-3.917Z"/>
+              </svg>
+            </span>
+            <span>Continue with Google</span>
+          </button>
+        </div>
+        <div id="status" aria-live="polite" class="note"></div>
+        <div class="footer">Problems? Request a new link.</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (async function(){
+      // Wait for config to be loaded from backend
+      if (window.configLoadedPromise) {
+        await window.configLoadedPromise;
+      }
+      
+      if (!window.firebase?.apps?.length) {
+        const cfg = window.SATYR_CONFIG?.firebase;
+        if (!cfg) { console.error("[v0] Firebase config missing."); return; }
+        firebase.initializeApp(cfg);
+      }
+      const auth = firebase.auth();
+      const provider = new firebase.auth.GoogleAuthProvider();
+
+      const emailEl = document.getElementById('email');
+      const statusEl = document.getElementById('status');
+      const emailBtn = document.getElementById('emailLinkBtn');
+      const googleBtn = document.getElementById('googleBtn');
+
+      function setStatus(html){ statusEl.innerHTML = html; }
+
+      // Handle incoming email link on this page
+      (async function handleEmailLink(){
+        try {
+          if (auth.isSignInWithEmailLink(window.location.href)) {
+            let email = window.localStorage.getItem('satyrEmailForSignIn');
+            if (!email) {
+              email = window.prompt('Confirm your email to finish sign-in:');
+            }
+            const result = await auth.signInWithEmailLink(email, window.location.href);
+            window.localStorage.removeItem('satyrEmailForSignIn');
+            setStatus('<span class="success">Signed in successfully! Redirecting…</span>');
+            setTimeout(()=> window.location.href = 'sat-notes.html', 800);
+          }
+        } catch (e) {
+          console.error("[v0] email link error:", e);
+          setStatus('<span class="error">Link invalid or expired. Please request a new magic link.</span>');
+        }
+      })();
+
+      // Send magic link
+      emailBtn.addEventListener('click', async () => {
+        const email = emailEl.value.trim();
+        if (!email) { setStatus('<span class="error">Please enter a valid email.</span>'); return; }
+        emailBtn.disabled = true;
+        try {
+          const url = window.location.origin + '/auth.html';
+          const settings = { url, handleCodeInApp: true };
+          await auth.sendSignInLinkToEmail(email, settings);
+          window.localStorage.setItem('satyrEmailForSignIn', email);
+          setStatus('<span class="success">Magic link sent! Check your email to continue.</span>');
+        } catch (e) {
+          console.error("[v0] send link error:", e);
+          setStatus('<span class="error">Could not send link. Try again.</span>');
+        } finally {
+          emailBtn.disabled = false;
+        }
+      });
+
+      // Google sign-in
+      googleBtn.addEventListener('click', async () => {
+        googleBtn.disabled = true;
+        try {
+          await auth.signInWithPopup(provider);
+          setStatus('<span class="success">Signed in! Redirecting…</span>');
+          setTimeout(()=> window.location.href = 'sat-notes.html', 600);
+        } catch (e) {
+          console.error("[v0] Google sign-in error:", e);
+          setStatus('<span class="error">Google sign-in failed. Try again.</span>');
+        } finally {
+          googleBtn.disabled = false;
+        }
+      });
+
+      // If user already signed in, redirect to home
+      auth.onAuthStateChanged((u)=>{
+        if (u) {
+          setStatus('<span class="success">Already signed in. Redirecting…</span>');
+          setTimeout(()=> window.location.href = 'sat-notes.html', 500);
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    (function(){
+      const panel = document.querySelector('.panel');
+      const canvas = document.getElementById('liquidCanvas');
+      if (!panel || !canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      // Low-res simulation for performance; canvas is CSS-scaled
+      let simW = 180, simH = 0, damping = 0.96;
+      let curr, prev;
+      let running = true;
+
+      function resize(){
+        const { width, height } = canvas.getBoundingClientRect();
+        simH = Math.max(120, Math.round(simW * (height / Math.max(1,width))));
+        canvas.width = simW;
+        canvas.height = simH;
+        curr = new Float32Array(simW * simH);
+        prev = new Float32Array(simW * simH);
+      }
+
+      function update(){
+        if (!running) return;
+        // simple height-field ripple with stronger damping + fade
+        for (let y=1; y<simH-1; y++){
+          for (let x=1; x<simW-1; x++){
+            const i = y*simW + x;
+            const val = (prev[i-1] + prev[i+1] + prev[i-simW] + prev[i+simW]) * 0.5 - curr[i];
+            // velocity-like term damped more strongly
+            curr[i] = val * damping;
+            // amplitude fade
+            prev[i] *= 0.98;
+          }
+        }
+        // swap
+        const t = prev; prev = curr; curr = t;
+
+        // render
+        const img = ctx.createImageData(simW, simH);
+        for (let i=0; i<img.data.length; i+=4){
+          const h = Math.max(-1, Math.min(1, prev[i>>2] * 1.2));
+          const r = 8 + h*80;
+          const g = 120 + h*120;
+          const b = 160 + h*150;
+          img.data[i]   = r<0?0:r>255?255:r;
+          img.data[i+1] = g<0?0:g>255?255:g;
+          img.data[i+2] = b<0?0:b>255?255:b;
+          img.data[i+3] = 110 + (20 + h*70);
+        }
+        requestAnimationFrame(update);
+        ctx.putImageData(img, 0, 0);
+      }
+
+      function disturb(nx, ny, power){
+        const x0 = Math.floor(nx * (simW-2)) + 1;
+        const y0 = Math.floor(ny * (simH-2)) + 1;
+        const rad = Math.max(1, Math.floor(simW * 0.02));
+        for (let y=-rad; y<=rad; y++){
+          for (let x=-rad; x<=rad; x++){
+            const dx = x0 + x, dy = y0 + y;
+            if (dx<=0 || dy<=0 || dx>=simW-1 || dy>=simH-1) continue;
+            const dist = Math.sqrt(x*x + y*y);
+            if (dist <= rad){
+              const falloff = (1 - dist/rad);
+              prev[dy*simW + dx] += power * falloff;
+            }
+          }
+        }
+      }
+
+      function mapToCanvas(e){
+        const rect = canvas.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width;
+        const ny = (e.clientY - rect.top) / rect.height;
+        return { nx, ny };
+      }
+
+      function disturbLine(nxa, nya, nxb, nyb, power = 0.22){
+        const ax = Math.max(1, Math.min(simW-2, Math.floor(nxa * simW)));
+        const ay = Math.max(1, Math.min(simH-2, Math.floor(nya * simH)));
+        const bx = Math.max(1, Math.min(simW-2, Math.floor(nxb * simW)));
+        const by = Math.max(1, Math.min(simH-2, Math.floor(nyb * simH)));
+        const dx = bx - ax, dy = by - ay;
+        const dist = Math.max(1, Math.hypot(dx, dy));
+        const steps = Math.max(1, Math.min(64, Math.ceil(dist)));
+        const stepx = dx / steps, stepy = dy / steps;
+        for (let i=0;i<=steps;i++){
+          const px = Math.max(1, Math.min(simW-2, (ax + stepx*i)|0));
+          const py = Math.max(1, Math.min(simH-2, (ay + stepy*i)|0));
+          prev[py*simW + px] += power;
+          // slight lateral bias to avoid circular look
+          if (px+1<simW-1) prev[py*simW + (px+1)] += power*0.5;
+          if (py+1<simH-1) prev[(py+1)*simW + px] += power*0.5;
+        }
+      }
+
+      let last = null;
+      function onMove(e){
+        const { nx, ny } = mapToCanvas(e);
+        if (nx<0 || ny<0 || nx>1 || ny>1) { last = null; return; }
+        if (!last){ last = { nx, ny }; return; }
+        disturbLine(last.nx, last.ny, nx, ny, 0.18);
+        last = { nx, ny };
+      }
+      function onLeave(){ last = null; }
+      function onClick(e){
+        const { nx, ny } = mapToCanvas(e);
+        if (nx<0 || ny<0 || nx>1 || ny>1) return;
+        // clicks create concentric ripples
+        disturb(nx, ny, 2.8);
+      }
+
+      window.addEventListener('resize', resize, { passive:true });
+      resize();
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        panel.addEventListener('mousemove', onMove, { passive:true });
+        panel.addEventListener('mouseleave', onLeave, { passive:true });
+        panel.addEventListener('click', onClick, { passive:true });
+        update();
+      } else {
+        running = false;
+      }
+    })();
+  </script>
+</body>
+</html>

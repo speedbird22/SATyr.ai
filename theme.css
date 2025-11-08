@@ -1,0 +1,204 @@
+:root {
+  --bg: #0f172a; /* dark background */
+  --surface: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.14);
+  --primary: #06b6d4; /* cyan */
+  --accent: #0d9488; /* teal */
+  --text: #f8fafc; /* primary text */
+  --muted: #cbd5e1; /* secondary text */
+  /* fallbacks for subject-specific tokens some pages may use */
+  --math-bg: var(--surface);
+  --math-accent: var(--accent);
+  --english-bg: var(--surface);
+  --english-accent: var(--accent);
+}
+
+/* Typography */
+html,
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  color: var(--text) !important;
+  background: linear-gradient(135deg, var(--bg) 0%, #1e293b 50%, #0b1529 100%) fixed !important;
+}
+
+h1,
+h2,
+h3,
+.main-title,
+.title,
+.card-title,
+.subtopic-title,
+.section-title {
+  font-family: "Playfair Display", Georgia, serif !important;
+  color: var(--text) !important;
+  background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Container surfaces */
+.main-container,
+.container,
+.progress-modal,
+.topic-card,
+.content,
+.content-area,
+.graph-item,
+.coordinate-container {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  backdrop-filter: blur(16px) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25) !important;
+  color: var(--text) !important;
+}
+
+/* Secondary text */
+.subtitle,
+.content-text,
+.progress-label,
+.stat-label,
+.topic-description,
+.topic-subtopics,
+.progress-indicator {
+  color: var(--muted) !important;
+}
+
+/* Primary accents */
+a.card-button,
+.nav-button,
+.subtopic-button,
+.back-button,
+.card-badge,
+.topic-icon,
+.css-icon,
+.nav-controls button {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.18), rgba(13, 148, 136, 0.14)) !important;
+  border: 1px solid rgba(6, 182, 212, 0.35) !important;
+  color: var(--text) !important;
+  border-radius: 12px !important;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+a.card-button:hover,
+.nav-button:hover,
+.subtopic-button:hover,
+.back-button:hover,
+.nav-controls button:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.28), rgba(13, 148, 136, 0.22)) !important;
+  box-shadow: 0 12px 32px rgba(6, 182, 212, 0.18) !important;
+  border-color: rgba(6, 182, 212, 0.55) !important;
+}
+
+.nav-button.active,
+.subtopic-button.active {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(13, 148, 136, 0.28)) !important;
+  border-color: rgba(6, 182, 212, 0.65) !important;
+}
+
+/* Cards and highlights */
+.example-box,
+.tip-box {
+  background: rgba(13, 148, 136, 0.1) !important;
+  border: 1px solid rgba(13, 148, 136, 0.35) !important;
+  color: var(--text) !important;
+}
+
+.formula {
+  background: rgba(0, 0, 0, 0.35) !important;
+  color: #fbbf24 !important;
+  border-radius: 8px !important;
+}
+
+/* Progress visuals */
+.progress-fill {
+  background: linear-gradient(90deg, var(--primary), #67e8f9) !important;
+}
+
+.stat-value,
+.progress-number {
+  color: var(--primary) !important;
+}
+
+/* Icon tints */
+.math-icon,
+.book-icon,
+.topic-icon.book,
+.topic-icon.math {
+  filter: drop-shadow(0 4px 10px rgba(6, 182, 212, 0.35)) !important;
+}
+
+/* Minimal link normalization */
+a {
+  color: var(--text);
+}
+
+/* Ensure stars remain subtle across pages */
+.star {
+  background: rgba(248, 250, 252, 0.9) !important;
+  box-shadow: 0 0 6px rgba(248, 250, 252, 0.7) !important;
+}
+
+/* Keep grids/axes readable */
+.grid-lines,
+.x-axis,
+.y-axis {
+  opacity: 0.85 !important;
+}
+
+/* ---------------------------------------
+   Notes surfaces unification (dark theme)
+   and ensure readable text inside them
+   --------------------------------------- */
+.subsection {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text) !important;
+}
+
+.subsection p,
+.subsection li,
+.subsection span,
+.subsection small,
+.subsection code {
+  color: var(--text) !important;
+}
+
+.subsection h1,
+.subsection h2,
+.subsection h3,
+.subsection h4,
+.subsection h5,
+.subsection h6 {
+  color: var(--text) !important;
+}
+
+.example-box,
+.tip-box {
+  background: rgba(13, 148, 136, 0.1) !important;
+  border: 1px solid rgba(13, 148, 136, 0.35) !important;
+  color: var(--text) !important;
+}
+
+.example-box p,
+.example-box li,
+.example-box span,
+.example-box small,
+.example-box code,
+.tip-box p,
+.tip-box li,
+.tip-box span,
+.tip-box small,
+.tip-box code {
+  color: var(--text) !important;
+}
+
+.correct,
+.success,
+.highlight,
+.accent {
+  color: inherit; /* will keep any explicitly set color in the page */
+}

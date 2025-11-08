@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information and Ideas - SAT Study Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        html, body { height: 100%; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(5, 164, 191, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(14, 166, 116, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(4, 135, 94, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 60% 10%, rgba(30, 58, 138, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 10% 60%, rgba(67, 56, 202, 0.06) 0%, transparent 70%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 20%, #0e7490 35%, #0f766e 50%, #115e59 65%, #134e4a 80%, #064e3b 100%);
+            min-height: 100%;
+            height: auto;
+            padding: 40px;
+            overflow-x: hidden;
+            position: relative;
+            background-attachment: fixed;
+        }
+        
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: #f8fafc; border-radius: 50%; animation: twinkle 3s infinite; box-shadow: 0 0 6px rgba(248, 250, 252, 0.8); }
+        .star.small { width: 1px; height: 1px; }
+        .star.medium { width: 2px; height: 2px; box-shadow: 0 0 8px rgba(248, 250, 252, 0.9); }
+        .star.large { width: 3px; height: 3px; box-shadow: 0 0 12px rgba(248, 250, 252, 1); }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            25% { opacity: 0.8; transform: scale(1.2); }
+            50% { opacity: 1; transform: scale(1.5); }
+            75% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            margin: 40px auto;
+            width: 90%;
+            max-width: 1000px;
+            background: 
+                linear-gradient(135deg, rgba(5, 164, 191, 0.07), rgba(14, 166, 116, 0.07), rgba(4, 135, 94, 0.05)),
+                linear-gradient(45deg, rgba(18, 165, 149, 0.04), rgba(11, 133, 122, 0.04)),
+                linear-gradient(225deg, rgba(30, 58, 138, 0.03), rgba(67, 56, 202, 0.02));
+            border: 2px solid rgba(5, 164, 191, 0.25);
+            border-radius: 20px;
+            padding: 40px;
+            color: #f8fafc;
+            z-index: 100;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba(5, 164, 191, 0.12),
+                inset 0 1px 0 rgba(5, 164, 191, 0.08);
+            backdrop-filter: blur(20px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #0891b2, #0d9488, #047857);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(5, 164, 191, 0.25);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.8;
+            color: #a7f3d0;
+            font-weight: 300;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(5, 164, 191, 0.12), rgba(14, 166, 116, 0.12), rgba(4, 135, 94, 0.10));
+            border: 2px solid rgba(5, 164, 191, 0.35);
+            border-radius: 12px;
+            color: #f8fafc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(5, 164, 191, 0.7);
+            background: linear-gradient(135deg, rgba(5, 164, 191, 0.22), rgba(14, 166, 116, 0.22), rgba(4, 135, 94, 0.20));
+        }
+
+        .subtopic-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .subtopic-button {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(5, 164, 191, 0.3);
+            border-radius: 8px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .subtopic-button:hover, .subtopic-button.active {
+            background: rgba(5, 164, 191, 0.18);
+            border-color: rgba(5, 164, 191, 0.5);
+            color: #0891b2;
+            transform: translateY(-1px);
+        }
+
+        .subtopic-button.completed {
+            background: rgba(34, 197, 94, 0.18);
+            border-color: rgba(34, 197, 94, 0.35);
+            color: #16a34a;
+        }
+
+        .subtopic-button.completed:hover {
+            background: rgba(34, 197, 94, 0.25);
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+
+        .content-area {
+            min-height: 400px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 15px;
+            border: 1px solid rgba(5, 164, 191, 0.18);
+        }
+
+        .subtopic-content {
+            display: none;
+        }
+
+        .subtopic-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subtopic-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #0891b2;
+        }
+
+        .content-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+        }
+
+        .content-text {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+        }
+
+        .example-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+
+        .list-item {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .list-item::before {
+            content: "•";
+            color: #06b6d4;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 20px; }
+            .container { padding: 20px; }
+            .title { font-size: 2em; }
+            .navigation { justify-content: center; }
+            .subtopic-nav { gap: 10px; }
+            .subtopic-button { padding: 8px 16px; font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Information and Ideas</h1>
+            <p class="subtitle">Reading Comprehension and Analysis</p>
+        </div>
+        
+        <div class="navigation">
+            <a href="english-topics.html" class="nav-button">← Back to English Topics</a>
+            <a href="sat-notes.html" class="nav-button">🏠 Home</a>
+        </div>
+        
+        <div class="subtopic-nav">
+            <button class="subtopic-button active" onclick="showSubtopic('main-ideas')">Main Ideas</button>
+            <button class="subtopic-button" onclick="showSubtopic('supporting-details')">Supporting Details</button>
+            <button class="subtopic-button" onclick="showSubtopic('inferences')">Inferences</button>
+            <button class="subtopic-button" onclick="showSubtopic('passage-strategies')">Passage Strategies</button>
+        </div>
+        
+        <div class="content-area">
+            <div id="main-ideas" class="subtopic-content active">
+                <h2 class="subtopic-title">Main Ideas</h2>
+                
+                <div class="content-section">
+                    <h3 class="section-title">Identifying Central Themes</h3>
+                    <p class="content-text">
+                        The main idea is the central point or message that the author wants to convey. It's the most important concept that ties the entire passage together.
+                    </p>
+                    <div  class="list-item">Look for topic sentences, usually at the beginning of paragraphs</div>
+                    <div  class="list-item">Identify recurring themes and concepts</div>
+                    <div  class="list-item">Pay attention to the conclusion, which often restates the main idea</div>
+                    <div  class="list-item">Consider what the author spends the most time discussing</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Distinguishing Main Ideas from Details</h3>
+                    <p class="content-text">
+                        Main ideas are broad concepts, while supporting details are specific examples, facts, or explanations that support the main idea.
+                    </p>
+                    <div  class="list-item">Main ideas answer "What is this passage mostly about?"</div>
+                    <div  class="list-item">Details answer "How?" "Why?" or "What examples support this?"</div>
+                    <div  class="list-item">Main ideas are general; details are specific</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Example: Identifying Main Ideas</div>
+                    <p><strong>Passage:</strong> "Climate change poses significant threats to global food security. Rising temperatures affect crop yields, while changing precipitation patterns disrupt growing seasons. Additionally, extreme weather events destroy harvests and agricultural infrastructure. These factors combine to create food shortages and price increases worldwide."</p>
+                    <p><strong>Main Idea:</strong> Climate change threatens global food security.</p>
+                    <p><strong>Supporting Details:</strong> Rising temperatures, changing precipitation, extreme weather events, food shortages, price increases.</p>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">Main Idea Tip</div>
+                    <p>If you can't identify the main idea immediately, try summarizing each paragraph in one sentence, then look for the common thread connecting them all.</p>
+                </div>
+            </div>
+            
+            <div id="supporting-details" class="subtopic-content">
+                <h2 class="subtopic-title">Supporting Details</h2>
+                
+                <div class="content-section">
+                    <h3 class="section-title">Types of Supporting Details</h3>
+                    <p class="content-text">
+                        Supporting details provide evidence, examples, and explanations that strengthen the main idea:
+                    </p>
+                    <div  class="list-item">Facts and statistics that provide concrete evidence</div>
+                    <div  class="list-item">Examples and anecdotes that illustrate concepts</div>
+                    <div  class="list-item">Expert opinions and quotations</div>
+                    <div  class="list-item">Comparisons and contrasts</div>
+                    <div  class="list-item">Cause and effect relationships</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Evaluating Detail Relevance</h3>
+                    <p class="content-text">
+                        Not all details are equally important. Learn to distinguish between:
+                    </p>
+                    <div  class="list-item">Primary details: directly support the main idea</div>
+                    <div  class="list-item">Secondary details: support primary details</div>
+                    <div  class="list-item">Irrelevant details: interesting but don't support the main point</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Example: Analyzing Supporting Details</div>
+                    <p><strong>Main Idea:</strong> Regular exercise provides numerous health benefits.</p>
+                    <p><strong>Primary Detail:</strong> Exercise reduces the risk of heart disease by 30%.</p>
+                    <p><strong>Secondary Detail:</strong> This reduction occurs because exercise strengthens the heart muscle.</p>
+                    <p><strong>Irrelevant Detail:</strong> The first modern gym opened in 1847.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Using Details for Comprehension</h3>
+                    <p class="content-text">
+                        Supporting details help you:
+                    </p>
+                    <div  class="list-item">Understand complex concepts through examples</div>
+                    <div  class="list-item">Evaluate the strength of the author's argument</div>
+                    <div  class="list-item">Remember information more effectively</div>
+                    <div  class="list-item">Make connections between ideas</div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">Supporting Details Tip</div>
+                    <p>When reading, ask yourself: "What evidence does the author provide?" and "How does this detail connect to the main point?"</p>
+                </div>
+            </div>
+            
+            <div id="inferences" class="subtopic-content">
+                <h2 class="subtopic-title">Inferences</h2>
+                
+                <div class="content-section">
+                    <h3 class="section-title">What Are Inferences?</h3>
+                    <p class="content-text">
+                        Inferences are logical conclusions drawn from evidence in the text, even when not explicitly stated. They require you to "read between the lines."
+                    </p>
+                    <div  class="list-item">Combine textual evidence with background knowledge</div>
+                    <div  class="list-item">Look for implied meanings and suggestions</div>
+                    <div  class="list-item">Consider the author's tone and word choice</div>
+                    <div  class="list-item">Analyze cause-and-effect relationships</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Types of Inferences</h3>
+                    <p class="content-text">
+                        Different types of inferences serve various purposes:
+                    </p>
+                    <div  class="list-item">Character inferences: understanding motivations and traits</div>
+                    <div  class="list-item">Causal inferences: determining cause-and-effect relationships</div>
+                    <div  class="list-item">Predictive inferences: anticipating future events</div>
+                    <div  class="list-item">Evaluative inferences: judging the author's attitude or bias</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Example: Making Inferences</div>
+                    <p><strong>Text:</strong> "Sarah glanced at her watch for the third time in five minutes, tapped her foot impatiently, and kept looking toward the restaurant entrance."</p>
+                    <p><strong>Inference:</strong> Sarah is waiting for someone who is late for their appointment.</p>
+                    <p><strong>Evidence:</strong> Checking time repeatedly, impatient body language, watching the entrance.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Making Valid Inferences</h3>
+                    <p class="content-text">
+                        To ensure your inferences are accurate:
+                    </p>
+                    <div  class="list-item">Base inferences on textual evidence, not assumptions</div>
+                    <div  class="list-item">Consider multiple possible interpretations</div>
+                    <div  class="list-item">Avoid over-inferring beyond what the text supports</div>
+                    <div  class="list-item">Check if your inference is consistent with the overall passage</div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">Inference Tip</div>
+                    <p>Strong inferences feel like logical "next steps" from the evidence. If you have to make big leaps or add information not suggested by the text, reconsider your inference.</p>
+                </div>
+            </div>
+            
+            <div id="passage-strategies" class="subtopic-content">
+                <h2 class="subtopic-title">Reading Passage Strategies</h2>
+                
+                <div class="content-section">
+                    <h3 class="section-title">Types of SAT Reading Passages</h3>
+                    <p class="content-text">
+                        The SAT includes several types of passages, each requiring specific reading strategies:
+                    </p>
+                    <div  class="list-item"><strong>Literature:</strong> Fiction excerpts, poetry, or literary nonfiction</div>
+                    <div  class="list-item"><strong>Historical Documents:</strong> Founding documents, speeches, or historical texts</div>
+                    <div  class="list-item"><strong>Social Science:</strong> Psychology, sociology, economics, or political science</div>
+                    <div  class="list-item"><strong>Natural Science:</strong> Biology, chemistry, physics, or earth science</div>
+                    <div  class="list-item"><strong>Paired Passages:</strong> Two related passages that present different perspectives</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Pre-Reading Strategy</h3>
+                    <p class="content-text">
+                        Before diving into the passage, use these techniques to orient yourself:
+                    </p>
+                    <div  class="list-item">Read the introduction/blurb to understand context and source</div>
+                    <div  class="list-item">Scan the questions first to know what to look for</div>
+                    <div  class="list-item">Note the passage type and adjust your reading approach</div>
+                    <div  class="list-item">Look for any graphics, charts, or visual elements</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Literature Passage Strategy</div>
+                    <ul>
+                        <li><strong>Focus on:</strong> Character development, mood, tone, literary devices</li>
+                        <li><strong>Pay attention to:</strong> Dialogue, internal thoughts, descriptive language</li>
+                        <li><strong>Ask yourself:</strong> What is the character's motivation? How does the author create atmosphere?</li>
+                        <li><strong>Common questions:</strong> Character analysis, theme identification, literary technique effects</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Science Passage Strategy</div>
+                    <ul>
+                        <li><strong>Focus on:</strong> Hypotheses, experimental design, results, conclusions</li>
+                        <li><strong>Pay attention to:</strong> Data, graphs, cause-and-effect relationships</li>
+                        <li><strong>Ask yourself:</strong> What problem is being investigated? What evidence supports the conclusion?</li>
+                        <li><strong>Common questions:</strong> Data interpretation, experimental analysis, scientific reasoning</li>
+                    </ul>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Active Reading Techniques</h3>
+                    <p class="content-text">
+                        Engage with the text as you read to improve comprehension and retention:
+                    </p>
+                    <div  class="list-item">Underline or circle key terms, names, and dates</div>
+                    <div  class="list-item">Make brief margin notes about main ideas</div>
+                    <div  class="list-item">Mark transitions and signal words (however, therefore, in contrast)</div>
+                    <div  class="list-item">Identify the author's tone and attitude</div>
+                    <div  class="list-item">Note shifts in perspective or argument</div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Paired Passage Strategies</h3>
+                    <p class="content-text">
+                        When dealing with paired passages, use these specific approaches:
+                    </p>
+                    <div  class="list-item">Read Passage 1 completely, then answer questions about it</div>
+                    <div  class="list-item">Read Passage 2 completely, then answer questions about it</div>
+                    <div  class="list-item">Finally, tackle questions comparing both passages</div>
+                    <div  class="list-item">Look for areas of agreement and disagreement</div>
+                    <div  class="list-item">Note different approaches to the same topic</div>
+                    <div  class="list-item">Consider how each author would respond to the other's argument</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Historical Document Strategy</div>
+                    <ul>
+                        <li><strong>Context is key:</strong> Pay attention to when and why the document was written</li>
+                        <li><strong>Language barriers:</strong> Don't get stuck on archaic language; focus on main ideas</li>
+                        <li><strong>Purpose:</strong> Identify whether the author is persuading, informing, or arguing</li>
+                        <li><strong>Audience:</strong> Consider who the intended audience was</li>
+                    </ul>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Command of Evidence</h3>
+                    <p class="content-text">
+                        Many SAT questions ask you to identify textual support for your answers:
+                    </p>
+                    <div  class="list-item">Always return to the passage to find specific evidence</div>
+                    <div  class="list-item">Look for direct quotes that support your answer choice</div>
+                    <div  class="list-item">Avoid answers based on outside knowledge</div>
+                    <div  class="list-item">The correct evidence will directly relate to the previous question</div>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">Time Management for Reading</div>
+                    <p>Spend about 13 minutes per passage (including questions). If you're running short on time, focus on questions that ask about specific lines or paragraphs rather than those requiring full passage comprehension.</p>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="section-title">Vocabulary in Context</h3>
+                    <p class="content-text">
+                        When encountering unfamiliar words or phrases:
+                    </p>
+                    <div  class="list-item">Use context clues from surrounding sentences</div>
+                    <div  class="list-item">Look for definition or explanation within the passage</div>
+                    <div  class="list-item">Consider the word's function in the sentence</div>
+                    <div  class="list-item">Eliminate answer choices that don't fit the context</div>
+                    <div  class="list-item">Remember that SAT often tests secondary meanings of common words</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = `star ${['small', 'medium', 'large'][Math.floor(Math.random() * 3)]}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function showSubtopic(subtopicId) {
+            // Hide all subtopic content
+            const allContent = document.querySelectorAll('.subtopic-content');
+            allContent.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const allButtons = document.querySelectorAll('.subtopic-button');
+            allButtons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected subtopic content
+            document.getElementById(subtopicId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            const expectedSubtopics = ['main-ideas', 'supporting-details', 'inferences'];
+            if (expectedSubtopics.includes(subtopicId)) {
+                markSubtopicCompleted('english', 'Information & Ideas', getSubtopicTitle(subtopicId));
+            }
+        }
+
+        // Helper function to get subtopic title
+        function getSubtopicTitle(subtopicId) {
+            const titles = {
+                'main-ideas': 'Main Ideas',
+                'supporting-details': 'Supporting Details', 
+                'inferences': 'Inferences',
+                'passage-strategies': 'Passage Strategies'
+            };
+            return titles[subtopicId] || subtopicId;
+        }
+
+        async function markSubtopicCompleted(subject, topic, subtopic) {
+            console.log(`[v0] DEBUG: Marking subtopic completed - ${subject}/${topic}/${subtopic}`);
+            
+            // Get current progress from main page function
+            let progress = await getProgressFromMain();
+            
+            if (!progress[subject]) progress[subject] = {};
+            if (!progress[subject][topic]) progress[subject][topic] = {};
+            progress[subject][topic][subtopic] = true;
+            
+            // Save using main page function that handles Firestore
+            await saveProgressToMain(progress);
+            
+            // Update button appearance
+            updateButtonCompletionStatus();
+        }
+
+        async function getProgressFromMain() {
+            if (window.parent && window.parent.getProgress) {
+                return await window.parent.getProgress();
+            }
+            // Fallback to localStorage
+            return JSON.parse(localStorage.getItem('satNotesProgress') || '{}');
+        }
+
+        async function saveProgressToMain(progress) {
+            if (window.parent && window.parent.saveProgress) {
+                await window.parent.saveProgress(progress);
+            } else {
+                // Fallback to localStorage
+                localStorage.setItem('satNotesProgress', JSON.stringify(progress));
+            }
+        }
+
+        // Function to check if subtopic is completed
+        async function isSubtopicCompleted(subtopicTitle) {
+            const progress = await getProgressFromMain();
+            return progress.english && progress.english['Information & Ideas'] && progress.english['Information & Ideas'][subtopicTitle];
+        }
+
+        // Function to update button appearance based on completion status
+        async function updateButtonCompletionStatus() {
+            const expectedSubtopics = ['main-ideas', 'supporting-details', 'inferences'];
+            const buttons = document.querySelectorAll('.subtopic-button');
+            
+            for (let i = 0; i < buttons.length; i++) {
+                const button = buttons[i];
+                const onclick = button.getAttribute('onclick');
+                if (onclick) {
+                    const subtopicId = onclick.match(/'([^']+)'/)[1];
+                    if (expectedSubtopics.includes(subtopicId)) {
+                        const subtopicTitle = getSubtopicTitle(subtopicId);
+                        if (await isSubtopicCompleted(subtopicTitle)) {
+                            button.classList.add('completed');
+                        }
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            await markSubtopicCompleted('english', 'Information & Ideas', 'Main Ideas');
+            await updateButtonCompletionStatus();
+        });
+
+        createStars();
+    </script>
+</body>
+</html>
