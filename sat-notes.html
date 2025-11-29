@@ -67,7 +67,7 @@
         .cube-face { position:absolute; inset:0; background:transparent; border:1px solid rgba(255,255,255,0.12); display:grid; place-items:center; backface-visibility:hidden; }
         .cube-face::before {
           content:""; width:100%; height:100%;
-          background-image:url("public/logo.png"); background-size:cover; background-position:center;
+          background-image:url("logo.jpg"); background-size:cover; background-position:center;
           opacity:0.95; border-radius:10px;
           transform: none;
         }
@@ -107,7 +107,7 @@
             margin-bottom: 3rem;
         }
 
-        /* Animated gradient background with floating orbs */
+        /* Animated background with floating orbs */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -875,7 +875,7 @@
         <header class="header-section">
             <div class="logo-title-container">
                 <div class="logo-container">
-                    <img src="public/logo.png" alt="SATyr Logo">
+                    <img src="logo.jpg" alt="SATyr Logo">
                 </div>
                 <div class="title-section">
                     <h1>SATyr Notes</h1>
@@ -1107,7 +1107,7 @@
             function render(user) {
               if (!authEl) return;
               if (user) {
-                const photo = user.photoURL || 'public/logo.png';
+                const photo = user.photoURL || 'logo.jpg';
                 const name = user.displayName || 'User';
                 authEl.innerHTML = `
                   <img class="auth-avatar" id="userAvatar" src="${photo}" alt="User Avatar" title="Click to delete all saved data" />
@@ -1246,273 +1246,6 @@
           function loop(){ step(); render(); requestAnimationFrame(loop); }
           loop();
         })();
-    </script>
-
-    <script>
-        // Progress wiring: compute and sync from localStorage to homepage UI
-        (function () {
-            // Topic structure to compute totals
-            const topicStructure = {
-                english: {
-                    'Craft & Structure': ['Text Structure', 'Rhetorical Strategies', 'Word Choice & Tone'],
-                    'Expression of Ideas': ['Organization', 'Development', 'Effective Language Use'],
-                    'Information & Ideas': ['Main Ideas', 'Supporting Details', 'Inferences'],
-                    'Standard English': ['Grammar', 'Punctuation', 'Sentence Structure', 'Advanced Grammar and Usage'],
-                },
-                math: {
-                    'Problem Solving': [
-                        'Ratios, Proportions, and Percentages',
-                        'Units, Measurements, and Conversions',
-                        'Data Interpretation',
-                        'Statistics and Probability',
-                    ],
-                    'Algebra': ['Linear Equations', 'Quadratic Functions', 'Polynomials', 'Exponential Functions'],
-                    'Geometry': ['Basic Shapes and Properties', 'Angles and Lines', 'Coordinate Geometry', 'Trigonometry'],
-                    'Advanced Math': [
-                        'Polynomial Functions and Operations',
-                        'Nonlinear Expressions and Equations',
-                        'Exponential and Logarithmic Functions',
-                        'Sequences, Series, and Complex Numbers',
-                    ],
-                },
-            };
-
-            window.getProgress = function() {
-                try {
-                    return JSON.parse(localStorage.getItem('satNotesProgress') || '{}');
-                } catch {
-                    return {};
-                }
-            }
-
-            // Not strictly needed in this version as progress is only read for display
-            // function saveProgress(progress) {
-            //     localStorage.setItem('satNotesProgress', JSON.stringify(progress || {}));
-            //     updateProgressBar();
-            // }
-
-            function countTotals(structure, progress) {
-                let total = 0;
-                let completed = 0;
-                let topicsCompleted = 0;
-
-                for (const subject of Object.keys(structure)) {
-                    for (const topic of Object.keys(structure[subject])) {
-                        const expected = structure[subject][topic];
-                        total += expected.length;
-
-                        const done = (progress[subject] && progress[subject][topic]) || {};
-                        let topicCompleteCount = 0;
-                        expected.forEach((name) => {
-                            if (done[name]) {
-                                completed += 1;
-                                topicCompleteCount += 1;
-                            }
-                        });
-                        if (topicCompleteCount === expected.length) topicsCompleted += 1;
-                    }
-                }
-                return { total, completed, topicsCompleted };
-            }
-
-            function countSubject(structureSubject, progressSubject) {
-                let total = 0;
-                let completed = 0;
-                for (const topic of Object.keys(structureSubject)) {
-                    const expected = structureSubject[topic];
-                    total += expected.length;
-                    const done = (progressSubject && progressSubject[topic]) || {};
-                    expected.forEach((name) => {
-                        if (done[name]) completed += 1;
-                    });
-                }
-                return { total, completed };
-            }
-
-            function countTopic(structureSubject, progressSubject, topicKey) {
-                const expected = structureSubject[topicKey] || [];
-                const done = (progressSubject && progressSubject[topicKey]) || {};
-                let completed = 0;
-                expected.forEach((name) => {
-                    if (done[name]) completed += 1;
-                });
-                return { total: expected.length, completed };
-            }
-
-            function pct(n, d) {
-                return d > 0 ? Math.round((n / d) * 100) : 0;
-            }
-
-            function setPctText(id, value) {
-                const el = document.getElementById(id);
-                if (el) el.textContent = `${value}%`;
-            }
-
-            // This function will be our primary update mechanism for progress bars and modal breakdown
-            window.updateProgressBar = function () {
-                const progress = window.getProgress();
-
-                // Overall
-                const totals = countTotals(topicStructure, progress);
-                const overall = pct(totals.completed, totals.total);
-
-                const overallEl = document.getElementById('overallProgress');
-                if (overallEl) overallEl.textContent = `${overall}%`;
-                const topicsCompletedEl = document.getElementById('topicsCompleted');
-                if (topicsCompletedEl) topicsCompletedEl.textContent = String(totals.topicsCompleted);
-
-                // English
-                const englishTotals = countSubject(
-                    topicStructure.english,
-                    progress.english || {}
-                );
-                const englishPct = pct(englishTotals.completed, englishTotals.total);
-                const englishPctEl = document.getElementById('englishProgressPercent');
-                const englishFillEl = document.getElementById('englishProgressFill');
-                if (englishPctEl) englishPctEl.textContent = `${englishPct}%`;
-                if (englishFillEl) {
-                    // Set the target width first
-                    englishFillEl.style.width = `${englishPct}%`;
-                }
-
-                // Math
-                const mathTotals = countSubject(
-                    topicStructure.math,
-                    progress.math || {}
-                );
-                const mathPct = pct(mathTotals.completed, mathTotals.total);
-                const mathPctEl = document.getElementById('mathProgressPercent');
-                const mathFillEl = document.getElementById('mathProgressFill');
-                if (mathPctEl) mathPctEl.textContent = `${mathPct}%`;
-                if (mathFillEl) {
-                    // Set the target width first
-                    mathFillEl.style.width = `${mathPct}%`;
-                }
-
-                // Update modal breakdown values
-                updateModalBreakdown(progress);
-            };
-
-            function updateModalBreakdown(progress) {
-                // English
-                const eng = progress.english || {};
-                const engStruct = topicStructure.english;
-
-                const ei = countTopic(engStruct, eng, 'Information & Ideas');
-                setPctText('eng-info-ideas', pct(ei.completed, ei.total));
-
-                const cs = countTopic(engStruct, eng, 'Craft & Structure');
-                setPctText('eng-craft-structure', pct(cs.completed, cs.total));
-
-                const ex = countTopic(engStruct, eng, 'Expression of Ideas');
-                setPctText('eng-expression-ideas', pct(ex.completed, ex.total));
-
-                const se = countTopic(engStruct, eng, 'Standard English');
-                setPctText('eng-standard-english', pct(se.completed, se.total));
-
-                // Math
-                const m = progress.math || {};
-                const mStruct = topicStructure.math;
-
-                const alg = countTopic(mStruct, m, 'Algebra');
-                setPctText('math-algebra', pct(alg.completed, alg.total));
-
-                const geo = countTopic(mStruct, m, 'Geometry');
-                setPctText('math-geometry', pct(geo.completed, geo.total));
-
-                const adv = countTopic(mStruct, m, 'Advanced Math');
-                setPctText('math-advanced', pct(adv.completed, adv.total));
-
-                const ps = countTopic(mStruct, m, 'Problem Solving');
-                setPctText('math-problem-solving', pct(ps.completed, ps.total));
-            }
-
-            // Ensure first paint has correct modal numbers and progress bars animate in
-            document.addEventListener('DOMContentLoaded', () => {
-                // Trigger the progress update logic after a short delay to allow DOM to fully load
-                // and also to allow the flash screen transition to complete.
-                setTimeout(() => {
-                    window.updateProgressBar();
-                    // Re-trigger animation for progress bars after they've been set by updateProgressBar
-                    const progressFills = document.querySelectorAll('.progress-fill');
-                    progressFills.forEach(fill => {
-                        const computedWidth = fill.style.width; // Get the target width
-                        fill.style.width = '0%'; // Reset to 0 to restart animation
-                        // Use requestAnimationFrame for smoother transition and to ensure the reset is applied
-                        requestAnimationFrame(() => {
-                            fill.style.width = computedWidth;
-                        });
-                    });
-                }, 3500); // Delay slightly longer than flash screen fade-out
-            });
-        })();
-
-        function computeProgressSummary() {
-            const progress = (window.getProgress ? window.getProgress() : JSON.parse(localStorage.getItem('satNotesProgress') || '{}')) || {};
-            const englishKeys = ['Information & Ideas', 'Craft & Structure', 'Expression of Ideas', 'Standard English'];
-            const mathKeys = ['Algebra', 'Geometry', 'Advanced Math', 'Problem Solving'];
-
-            function topicCompletedCount(subject, keys) {
-            const s = progress[subject] || {};
-            let count = 0;
-            keys.forEach(k => {
-                const t = s[k] || {};
-                // consider topic "started" if any subtopic marked true
-                const hasAny = Object.values(t).some(Boolean);
-                if (hasAny) count++;
-            });
-            return count;
-            }
-
-            const engCount = topicCompletedCount('english', englishKeys);
-            const mathCount = topicCompletedCount('math', mathKeys);
-
-            const missingEng = englishKeys.filter(k => {
-            const t = (progress.english || {})[k] || {};
-            return !Object.values(t).some(Boolean);
-            });
-            const missingMath = mathKeys.filter(k => {
-            const t = (progress.math || {})[k] || {};
-            return !Object.values(t).some(Boolean);
-            });
-
-            return { engCount, mathCount, missingEng, missingMath };
-        }
-
-        function renderSuggestions() {
-            const box = document.getElementById('progress-suggestions');
-            if (!box) return;
-            const { engCount, mathCount, missingEng, missingMath } = computeProgressSummary();
-
-            const lines = [];
-            if (engCount > 0 && mathCount === 0) {
-            lines.push('You\'ve been focusing on English. Add a Math session next to keep balance.');
-            } else if (mathCount > 0 && engCount === 0) {
-            lines.push('You\'ve been focusing on Math. Spend some time on English to round things out.');
-            } else if (engCount > mathCount + 1) {
-            lines.push('Great English momentum! Give Math a bit more attention.');
-            } else if (mathCount > engCount + 1) {
-            lines.push('Math is progressing well. Consider tackling an English topic too.');
-            } else if (engCount === 0 && mathCount === 0) {
-            lines.push('Start with any topic you like—try "Information & Ideas" or "Algebra" first.');
-            }
-
-            if (missingEng.length) {
-            lines.push(`English topics to try next: ${missingEng.join(', ')}.`);
-            }
-            if (missingMath.length) {
-            lines.push(`Math topics to try next: ${missingMath.join(', ')}.`);
-            }
-
-            if (!lines.length) {
-            lines.push('Nice balance so far! Keep alternating between English and Math for steady gains.');
-            }
-
-            box.innerHTML = `
-            <h4>Personalized Suggestions</h4>
-            <ul>${lines.map(l => `<li>${l}</li>`).join('')}</ul>
-            `;
-        }
     </script>
 </body>
 </html>
