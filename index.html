@@ -592,7 +592,6 @@ body.mission-vision-active .light-blob {
     font-size: 16px;
     cursor: pointer;
     text-decoration: none;
-    transition: background-color 0.3s ease;
     display: inline-block;
 }
 
@@ -1132,7 +1131,7 @@ body.mission-vision-active .light-blob {
         transform: scale(0);
     }
     60% {
-        transform: scale(1.2);
+        transform: scale(1.1);
     }
     100% {
         transform: scale(1);
@@ -1814,7 +1813,7 @@ body.mission-vision-active .light-blob {
     padding: 20px;
     color: white;
     z-index: 20;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .dialog-header {
@@ -2410,9 +2409,7 @@ body.mindtale-active .light-blob {
             <div class="feature-image">
                 <div class="controller-container">
                                         <svg class="controller-icon" viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M30,80 C30,50 50,30 80,20 C110,10 140,5 150,5 C160,5 190,10 220,20 C250,30 270,50 270,80 
-                                 C270,110 260,130 240,140 C220,150 180,155 150,155 
-                                 C120,155 80,150 60,140 C40,130 30,110 30,80 Z" 
+                                                <path d="M30,80 C30,50 50,30 80,20 C110,10 140,5 150,5 C160,5 190,10 220,20 C250,30 270,50 270,80 C270,110 260,130 240,140 C220,150 180,155 150,155 C120,155 80,150 60,140 C40,130 30,110 30,80 Z"
                               fill="rgba(40,40,40,0.5)" 
                               stroke="rgba(255,255,255,0.8)" 
                               stroke-width="2"/>
@@ -2735,291 +2732,658 @@ body.mindtale-active .light-blob {
                     </div>
                     
                                         <div class="sidebar-category">
-        16px;
-    }
-    
-    .notes-content ul, .note-content ol {
-        margin: 15px 0;
-        padding-left: 25px;
-    }
-    
-    .note-content li {
-        margin-bottom: 8px;
-    }
-    
-    .note-content .example {
-        background-color: rgba(0, 128, 128, 0.1);
-        border-left: 4px solid rgba(0, 128, 128, 0.6);
-        padding: 15px;
-        margin: 15px 0;
-        border-radius: 5px;
-    }
-    
-    .note-content .formula {
-        background-color: rgba(30, 30, 30, 0.8);
-        padding: 15px;
-        margin: 15px 0;
-        border-radius: 5px;
-        font-family: 'Courier New', monospace;
-        text-align: center;
-        font-size: 18px;
-    }
-    
-    .note-content .tip {
-        background-color: rgba(0, 128, 128, 0.1);
-        border: 2px solid rgba(0, 128, 128, 0.3);
-        padding: 15px;
-        margin: 15px 0;
-        border-radius: 5px;
-    }
-    
-    .note-content .tip-header {
-        font-weight: bold;
-        color: rgba(0, 128, 128, 0.9);
-        margin-bottom: 8px;
-    }
-    
-    .note-content table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-    }
-    
-    .note-content th, .note-content td {
-        padding: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        text-align: left;
-    }
-    
-    .note-content th {
-        background-color: rgba(0, 128, 128, 0.2);
-        color: white;
-        font-weight: 600;
-    }
-    
-    .note-content tr:nth-child(even) {
-        background-color: rgba(30, 30, 30, 0.4);
-    }
-    
-    /* Empty State */
-    .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 400px;
-        text-align: center;
-    }
-    
-    .empty-state svg {
-        width: 80px;
-        height: 80px;
-        color: rgba(0, 128, 128, 0.6);
-        margin-bottom: 20px;
-    }
-    
-    .empty-state-title {
-        font-size: 24px;
-        font-weight: 600;
-        color: white;
-        margin-bottom: 10px;
-    }
-    
-    .empty-state-text {
-        font-size: 16px;
-        color: rgba(255, 255, 255, 0.7);
-        max-width: 400px;
-        margin-bottom: 20px;
-    }
-    
-    /* Responsive Styles for Notes Section */
-    @media (max-width: 992px) {
-        .notes-layout {
-            flex-direction: column;
-        }
-        
-        .notes-sidebar {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        
-        .sidebar-nav {
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .sidebar-category {
-            margin-bottom: 0;
-            flex: 1 1 calc(50% - 10px);
-            min-width: 200px;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .notes-main-tabs {
-            flex-wrap: wrap;
-        }
-        
-        .main-tab {
-            flex: 1 1 calc(50% - 10px);
-            text-align: center;
-            padding: 10px;
-        }
-        
-        .content-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 15px;
-        }
-        
-        .content-actions {
-            width: 100%;
-            justify-content: space-between;
-        }
-        
-        .sidebar-category {
-            flex: 1 1 100%;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .notes-title {
-            font-size: 36px;
-        }
-        
-        .notes-subtitle {
-            font-size: 16px;
-        }
-        
-        .notes-content {
-            padding: 20px 15px;
-        }
-        
-        .main-tab {
-            flex: 1 1 100%;
-        }
-    }
-    
-</script>
-<script>
-// Enhanced eye animation that follows cursor with natural movements
-document.addEventListener('DOMContentLoaded', function() {
-    const eyePupil = document.querySelector('.eye-pupil');
-    const eyeContainer = document.querySelector('.eye-animation-container');
-    const eyeElement = document.querySelector('.eye');
-    
-    // Variables for random eye movement
-    let randomMovementX = 0;
-    let randomMovementY = 0;
-    let lastUpdateTime = Date.now();
-    const updateInterval = 2000; // Update random movement every 2 seconds
-    
-    if (eyePupil && eyeContainer) {
-        // Function to generate random movement
-        function updateRandomMovement() {
-            randomMovementX = (Math.random() - 0.5) * 6; // Random value between -3 and 3
-            randomMovementY = (Math.random() - 0.5) * 6; // Random value between -3 and 3
-        }
-        
-        // Initial random movement
-        updateRandomMovement();
-        
-        document.addEventListener('mousemove', function(e) {
-            // Only run the animation when the vision section is visible
-            if (!document.querySelector('.vision-section') || 
-                !document.querySelector('.mission-vision-section.active')) {
-                return;
-            }
-            
-            // Check if it's time to update random movement
-            const currentTime = Date.now();
-            if (currentTime - lastUpdateTime > updateInterval) {
-                updateRandomMovement();
-                lastUpdateTime = currentTime;
-            }
-            
-            // Get eye container position
-            const eyeRect = eyeContainer.getBoundingClientRect();
-            const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-            const eyeCenterY = eyeRect.top + eyeRect.height / 2;
-            
-            // Calculate distance from mouse to eye center
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            
-            // Calculate angle between mouse and eye center
-            const angle = Math.atan2(mouseY - eyeCenterY, mouseX - eyeCenterX);
-            
-            // Calculate maximum distance the pupil can move (10px)
-            const maxDistance = 10;
-            
-            // Calculate new pupil position with mouse tracking (80%) and random movement (20%)
-            const pupilX = (Math.cos(angle) * maxDistance * 0.8) + randomMovementX;
-            const pupilY = (Math.sin(angle) * maxDistance * 0.8) + randomMovementY;
-            
-            // Apply the new position with a slight delay for smoother movement
-            eyePupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
-        });
-        
-        // Reset pupil position when mouse leaves the window
-        document.addEventListener('mouseleave', function() {
-            eyePupil.style.transform = 'translate(0, 0)';
-        });
-        
-        // Add subtle random movement even when mouse isn't moving
-        setInterval(function() {
-            // Only run if no mouse movement is happening
-            if (!document.querySelector('.vision-section') || 
-                !document.querySelector('.mission-vision-section.active')) {
-                return;
-            }
-            
-            updateRandomMovement();
-            
-            // Get current transform
-            const currentTransform = eyePupil.style.transform;
-            const match = currentTransform.match(/translate$$([^,]+)px,\s*([^)]+)px$$/);
-            
-            if (match) {
-                const currentX = parseFloat(match[1]);
-                const currentY = parseFloat(match[2]);
-                
-                // Add subtle random movement
-                const newX = currentX + (Math.random() - 0.5) * 2;
-                const newY = currentY + (Math.random() - 0.5) * 2;
-                
-                // Limit movement range
-                const limitedX = Math.max(-10, Math.min(10, newX));
-                const limitedY = Math.max(-10, Math.min(10, newY));
-                
-                eyePupil.style.transform = `translate(${limitedX}px, ${limitedY}px)`;
-            }
-        }, 500);
-    }
-    
-    // Replay animations when section becomes visible
-    const missionVisionSection = document.getElementById('mission-vision');
-    if (missionVisionSection) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Reset and replay animations
-                    const animatedElements = entry.target.querySelectorAll('.animate-text, .value-item, .target-outer, .target-middle, .target-inner, .target-bullseye, .arrow, .eye, .impact-ripple, .mission-table');
+                        <div class="category-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 3h18v18H3z"></path>
+                            </svg>
+                            Geometry
+                        </div>
+                        <div class="category-items">
+                            <div class="category-item" data-note="lines-angles">Lines & Angles</div>
+                            <div class="category-item" data-note="triangles">Triangles</div>
+                            <div class="category-item" data-note="circles">Circles</div>
+                            <div class="category-item" data-note="polygons">Polygons</div>
+                            <div class="category-item" data-note="coordinate-geometry">Coordinate Geometry</div>
+                        </div>
+                    </div>
                     
-                    animatedElements.forEach(element => {
-                        // Remove and reapply animation classes
-                        element.style.animation = 'none';
-                        element.offsetHeight; // Trigger reflow
-                        element.style.animation = null;
-                    });
-                }
-            });
-        }, { threshold: 0.2 });
+                                        <div class="sidebar-category">
+                        <div class="category-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                                <line x1="3" y1="20" x2="21" y2="20"></line>
+                            </svg>
+                            Data Analysis
+                        </div>
+                        <div class="category-items">
+                            <div class="category-item" data-note="statistics">Statistics</div>
+                            <div class="category-item" data-note="probability">Probability</div>
+                            <div class="category-item" data-note="data-interpretation">Data Interpretation</div>
+                            <div class="category-item" data-note="scatter-plots">Scatter Plots</div>
+                        </div>
+                    </div>
+                    
+                                        <div class="sidebar-category">
+                        <div class="category-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 3L21 21"></path>
+                                <path d="M21 3L3 21"></path>
+                            </svg>
+                            Trigonometry
+                        </div>
+                        <div class="category-items">
+                            <div class="category-item" data-note="trig-basics">Trigonometric Basics</div>
+                            <div class="category-item" data-note="trig-functions">Trigonometric Functions</div>
+                            <div class="category-item" data-note="trig-identities">Trigonometric Identities</div>
+                            <div class="category-item" data-note="trig-applications">Applications</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                        <div class="notes-content">
+                <div class="content-header">
+                    <h2 class="content-title">Main Idea & Purpose</h2>
+                    <div class="content-actions">
+                        <button class="action-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Edit
+                        </button>
+                        <button class="action-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download
+                        </button>
+                        <button class="action-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                            Share
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="note-content">
+                    <h1>Identifying Main Idea & Purpose</h1>
+                    
+                    <p>The main idea is the central point or primary message that the author wants to convey in a passage. Understanding the main idea is crucial for SAT reading comprehension questions, as many questions directly ask about it or require you to understand it to answer other questions correctly.</p>
+                    
+                    <h2>Key Strategies for Identifying Main Idea</h2>
+                    
+                    <h3>1. Look for Repeated Concepts</h3>
+                    <p>Authors often emphasize their main points through repetition. Pay attention to words, phrases, or concepts that appear multiple times throughout the passage.</p>
+                    
+                    <div class="example">
+                        <p><strong>Example:</strong> If a passage repeatedly mentions "economic inequality," "wealth gap," and "income disparity," the main idea likely relates to economic disparities in society.</p>
+                    </div>
+                    
+                    <h3>2. Analyze the Introduction and Conclusion</h3>
+                    <p>Authors typically introduce their main idea in the introduction and reinforce it in the conclusion. These sections often contain the clearest statements of the author's central point.</p>
+                    
+                    <div class="tip">
+                        <div class="tip-header">💡 SAT Tip</div>
+                        <p>If you're short on time, reading the first and last paragraphs can give you a quick overview of the main idea.</p>
+                    </div>
+                    
+                    <h3>3. Distinguish Between Main Ideas and Supporting Details</h3>
+                    <p>The main idea is the overarching concept, while supporting details provide evidence, examples, or explanations that reinforce the main idea.</p>
+                    
+                    <table>
+                        <tr>
+                            <th>Main Idea</th>
+                            <th>Supporting Details</th>
+                        </tr>
+                        <tr>
+                            <td>Climate change poses significant threats to coastal cities.</td>
+                            <td>Rising sea levels, increased hurricane intensity, flooding risks</td>
+                        </tr>
+                        <tr>
+                            <td>The Renaissance revolutionized European art and culture.</td>
+                            <td>Perspective in painting, humanism in literature, architectural innovations</td>
+                        </tr>
+                    </table>
+                    
+                    <h2>Author's Purpose</h2>
+                    
+                    <p>The author's purpose refers to the reason why the author wrote the passage. Common purposes include:</p>
+                    
+                    <ul>
+                        <li><strong>To inform:</strong> Provide factual information about a topic</li>
+                        <li><strong>To persuade:</strong> Convince the reader of a particular viewpoint</li>
+                        <li><strong>To entertain:</strong> Amuse or engage the reader</li>
+                        <li><strong>To explain:</strong> Clarify a concept or process</li>
+                        <li><strong>To describe:</strong> Paint a picture with words</li>
+                    </ul>
+                    
+                    <h3>Clues to Identify Author's Purpose</h3>
+                    
+                    <div class="example">
+                        <p><strong>Informative:</strong> Objective tone, factual information, statistics, definitions</p>
+                        <p><strong>Persuasive:</strong> Strong opinions, calls to action, emotional appeals, counterarguments</p>
+                        <p><strong>Explanatory:</strong> Step-by-step processes, cause-effect relationships, examples</p>
+                    </div>
+                    
+                    <h2>Common SAT Question Types</h2>
+                    
+                    <p>The SAT frequently asks questions about main idea and purpose in these formats:</p>
+                    
+                    <ul>
+                        <li>"The primary purpose of the passage is to..."</li>
+                        <li>"The main idea of the passage suggests that..."</li>
+                        <li>"The author's primary goal is to..."</li>
+                        <li>"Which of the following best summarizes the passage?"</li>
+                    </ul>
+                    
+                    <div class="tip">
+                        <div class="tip-header">💡 Practice Strategy</div>
+                        <p>After reading a passage, try to summarize the main idea in one sentence before looking at the questions. This helps solidify your understanding and prepares you for main idea questions.</p>
+                    </div>
+                    
+                    <h2>Common Mistakes to Avoid</h2>
+                    
+                    <ul>
+                        <li><strong>Confusing a supporting detail for the main idea:</strong> Remember that the main idea encompasses the entire passage, not just one section.</li>
+                        <li><strong>Selecting an option that's too narrow:</strong> The main idea should cover the scope of the entire passage.</li>
+                        <li><strong>Selecting an option that's too broad:</strong> The main idea should be specific to the passage, not a general statement about the topic.</li>
+                        <li><strong>Letting personal bias influence your answer:</strong> Focus on what the author is saying, not what you think about the topic.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="ai" class="ai-section">
+<div class="ai-chat-container">
+    <div class="ai-chat-header">
+        <h2 class="ai-chat-title">SATyr AI Assistant</h2>
+    </div>
+    <div class="ai-chat-body">
+        <div class="ai-message ai-message-bot">
+            Hello! I'm your SATyr AI Assistant. I can help you with SAT preparation, answer questions, and provide study tips. What would you like help with today?
+        </div>
+    </div>
+    <form id="ai-chat-form" class="ai-chat-form">
+        <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder="Ask me anything about SAT preparation..." autocomplete="off">
+        <button type="submit" class="ai-chat-submit">Send</button>
+    </form>
+</div>
+</section>
+
+<section id="mission-vision" class="mission-vision-section">
+<div class="mission-vision-container">
+    <div class="mission-vision-header">
+        <h1 class="mission-vision-title">Our Mission & Vision</h1>
+        <p class="mission-vision-subtitle">
+            At SATyr, we're committed to transforming SAT preparation through innovative technology and personalized learning experiences that adapt to each student's unique needs.
+        </p>
+    </div>
+    
+    <div class="mission-vision-content">
+        <div class="mission-section">
+            <div class="mission-animation-container">
+                <div class="target-container">
+                    <div class="target-outer"></div>
+                    <div class="target-middle"></div>
+                    <div class="target-inner"></div>
+                    <div class="target-bullseye"></div>
+                </div>
+                <div class="arrow">
+                    <div class="arrow-shaft"></div>
+                    <div class="arrow-head"></div>
+                    <div class="arrow-fletching"></div>
+                </div>
+                <div class="impact-ripple"></div>
+            </div>
+            <h2 class="section-title">Our Mission</h2>
+            <div class="section-content">
+                <p class="animate-text">
+                    SATyr's mission is to democratize access to high-quality SAT preparation by leveraging artificial intelligence to create personalized, engaging, and effective learning experiences for students of all backgrounds.
+                </p>
+                <p class="animate-text">
+                    We believe that every student deserves the opportunity to reach their full potential, regardless of their socioeconomic status or geographic location. By combining cutting-edge AI technology with proven educational methodologies, we aim to level the playing field and help students achieve their academic goals.
+                </p>
+                
+                <table class="mission-table">
+                    <thead>
+                        <tr>
+                            <th>Strategic Pillar</th>
+                            <th>Objective</th>
+                            <th>Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="highlight">Accessibility</td>
+                            <td>Remove barriers to quality SAT prep</td>
+                            <td>Affordable pricing, scholarships, offline access options</td>
+                        </tr>
+                        <tr>
+                            <td class="highlight">Personalization</td>
+                            <td>Tailor learning to individual needs</td>
+                            <td>AI-driven adaptive learning paths, personalized feedback</td>
+                        </tr>
+                        <tr>
+                            <td class="highlight">Engagement</td>
+                            <td>Make learning enjoyable and effective</td>
+                            <td>Gamification, interactive content, real-world applications</td>
+                        </tr>
+                        <tr>
+                            <td class="highlight">Effectiveness</td>
+                            <td>Deliver measurable score improvements</td>
+                            <td>Data-driven approach, proven methodologies, continuous improvement</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         
-        observer.observe(missionVisionSection);
+        <div class="vision-section">
+            <div class="eye-animation-container">
+                <div class="eye">
+                    <div class="eye-outer"></div>
+                    <div class="eye-inner"></div>
+                    <div class="eye-pupil"></div>
+                    <div class="eye-highlight"></div>
+                    <div class="eye-lid"></div>
+                </div>
+            </div>
+            <h2 class="section-title">Our Vision</h2>
+            <div class="section-content">
+                <p class="animate-text">
+                    We envision a future where SAT preparation is not just effective but also engaging and accessible to all. Our platform adapts to each student's unique learning style, strengths, and weaknesses, providing a truly personalized educational experience.
+                </p>
+                <p class="animate-text">
+                    Beyond test preparation, we aim to instill a love for learning and critical thinking that will benefit students throughout their academic and professional careers. We're not just helping students achieve higher scores; we're helping them develop skills that will serve them for a lifetime.
+                </p>
+                
+                <div class="values-list">
+                    <div class="value-item">
+                        <h3 class="value-title">Innovation</h3>
+                        <p class="value-description">
+                            We continuously push the boundaries of what's possible in educational technology to provide the most effective learning tools.
+                        </p>
+                    </div>
+                    <div class="value-item">
+                        <h3 class="value-title">Accessibility</h3>
+                        <p class="value-description">
+                            We're committed to making high-quality SAT preparation available to students regardless of their background or circumstances.
+                        </p>
+                    </div>
+                    <div class="value-item">
+                        <h3 class="value-title">Personalization</h3>
+                        <p class="value-description">
+                            We believe that every student learns differently, and our platform adapts to individual learning styles and needs.
+                        </p>
+                    </div>
+                    <div class="value-item">
+                        <h3 class="value-title">Excellence</h3>
+                        <p class="value-description">
+                            We strive for excellence in everything we do, from the accuracy of our content to the effectiveness of our teaching methods.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+</main>
+
+<script>
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM elements
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+    const backButtons = document.querySelectorAll('.back-button');
+    const featureButtons = document.querySelectorAll('.feature-button');
+    const body = document.body;
+    const blob1 = document.getElementById('blob1');
+    const blob2 = document.getElementById('blob2');
+    const blob3 = document.getElementById('blob3');
+    const satBackground = document.getElementById('sat-background');
+    const scrollDownArrow = document.getElementById('scroll-down-arrow');
+    const aiChatForm = document.getElementById('ai-chat-form');
+    const aiChatInput = document.getElementById('ai-chat-input');
+    
+    // Notes section elements
+    const mainTabs = document.querySelectorAll('.main-tab');
+    const englishNav = document.querySelector('.english-nav');
+    const mathNav = document.querySelector('.math-nav');
+    const categoryItems = document.querySelectorAll('.category-item');
+    const notesSearch = document.getElementById('notes-search');
+    
+    // SAT vocabulary words with definitions
+    const satWords = [
+        { word: "Ambiguous", definition: "Open to multiple interpretations" },
+        { word: "Benevolent", definition: "Well-meaning and kindly" },
+        { word: "Cacophony", definition: "A harsh, discordant mixture of sounds" },
+        { word: "Diligent", definition: "Having or showing care in one's work" },
+        { word: "Ephemeral", definition: "Lasting for a very short time" },
+        { word: "Fastidious", definition: "Very attentive to accuracy and detail" },
+        { word: "Gregarious", definition: "Fond of company; sociable" },
+        { word: "Hackneyed", definition: "Overused and consequently lacking in insight" },
+        { word: "Iconoclast", definition: "A person who attacks cherished beliefs" },
+        { word: "Juxtapose", definition: "Place side by side for comparison" },
+        { word: "Laconic", definition: "Using very few words" },
+        { word: "Meticulous", definition: "Showing great attention to detail" },
+        { word: "Nefarious", definition: "Wicked or criminal" },
+        { word: "Obfuscate", definition: "Make obscure or unclear" },
+        { word: "Pragmatic", definition: "Dealing with things sensibly and realistically" }
+    ];
+    
+    // Math equations
+    const mathEquations = [
+        "y = mx + b",
+        "a² + b² = c²",
+        "E = mc²",
+        "(x + y)² = x² + 2xy + y²",
+        "sin²θ + cos²θ = 1",
+        "∫ f(x) dx",
+        "lim x→∞ (1 + 1/x)^x = e",
+        "f'(x) = lim h→0 [f(x+h) - f(x)]/h",
+        "P(A|B) = P(A ∩ B) / P(B)",
+        "x = (-b ± √(b² - 4ac)) / 2a",
+        "log(xy) = log(x) + log(y)",
+        "∑ n=1 to ∞ 1/n²= π²/6",
+        "d/dx [sin(x)] = cos(x)",
+        "∮ E·dl = -dΦB/dt",
+        "F = G(m₁m₂)/r²"
+    ];
+    
+    // Create SAT background elements with horizontal movement
+    function createSatBackgroundElements() {
+        // Clear existing elements
+        satBackground.innerHTML = '';
+        
+        // Create horizontal rows for words
+        const numRows = 10;
+        const rowHeight = window.innerHeight / numRows;
+        
+        // Create word elements
+        for (let i = 0; i < numRows; i++) {
+            const wordData = satWords[Math.floor(Math.random() * satWords.length)];
+            const element = document.createElement('div');
+            element.className = 'sat-element sat-word';
+            element.textContent = `${wordData.word}: ${wordData.definition}`;
+            
+            // Position in a horizontal line
+            const y = i * rowHeight + rowHeight/2;
+            // Alternate direction for each row
+            const direction = i % 2 === 0 ? 1 : -1;
+            const x = direction > 0 ? -300 : window.innerWidth;
+            
+            element.style.left = `${x}px`;
+            element.style.top = `${y}px`;
+            
+            // Set opacity to 50%
+            element.style.opacity = "0.5";
+            
+            // Add animation data - only horizontal movement
+            element.dataset.speedX = (direction * (0.5 + Math.random() * 0.5)).toString();
+            
+            satBackground.appendChild(element);
+        }
+        
+        // Create equation elements in horizontal lines
+        for (let i = 0; i < numRows; i++) {
+            const equation = mathEquations[Math.floor(Math.random() * mathEquations.length)];
+            const element = document.createElement('div');
+            element.className = 'sat-element sat-equation';
+            element.textContent = equation;
+            
+            // Position in a horizontal line, offset from words
+            const y = i * rowHeight + rowHeight/2 + rowHeight/3;
+            // Alternate direction for each row
+            const direction = i % 2 === 0 ? -1 : 1;
+            const x = direction > 0 ? -300 : window.innerWidth;
+            
+            element.style.left = `${x}px`;
+            element.style.top = `${y}px`;
+            
+            // Set opacity to 50%
+            element.style.opacity = "0.5";
+            
+            // Add animation data - only horizontal movement
+            element.dataset.speedX = (direction * (0.3 + Math.random() * 0.4)).toString();
+            
+            satBackground.appendChild(element);
+        }
     }
-});
-</script>
-</body>
-</html>
+    
+    // Animate SAT background elements
+    function animateSatElements() {
+        const elements = document.querySelectorAll('.sat-element');
+        
+        elements.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            let x = parseFloat(element.style.left);
+            const speedX = parseFloat(element.dataset.speedX);
+            
+            x += speedX;
+            
+            // Boundary check and wrap around
+            if (speedX > 0 && x > window.innerWidth) {
+                x = -rect.width;
+            } else if (speedX < 0 && x < -rect.width) {
+                x = window.innerWidth;
+            }
+            
+            element.style.left = `${x}px`;
+        });
+        
+        requestAnimationFrame(animateSatElements);
+    }
+    
+    // Initialize mouse position for blob animation
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    
+    // Update mouse position on mouse move
+    document.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    
+    // Position blobs initially
+    function updateBlobPosition(blob, x, y) {
+        if (!blob) return;
+        
+        const blobWidth = parseInt(blob.style.width || '400');
+        const blobHeight = parseInt(blob.style.height || '400');
+        blob.style.left = (x - blobWidth / 2) + 'px';
+        blob.style.top = (y - blobHeight / 2) + 'px';
+    }
+    
+    // Set initial positions
+    updateBlobPosition(blob1, mouseX, mouseY);
+    updateBlobPosition(blob2, mouseX, mouseY);
+    updateBlobPosition(blob3, mouseX, mouseY);
+    
+    // Animate blobs to follow cursor with different speeds
+    function animateBlobs() {
+        if (blob1 && blob2 && blob3) {
+            // Blob 1 - slowest
+            const blob1X = parseInt(blob1.style.left || '0');
+            const blob1Y = parseInt(blob1.style.top || '0');
+            const blob1Width = parseInt(blob1.style.width || '600');
+            const blob1Height = parseInt(blob1.style.height || '600');
+            blob1.style.left = (blob1X + (mouseX - blob1Width/2 - blob1X) * 0.05) + 'px';
+            blob1.style.top = (blob1Y + (mouseY - blob1Height/2 - blob1Y) * 0.05) +  'px';
+            
+            // Blob 2 - medium speed
+            const blob2X = parseInt(blob2.style.left || '0');
+            const blob2Y = parseInt(blob2.style.top || '0');
+            const blob2Width = parseInt(blob2.style.width || '400');
+            const blob2Height = parseInt(blob2.style.height || '400');
+            blob2.style.left = (blob2X + (mouseX - blob2Width/2 - blob2X) * 0.1) + 'px';
+            blob2.style.top = (blob2Y + (mouseY - blob2Height/2 - blob2Y) * 0.1) + 'px';
+            
+            // Blob 3 - fastest
+            const blob3X = parseInt(blob3.style.left || '0');
+            const blob3Y = parseInt(blob3.style.top || '0');
+            const blob3Width = parseInt(blob3.style.width || '300');
+            const blob3Height = parseInt(blob3.style.height || '300');
+            blob3.style.left = (blob3X + (mouseX - blob3Width/2 - blob3X) * 0.15) + 'px';
+            blob3.style.top = (blob3Y + (mouseY - blob3Height/2 - blob3Y) * 0.15) + 'px';
+        }
+        
+        requestAnimationFrame(animateBlobs);
+    }
+    
+    // Function to show a specific section with smooth transitions
+    function showSection(sectionId)  {
+        console.log("Showing section:", sectionId);
+        
+        // Hide all sections
+        sections.forEach(section => {
+            section.style.display = 'none';
+            section.classList.remove('active');
+        });
+        
+        // Show selected section
+        const activeSection = document.getElementById(sectionId);
+        if (activeSection) {
+            activeSection.style.display = 'block';
+            activeSection.classList.add('active');
+        }
+        
+        // Update body classes
+        if (sectionId !== 'mindtale-direct') {
+            body.className = '';
+            body.classList.add(sectionId + '-active');
+        }
+        
+        // Update active nav link
+        navLinks.forEach(link => {
+            if (link.getAttribute('data-section') === sectionId) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+        
+        // Initialize Mindtale game if that section is shown
+        if (sectionId === 'mindtale') {
+            initializeMindtaleGame();
+        }
+    }
+    
+    // Add click event listeners to nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const section = this.getAttribute('data-section');
+        
+            // Open AI chat in new tab if AI section is clicked
+            if (section === 'ai') {
+                window.open('ai-chat.html', '_blank');
+            } else if (section === 'mindtale-direct') {
+                // Open Mindtale game directly in new tab
+                window.open('mindtale.html', '_blank');
+            } else if (section === 'notes') {
+                // Open SAT notes in new tab
+                window.open('sat-notes.html', '_blank');
+            } else if (section === 'about-us') {
+                showSection('mission-vision');
+            } else if (section === 'test-zone') {
+                window.open('test-zone.html', '_blank');
+            } else {
+                showSection(section);
+            }
+        });
+    });
+    
+    // Add click event listeners to back buttons
+    backButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const section = this.getAttribute('data-section');
+            showSection(section);
+        });
+    });
+    
+    // Add click event listeners to feature buttons
+    featureButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const section = this.getAttribute('data-section');
+        
+            // Open AI chat in new tab if AI section is clicked
+            if (section === 'ai') {
+                window.open('ai-chat.html', '_blank');
+            } else if (section === 'mindtale-direct') {
+                // Open Mindtale game directly in new tab
+                window.open('mindtale.html', '_blank');
+            } else if (section === 'notes') {
+                // Open SAT notes in new tab
+                window.open('sat-notes.html', '_blank');
+            } else if (section === 'about-us') {
+                showSection('mission-vision');
+            } else if (section === 'test-zone') {
+                window.open('test-zone.html', '_blank');
+            } else {
+                showSection(section);
+            }
+        });
+    });
+    
+    // Scroll down arrow click event
+    if (scrollDownArrow) {
+        scrollDownArrow.addEventListener('click', function() {
+            const featuresSection = document.querySelector('.features-section');
+            if (featuresSection) {
+                featuresSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // AI Chat form submission
+    if (aiChatForm) {
+        aiChatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (aiChatInput && aiChatInput.value.trim() !== '') {
+                window.open('ai-chat.html', '_blank');
+            }
+        });
+    }
+    
+    // Game buttons
+    document.querySelectorAll('.game-button').forEach(button => {
+        button.addEventListener('click', function() {
+            if (button.querySelector('.game-title')?.textContent === 'Mindtale') {
+                // Open Mindtale game in new window/tab
+                window.open('mindtale.html', '_blank');
+            }
+        });
+    });
+    
+    // Back to games button
+    const backToGamesButton = document.getElementById('back-to-games');
+    if (backToGamesButton) {
+        backToGamesButton.addEventListener('click', function() {
+            showSection('games');
+        });
+    }
+    
+    // Notes section functionality
+    
+    // Main tabs switching
+    mainTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Update active tab
+            mainTabs.forEach(t => t.classList.remove('active'));
+            this.
