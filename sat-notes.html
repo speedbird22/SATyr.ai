@@ -835,8 +835,9 @@
         }
         .suggestions ul { margin: 0; padding-left: 18px; color: #cbd5e1; }
     </style>
-    <!-- Replaced hardcoded config.js with backend config loader -->
-    <script src="config-loader.js"></script>
+    <!-- Load config.js first for immediate availability -->
+    <script src="config.js"></script>
+    <!-- removed config-loader.js script tag -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>

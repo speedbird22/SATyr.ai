@@ -1,4 +1,4 @@
- // Configuration file for SATyr AI Chat
+// Configuration file for SATyr AI Chat
 // Keep this file secure and never commit it to version control
 
 const CONFIG = {
