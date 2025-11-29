@@ -1,463 +1,3684 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mindtale - A Mythical Journey Awaits</title>
-    <link rel="icon" type="image/jpeg" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindtale - Educational Mythology Adventure</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+}
 
-        body {
-            min-height: 100vh;
-            background: linear-gradient(180deg, #0a0a23 0%, #1a1a3a 100%);
-            overflow-x: hidden;
-            font-family: Arial, sans-serif;
-            color: #d8b8ff;
-        }
+body {
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #000000;
+  cursor: default;
+}
 
-        /* Starry background animation */
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            z-index: 0;
-        }
+/* Light effect styles */
+.light-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
 
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 5s infinite;
-            opacity: 0.8;
-        }
+.light-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+  z-index: 1;
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: blobPulse 8s infinite alternate;
+  mix-blend-mode: screen;
+}
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 0.2; transform: scale(1.2); }
-        }
+@keyframes blobPulse {
+  0% {
+    filter: blur(80px);
+    opacity: 0.7;
+  }
+  50% {
+    filter: blur(90px);
+    opacity: 0.8;
+  }
+  100% {
+    filter: blur(100px);
+    opacity: 0.7;
+  }
+}
 
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(216, 184, 255, 0.5); }
-            50% { box-shadow: 0 0 30px rgba(216, 184, 255, 0.8); }
-        }
+/* Game container */
+.game-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+/* Header */
+.game-header {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-bottom: 2px solid rgba(128, 0, 128, 0.5);
+  z-index: 10;
+}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+.game-title {
+  font-size: 28px;
+  color: #fff;
+  margin: 0;
+  font-family: 'Cinzel Decorative', cursive;
+  text-shadow: 0 0 10px rgba(155, 89, 182, 0.7);
+}
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+.game-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
-        @keyframes ping {
-            75%, 100% {
-                transform: scale(2);
-                opacity: 0;
-            }
-        }
+.game-control-button {
+  background: rgba(128, 0, 128, 0.3);
+  border: 1px solid rgba(128, 0, 128, 0.6);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-        @keyframes logoGlow {
-            0%, 100% { 
-                filter: drop-shadow(0 0 10px rgba(216, 184, 255, 0.5));
-            }
-            50% { 
-                filter: drop-shadow(0 0 20px rgba(216, 184, 255, 0.8));
-            }
-        }
+.game-control-button:hover {
+  background: rgba(128, 0, 128, 0.5);
+  transform: translateY(-2px);
+}
 
-        /* Random star positions and sizes */
-        .star:nth-child(1) { top: 10%; left: 15%; width: 2px; height: 2px; animation-delay: 0s; animation-duration: 6s; }
-        .star:nth-child(2) { top: 20%; left: 85%; width: 3px; height: 3px; animation-delay: 1s; animation-duration: 7s; }
-        .star:nth-child(3) { top: 30%; left: 25%; width: 1px; height: 1px; animation-delay: 2s; animation-duration: 5s; }
-        .star:nth-child(4) { top: 40%; left: 65%; width: 2px; height: 2px; animation-delay: 3s; animation-duration: 8s; }
-        .star:nth-child(5) { top: 50%; left: 35%; width: 3px; height: 3px; animation-delay: 4s; animation-duration: 6s; }
-        .star:nth-child(6) { top: 60%; left: 75%; width: 1px; height: 1px; animation-delay: 0.5s; animation-duration: 7s; }
-        .star:nth-child(7) { top: 70%; left: 20%; width: 2px; height: 2px; animation-delay: 1.5s; animation-duration: 5s; }
-        .star:nth-child(8) { top: 80%; left: 90%; width: 3px; height: 3px; animation-delay: 2.5s; animation-duration: 8s; }
-        .star:nth-child(9) { top: 15%; left: 50%; width: 2px; height: 2px; animation-delay: 3.5s; animation-duration: 6s; }
-        .star:nth-child(10) { top: 25%; left: 70%; width: 1px; height: 1px; animation-delay: 4.5s; animation-duration: 7s; }
-        .star:nth-child(11) { top: 35%; left: 10%; width: 2px; height: 2px; animation-delay: 1s; animation-duration: 6s; }
-        .star:nth-child(12) { top: 45%; left: 80%; width: 1px; height: 1px; animation-delay: 2s; animation-duration: 8s; }
-        .star:nth-child(13) { top: 55%; left: 40%; width: 3px; height: 3px; animation-delay: 3s; animation-duration: 5s; }
-        .star:nth-child(14) { top: 65%; left: 60%; width: 2px; height: 2px; animation-delay: 4s; animation-duration: 7s; }
-        .star:nth-child(15) { top: 75%; left: 30%; width: 1px; height: 1px; animation-delay: 0s; animation-duration: 6s; }
-        .star:nth-child(16) { top: 85%; left: 55%; width: 2px; height: 2px; animation-delay: 1.5s; animation-duration: 8s; }
-        .star:nth-child(17) { top: 5%; left: 45%; width: 3px; height: 3px; animation-delay: 2.5s; animation-duration: 5s; }
-        .star:nth-child(18) { top: 95%; left: 15%; width: 1px; height: 1px; animation-delay: 3.5s; animation-duration: 7s; }
-        .star:nth-child(19) { top: 12%; left: 75%; width: 2px; height: 2px; animation-delay: 4.5s; animation-duration: 6s; }
-        .star:nth-child(20) { top: 88%; left: 25%; width: 3px; height: 3px; animation-delay: 0.5s; animation-duration: 8s; }
+/* Game screens */
+.game-screen {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
 
-        .container {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-        }
+.game-screen.active {
+  display: block;
+  opacity: 1;
+  z-index: 5;
+}
 
-        .hero-section {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
+/* Main menu screen */
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  height: 100%;
+  background: transparent;
+}
 
-        .hero-container {
-            background: rgba(26, 26, 58, 0.7);
-            border: 2px solid #d8b8ff;
-            border-radius: 2rem;
-            padding: 2rem;
-            box-shadow: 0 0 30px rgba(216, 184, 255, 0.5);
-            animation: glow 6s ease-in-out infinite;
-        }
+.menu-title {
+  font-size: 48px;
+  margin-bottom: 30px;
+  font-family: 'Cinzel Decorative', cursive;
+  text-shadow: 0 0 15px rgba(155, 89, 182, 0.9);
+  text-align: center;
+}
 
-        .logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1.5rem;
-            border: 3px solid #d8b8ff;
-            animation: logoGlow 4s ease-in-out infinite;
-            object-fit: cover;
-        }
+.menu-subtitle {
+  font-size: 20px;
+  margin-bottom: 50px;
+  text-align: center;
+  max-width: 600px;
+  line-height: 1.5;
+}
 
-        .hero-title {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #d8b8ff;
-            margin-bottom: 1.5rem;
-            font-family: 'Cinzel Decorative', cursive;
-            text-shadow: 0 0 20px #d8b8ff;
-            animation: pulse 8s infinite;
-        }
+.start-button {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.8) 0%, rgba(142, 68, 173, 0.8) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(155, 89, 182, 0.3);
+  margin-bottom: 30px;
+}
 
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: #d8b8ff;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px #d8b8ff;
-        }
+.start-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(155, 89, 182, 0.4);
+}
 
-        .hero-description {
-            font-size: 1.125rem;
-            color: rgba(216, 184, 255, 0.8);
-            margin-bottom: 1.5rem;
-        }
+/* Character selection screen */
+.character-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  height: 100%;
+  background: transparent;
+}
 
-        .coming-soon {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.25rem;
-            color: #d8b8ff;
-        }
+.character-selection-title {
+  font-size: 36px;
+  margin-bottom: 20px;
+  font-family: 'Cinzel Decorative', cursive;
+  text-shadow: 0 0 10px rgba(155, 89, 182, 0.7);
+  text-align: center;
+}
 
-        .sparkle {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: #d8b8ff;
-        }
+.character-selection-subtitle {
+  font-size: 18px;
+  margin-bottom: 40px;
+  text-align: center;
+  max-width: 600px;
+  line-height: 1.5;
+}
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            max-width: 72rem;
-            width: 100%;
-            margin-bottom: 4rem;
-        }
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
 
-        .feature-card {
-            background: rgba(26, 26, 58, 0.6);
-            border: 1px solid rgba(216, 184, 255, 0.5);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            height: 100%;
-            transition: all 0.7s ease;
-            text-align: center;
-        }
+.character-card {
+  background-color: rgba(50, 50, 50, 0.5);
+  border: 2px solid rgba(128, 0, 128, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-        .feature-card:hover {
-            border-color: #d8b8ff;
-            box-shadow: 0 0 25px rgba(216, 184, 255, 0.4);
-            transform: scale(1.05);
-        }
+.character-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(128, 0, 128, 0.8);
+  background-color: rgba(70, 70, 70, 0.5);
+}
 
-        .feature-icon {
-            background: rgba(216, 184, 255, 0.1);
-            border-radius: 50%;
-            padding: 1rem;
-            margin: 0 auto 1rem;
-            width: 4rem;
-            height: 4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.7s ease;
-            font-size: 2rem;
-        }
+.character-card.selected {
+  border-color: #9b59b6;
+  background-color: rgba(155, 89, 182, 0.2);
+  box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
+}
 
-        .feature-card:hover .feature-icon {
-            background: rgba(216, 184, 255, 0.2);
-        }
+.character-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: rgba(128, 0, 128, 0.2);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  overflow: hidden;
+  position: relative;
+}
 
-        .globe-icon {
-            animation: spin 20s linear infinite;
-        }
+.character-avatar {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        .eye-icon {
-            animation: pulse 6s infinite;
-        }
+.scholar-avatar {
+  background: radial-gradient(circle, rgba(155, 89, 182, 0.8), rgba(142, 68, 173, 0.8));
+}
 
-        .feature-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #d8b8ff;
-            margin-bottom: 0.75rem;
-            text-shadow: 0 0 10px #d8b8ff;
-        }
+.scholar-avatar::before {
+  content: "📚";
+  font-size: 40px;
+}
 
-        .feature-description {
-            color: rgba(216, 184, 255, 0.8);
-            font-size: 0.875rem;
-            line-height: 1.6;
-        }
+.poet-avatar {
+  background: radial-gradient(circle, rgba(52, 152, 219, 0.8), rgba(41, 128, 185, 0.8));
+}
 
-        .feature-meta {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 0.75rem;
-            font-size: 0.75rem;
-            color: rgba(216, 184, 255, 0.6);
-        }
+.poet-avatar::before {
+  content: "🖋️";
+  font-size: 40px;
+}
 
-        .additional-features {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            max-width: 64rem;
-            width: 100%;
-            margin-bottom: 3rem;
-        }
+.explorer-avatar {
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.8), rgba(39, 174, 96, 0.8));
+}
 
-        .additional-feature {
-            background: rgba(26, 26, 58, 0.4);
-            border: 1px solid rgba(216, 184, 255, 0.3);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            text-align: center;
-        }
+.explorer-avatar::before {
+  content: "🧭";
+  font-size: 40px;
+}
 
-        .additional-feature h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #d8b8ff;
-            margin-bottom: 0.5rem;
-        }
+.character-name {
+  font-size: 18px;
+  color: white;
+  margin-bottom: 5px;
+  text-align: center;
+  font-weight: bold;
+}
 
-        .additional-feature p {
-            color: rgba(216, 184, 255, 0.7);
-            font-size: 0.875rem;
-        }
+.character-description {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
 
-        .scroll-text {
-            text-align: center;
-            animation: float 4s ease-in-out infinite;
-        }
+.start-adventure-button {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.8) 0%, rgba(142, 68, 173, 0.8) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(155, 89, 182, 0.3);
+}
 
-        .scroll-text p {
-            font-size: 1.125rem;
-            color: #d8b8ff;
-            text-shadow: 0 0 10px #d8b8ff;
-        }
+.start-adventure-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(155, 89, 182, 0.4);
+}
 
-        .floating-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+.start-adventure-button:disabled {
+  background: rgba(100, 100, 100, 0.5);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #d8b8ff;
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: ping 8s infinite;
-        }
+/* World map screen */
+.world-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: 
+      radial-gradient(circle at 50% 50%, rgba(255, 246, 215, 0.7), rgba(242, 226, 195, 0.7) 30%, rgba(226, 201, 153, 0.8) 70%, rgba(205, 179, 128, 0.9) 100%),
+      repeating-linear-gradient(45deg, rgba(168, 143, 89, 0.1) 0px, rgba(168, 143, 89, 0.1) 1px, transparent 1px, transparent 4px),
+      repeating-linear-gradient(-45deg, rgba(168, 143, 89, 0.1) 0px, rgba(168, 143, 89, 0.1) 1px, transparent 1px, transparent 4px);
+  overflow: hidden;
+}
 
-        .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { top: 35%; left: 30%; animation-delay: 3s; }
-        .particle:nth-child(3) { top: 50%; left: 50%; animation-delay: 6s; }
-        .particle:nth-child(4) { top: 65%; left: 70%; animation-delay: 9s; }
-        .particle:nth-child(5) { top: 80%; left: 90%; animation-delay: 12s; }
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
-        /* Responsive design */
-        @media (min-width: 768px) {
-            .logo {
-                width: 150px;
-                height: 150px;
-            }
+.map-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border: 30px solid transparent;
+  border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23a67c52" stroke-width="8"/><path d="M0,0 L20,20 M80,20 L100,0 M0,100 L20,80 M80,80 L100,100" stroke="%23a67c52" stroke-width="3"/><path d="M40,0 L50,10 L60,0 M40,100 L50,90 L60,100 M0,40 L10,50 L0,60 M100,40 L90,50 L100,60" stroke="%23a67c52" stroke-width="3"/></svg>') 30 stretch;
+  z-index: 5;
+}
 
-            .hero-title {
-                font-size: 6rem;
-            }
+.map-title {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 36px;
+  font-weight: 700;
+  color: #5c3a21;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  z-index: 6;
+  background-color: rgba(255, 246, 215, 0.7);
+  padding: 10px 30px;
+  border-radius: 5px;
+  border: 2px solid #8c6239;
+}
 
-            .hero-subtitle {
-                font-size: 2rem;
-            }
+.map-compass {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  width: 100px;
+  height: 100px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="rgba(255, 246, 215, 0.7)" stroke="%23a67c52" stroke-width="2"/><circle cx="50" cy="50" r="5" fill="%23a67c52"/><path d="M50 5 L55 45 L50 50 L45 45 Z" fill="%23a67c52"/><path d="M50 95 L45 55 L50 50 L55 55 Z" fill="%23a67c52"/><path d="M5 50 L45 45 L50 50 L45 55 Z" fill="%23a67c52"/><path d="M95 50 L55 55 L50 50 L55 45 Z" fill="%23a67c52"/><text x="50" y="15" text-anchor="middle" font-family="serif" font-size="10" fill="%23a67c52">N</text><text x="50" y="90" text-anchor="middle" font-family="serif" font-size="10" fill="%23a67c52">S</text><text x="15" y="53" text-anchor="middle" font-family="serif" font-size="10" fill="%23a67c52">W</text><text x="85" y="53" text-anchor="middle" font-family="serif" font-size="10" fill="%23a67c52">E</text></svg>');
+  background-size: contain;
+  z-index: 6;
+}
 
-            .features-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+/* Map features */
+.map-land {
+  position: absolute;
+  background: radial-gradient(ellipse at center, rgba(222, 184, 135, 0.5) 0%, rgba(210, 180, 140, 0.3) 100%);
+  border-radius: 40%;
+  z-index: 1;
+}
 
-            .additional-features {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+.map-ocean {
+  position: absolute;
+  background: linear-gradient(to right, rgba(100, 148, 237, 0.3), rgba(70, 130, 180, 0.4));
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.map-mountains {
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><path d="M10 90 L50 20 L70 50 L100 10 L130 60 L150 30 L190 90 Z" fill="%23555" stroke="%23333" stroke-width="2"/><path d="M30 90 L50 50 L70 90 M110 90 L130 40 L150 90" fill="none" stroke="%23333" stroke-width="1"/></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.player-marker {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(155, 89, 182, 0.8);
+  border: 3px solid #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(155, 89, 182, 0.7), 0 0 5px #fff;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  animation: pulse-player 2s infinite ease-in-out;
+}
+
+@keyframes pulse-player {
+  0% {
+    box-shadow: 0 0 15px rgba(155, 89, 182, 0.7), 0 0 5px #fff;
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(155, 89, 182, 0.9), 0 0 10px #fff;
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(155, 89, 182, 0.7), 0 0 5px #fff;
+  }
+}
+
+/* Mythology regions */
+.mythology-region {
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 3;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none; /* Remove underline if it's a link */
+}
+
+.mythology-region:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+.region-greek {
+  top: 35%;
+  left: 55%;
+  background-color: rgba(52, 89, 149, 0.3);
+  border: 2px solid rgba(52, 89, 149, 0.7);
+}
+
+.region-norse {
+  top: 15%;
+  left: 40%;
+  background-color: rgba(241, 196, 15, 0.3);
+  border: 2px solid rgba(241, 196, 15, 0.7);
+}
+
+.region-eden {
+  top: 30%;
+  left: 25%;
+  background-color: rgba(46, 204, 113, 0.3);
+  border: 2px solid rgba(46, 204, 113, 0.7);
+}
+
+.region-roman {
+  top: 45%;
+  left: 45%;
+  background-color: rgba(231, 76, 60, 0.3);
+  border: 2px solid rgba(231, 76, 60, 0.7);
+}
+
+.region-egyptian {
+  top: 60%;
+  left: 35%;
+  background-color: rgba(243, 156, 18, 0.3);
+  border: 2px solid rgba(243, 156, 18, 0.7);
+}
+
+.region-aztec {
+  top: 65%;
+  left: 20%;
+  background-color: rgba(155, 89, 182, 0.3);
+  border: 2px solid rgba(155, 89, 182, 0.7);
+}
+
+.region-indian {
+  top: 50%;
+  left: 70%;
+  background-color: rgba(52, 73, 94, 0.3);
+  border: 2px solid rgba(52, 73, 94, 0.7);
+}
+
+.region-japanese {
+  top: 25%;
+  left: 75%;
+  background-color: rgba(192, 57, 43, 0.3);
+  border: 2px solid rgba(192, 57, 43, 0.7);
+}
+
+.region-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.region-label {
+  position: absolute;
+  width: 150px;
+  text-align: center;
+  color: #3a2313;
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 246, 215, 0.7);
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #8c6239;
+}
+
+/* Dialogue screen */
+.dialogue-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent content from spilling out */
+}
+
+.dialogue-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.dialogue-content {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.character-display {
+  position: absolute;
+  bottom: 220px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.npc-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* NPC Avatars */
+.athena-avatar {
+  background: radial-gradient(circle, rgba(52, 152, 219, 0.8), rgba(41, 128, 185, 0.8));
+}
+
+.athena-avatar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(52, 152, 219, 0.8)"/><circle cx="100" cy="70" r="40" fill="rgba(41, 128, 185, 1)"/><circle cx="80" cy="60" r="8" fill="white"/><circle cx="120" cy="60" r="8" fill="white"/><path d="M70 120C100 150 130 120 130 120" stroke="white" stroke-width="3" fill="none"/><path d="M70 40L130 40" stroke="gold" stroke-width="5"/><path d="M100 40L100 10" stroke="gold" stroke-width="5"/></svg>');
+  background-size: contain;
+}
+
+.odin-avatar {
+  background: radial-gradient(circle, rgba(241, 196, 15, 0.8), rgba(243, 156, 18, 0.8));
+}
+
+.odin-avatar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(241, 196, 15, 0.8)"/><circle cx="100" cy="70" r="40" fill="rgba(243, 156, 18, 1)"/><circle cx="80" cy="60" r="8" fill="black"/><path d="M120 60L120 60" stroke="black" stroke-width="16" stroke-linecap="round"/><path d="M70 120C100 140 130 120 130 120" stroke="black" stroke-width="3" fill="none"/><path d="M60 30L140 30" stroke="brown" stroke-width="5"/></svg>');
+  background-size: contain;
+}
+
+.janus-avatar {
+  background: radial-gradient(circle, rgba(231, 76, 60, 0.8), rgba(192, 57, 43, 0.8));
+}
+
+.janus-avatar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(231, 76, 60, 0.8)"/><circle cx="100" cy="70" r="40" fill="rgba(192, 57, 43, 1)"/><circle cx="80" cy="60" r="8" fill="white"/><circle cx="120" cy="60" r="8" fill="white"/><path d="M70 120C100 140 130 120 130 120" stroke="white" stroke-width="3" fill="none"/><path d="M60 30L140 30" stroke="gold" stroke-width="5"/></svg>');
+  background-size: contain;
+}
+
+/* Add these to the NPC Avatars section */
+.anubis-avatar {
+  background: radial-gradient(circle, rgba(243, 156, 18, 0.8), rgba(211, 84, 0, 0.8));
+}
+
+.anubis-avatar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(243, 156, 18, 0.8)"/><path d="M100 60 L80 100 L120 100 Z" fill="black"/><path d="M70 80 L70 120 L90 140 L110 140 L130 120 L130 80 Z" fill="rgba(211, 84, 0, 1)"/><circle cx="80" cy="90" r="5" fill="white"/><circle cx="120" cy="90" r="5" fill="white"/><path d="M90 110 L110 110" stroke="black" stroke-width="3" fill="none"/></svg>');
+  background-size: contain;
+}
+
+.quetzalcoatl-avatar {
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.8), rgba(39, 174, 96, 0.8));
+}
+
+.quetzalcoatl-avatar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(46, 204, 113, 0.8)"/><path d="M60 100 C60 80, 140 80, 140 100 S60 120, 60 100 Z" fill="rgba(39, 174, 96, 1)"/><path d="M80 90 L70 70 M120 90 L130 70" stroke="white" stroke-width="3"/><path d="M90 100 L110 100" stroke="white" stroke-width="3"/><path d="M60 100 L50 120 M140 100 L150 120" stroke="rgba(39, 174, 96, 1)" stroke-width="5"/></svg>');
+  background-size: contain;
+}
+
+.ganesha-avatar {
+  background: radial-gradient(circle, rgba(52, 73, 94, 0.8), rgba(44, 62, 80, 0.8));
+}
+
+.ganesha-avatar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(52, 73, 94, 0.8)"/><circle cx="100" cy="90" r="40" fill="rgba(44, 62, 80, 1)"/><path d="M100 50 L100 10 C120 20, 120 40, 100 50 Z" fill="rgba(52, 73, 94, 1)"/><circle cx="85" cy="80" r="5" fill="white"/><circle cx="115" cy="80" r="5" fill="white"/><path d="M90 100 L110 100" stroke="white" stroke-width="3"/></svg>');
+  background-size: contain;
+}
+
+.amaterasu-avatar {
+  background: radial-gradient(circle, rgba(192, 57, 43, 0.8), rgba(169, 50, 38, 0.8));
+}
+
+.amaterasu-avatar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(192, 57, 43, 0.8)"/><circle cx="100" cy="100" r="30" fill="rgba(255, 255, 255, 0.8)"/><path d="M100 30 L100 170 M30 100 L170 100 M50 50 L150 150 M50 150 L150 50" stroke="rgba(255, 255, 255, 0.6)" stroke-width="3"/><circle cx="85" cy="85" r="5" fill="black"/><circle cx="115" cy="85" r="5" fill="black"/><path d="M85 115 L115 115" stroke="black" stroke-width="3"/></svg>');
+  background-size: contain;
+}
+
+.eve-avatar {
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.8), rgba(39, 174, 96, 0.8));
+}
+
+.eve-avatar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="rgba(46, 204, 113, 0.8)"/><circle cx="100" cy="70" r="30" fill="rgba(39, 174, 96, 1)"/><path d="M70 70 C70 40, 130 40, 130 70" stroke="rgba(39, 174, 96, 1)" stroke-width="5" fill="none"/><circle cx="85" cy="65" r="5" fill="white"/><circle cx="115" cy="65" r="5" fill="white"/><path d="M90 80 C95 85, 105 85, 110 80" stroke="white" stroke-width="2" fill="none"/><path d="M100 100 L100 130 M80 110 L120 110" stroke="rgba(39, 174, 96, 1)" stroke-width="5"/></svg>');
+  background-size: contain;
+}
+
+.dialogue-box {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 800px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(155, 89, 182, 0.7);
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 3;
+  max-height: 40vh; /* Limit height to prevent overflow */
+  overflow-y: auto; /* Add scrolling if needed */
+}
+
+.dialogue-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dialogue-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #9b59b6;
+  margin-right: 10px;
+}
+
+.dialogue-text {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  min-height: 80px;
+}
+
+.player-response {
+  font-size: 16px;
+  color: #3498db;
+  font-style: italic;
+  margin-bottom: 15px;
+  padding-left: 20px;
+  border-left: 3px solid #3498db;
+}
+
+.dialogue-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dialogue-option {
+  background-color: rgba(155, 89, 182, 0.3);
+  border: 1px solid rgba(155, 89, 182, 0.5);
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dialogue-option:hover {
+  background-color: rgba(155, 89, 182, 0.5);
+}
+
+.dialogue-continue {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.continue-button {
+  background-color: rgba(155, 89, 182, 0.5);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.continue-button:hover {
+  background-color: rgba(155, 89, 182, 0.7);
+}
+
+.continue-button::after {
+  content: "▶";
+  font-size: 12px;
+}
+
+/* Lesson screen */
+.lesson-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto; /* Allow scrolling */
+}
+
+.lesson-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-family: 'Cinzel Decorative', cursive;
+  text-align: center;
+  color: #9b59b6;
+}
+
+.lesson-content {
+  width: 80%;
+  max-width: 800px;
+  background-color: rgba(30, 30, 30, 0.8);
+  border: 2px solid rgba(155, 89, 182, 0.5);
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 30px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.lesson-text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.lesson-example {
+  background-color: rgba(155, 89, 182, 0.2);
+  border-left: 4px solid #9b59b6;
+  padding: 15px;
+  margin: 20px 0;
+}
+
+.lesson-button {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.8) 0%, rgba(142, 68, 173, 0.8) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px; /* Add space at bottom */
+}
+
+.lesson-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(155, 89, 182, 0.3);
+}
+
+/* Test screen */
+.test-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+.test-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-family: 'Cinzel Decorative', cursive;
+  text-align: center;
+  color: #9b59b6;
+}
+
+.test-container {
+  width: 80%;
+  max-width: 800px;
+}
+
+.question-card {
+  background-color: rgba(30, 30, 30, 0.8);
+  border: 2px solid rgba(155, 89, 182, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.question-text {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.question-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.question-option {
+  background-color: rgba(50, 50, 50, 0.8);
+  border: 1px solid rgba(155, 89, 182, 0.3);
+  border-radius: 5px;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.question-option:hover {
+  background-color: rgba(70, 70, 70, 0.8);
+  border-color: rgba(155, 89, 182, 0.5);
+}
+
+.question-option.selected {
+  background-color: rgba(155, 89, 182, 0.2);
+  border-color: #9b59b6;
+}
+
+.test-submit-button {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.8) 0%, rgba(142, 68, 173, 0.8) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 30px;
+}
+
+.test-submit-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(155, 89, 182, 0.3);
+}
+
+/* Results screen */
+.results-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+.results-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-family: 'Cinzel Decorative', cursive;
+  text-align: center;
+  color: #9b59b6;
+}
+
+.results-score {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.results-message {
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.results-continue-button {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.8) 0%, rgba(142, 68, 173, 0.8) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.results-continue-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(155, 89, 182, 0.3);
+}
+
+/* Inventory screen */
+#inventory-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#inventory-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  width: 80%;
+  max-width: 800px;
+  padding: 20px;
+  border: 2px solid rgba(155, 89, 182, 0.5);
+  border-radius: 10px;
+  background-color: rgba(30, 30, 30, 0.8);
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+.inventory-item {
+  background-color: rgba(50, 50, 50, 0.8);
+  border: 1px solid rgba(155, 89, 182, 0.3);
+  border-radius: 5px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.item-image {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.item-name {
+  font-size: 16px;
+}
+
+#inventory-close {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.8) 0%, rgba(142, 68, 173, 0.8) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+#inventory-close:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(155, 89, 182, 0.3);
+}
+
+/* Loading screen */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+}
+
+/* Utility classes */
+.hidden {
+  display: none !important;
+}
+
+/* Fantasy font for the entire game */
+@font-face {
+  font-family: 'Fantasy';
+  src: url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap');
+}
+
+body, button, input, h1, h2, h3, h4, h5, h5, h6, p, span {
+  font-family: 'Cinzel Decorative', cursive;
+}
+
+/* Intro animation container */
+.intro-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.intro-animation.hidden {
+  display: none;
+}
+
+.intro-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #1a0033 0%, #000000 100%);
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+}
+
+.intro-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0;
+  animation: fadeIn 3s ease forwards, twinkle 8s ease-in-out infinite;
+}
+
+.intro-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.intro-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 64px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(155, 89, 182, 0.7);
+  opacity: 0;
+  z-index: 1;
+}
+
+.intro-tagline {
+  position: absolute;
+  top: calc(50% + 70px);
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 24px;
+  color: #9b59b6;
+  text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+  opacity: 0;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+}
+
+.intro-continue {
+  position: absolute;
+  top: calc(50% + 130px);
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(155, 89, 182, 0.3);
+  border: 1px solid rgba(155, 89, 182, 0.5);
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 2;
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Enhanced Book Animation */
+.book-wrapper {
+  width: 300px;
+  height: 400px;
+  position: relative;
+  perspective: 1500px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeIn 1s ease 0.5s forwards;
+  margin: 0 auto 40px;
+}
+
+.book {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateY(-10deg);
+  transition: transform 0.5s;
+}
+
+.book-front-cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  background: linear-gradient(45deg, #4a235a, #8e44ad);
+  border-radius: 5px 15px 15px 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+}
+
+.book-front-cover::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.book-front-cover::after {
+  content: 'MINDTALE';
+  position: absolute;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.book-back-cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: linear-gradient(45deg, #4a235a, #8e44ad);
+  border-radius: 5px 15px 15px 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.book-back-cover::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.book-back-cover::after {
+  content: 'MINDTALE';
+  position: absolute;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transform: rotateY(180deg);
+}
+
+.book-spine {
+  position: absolute;
+  width: 30px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(to right, #3a1c47, #4a235a);
+  border-radius: 5px 0 0 5px;
+  transform-origin: right;
+  transform: rotateY(90deg) translateX(-15px);
+  box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.book-spine::after {
+  content: 'MINDTALE';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateZ(-90deg);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.book-page {
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  top: 2.5%;
+  right: 0;
+  background: #e8d9b5;
+  border-radius: 0 5px 5px 0;
+  transform-origin: left;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  backface-visibility: hidden;
+}
+
+.book-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23e8d9b5"/><rect width="200" height="200" fill="%23c4b59a" opacity="0.1"/><path d="M0,0 L200,200 M200,0 L0,200" stroke="%23b5a489" stroke-width="0.5" opacity="0.2"/></svg>');
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.book-page::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+  z-index: 2;
+}
+
+.page-content {
+  font-family: 'Lato', serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #5c3a21;
+  max-width: 90%;
+  text-align: justify;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transform: translateZ(1px);
+}
+
+.page1 {
+  z-index: 4;
+  transform: rotateY(0deg);
+}
+
+.page2 {
+  z-index: 3;
+  transform: rotateY(0deg);
+}
+
+.page3 {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.page-number {
+  position: absolute;
+  bottom: 15px;
+  font-size: 12px;
+  color: #8c6239;
+}
+
+.page-number-left {
+  left: 20px;
+}
+
+.page-number-right {
+  right: 20px;
+}
+
+.page-edge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(232, 217, 181, 1), rgba(255, 255, 255, 0.5));
+  border-radius: 0 5px 5px 0;
+  z-index: 1;
+}
+
+.page-turning {
+  animation: pageTurn 0.5s ease-in-out forwards;
+}
+
+@keyframes pageTurn {
+  0% {
+    transform: rotateY(0deg);
+    z-index: 5;
+  }
+  100% {
+    transform: rotateY(-180deg);
+    z-index: 1;
+  }
+}
+
+@keyframes coverOpen {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(-160deg);
+  }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Main menu fade in animation */
+.main-menu {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.main-menu.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-continue {
+  position: relative;
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(155, 89, 182, 0.3);
+  border: 1px solid rgba(155, 89, 182, 0.5);
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease 8s forwards; /* Appears after title and tagline */
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+</style>
 </head>
 <body>
-    <div class="stars">
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
+<div class="intro-animation" id="intro-animation">
+  <div class="intro-bg"></div>
+  <div class="intro-stars"></div>
+  <div class="intro-content">
+    <div class="book-wrapper">
+      <div class="book">
+        <div class="book-spine"></div>
+        <div class="book-back-cover"></div>
+        <div class="book-page page3">
+          <div class="page-content" id="page3-content">
+            Armed with courage and a magical sword gifted by his father Poseidon, Theseus sailed to Crete. Princess Ariadne, captivated by his bravery, gave him a golden thread to find his way back through the maze.
+            <span class="page-number page-number-right">3</span>
+          </div>
+          <div class="page-edge"></div>
+        </div>
+        <div class="book-page page2">
+          <div class="page-content" id="page2-content">
+            The Oracle of Delphi had prophesied that Theseus would face the dreaded Minotaur, a creature half-man and half-bull, who dwelled in the labyrinth of Crete. Many had entered, but none had returned.
+            <span class="page-number page-number-right">2</span>
+          </div>
+          <div class="page-edge"></div>
+        </div>
+        <div class="book-page page1">
+          <div class="page-content" id="page1-content">
+            Once upon a time, in the ancient land of Greece, where gods and mortals walked the same earth, there lived a young hero named Theseus. Born of both divine and royal blood, he was destined for greatness.
+            <span class="page-number page-number-right">1</span>
+          </div>
+          <div class="page-edge"></div>
+        </div>
+        <div class="book-front-cover"></div>
+      </div>
     </div>
+    <div class="intro-logo">MINDTALE</div>
+    <div class="intro-tagline">A Journey Through Mythological Realms</div>
+    <button class="intro-continue" id="intro-continue">Begin Your Journey</button>
+  </div>
+</div>
+<div class="light-effect">
+  <div class="light-blob" id="blob1" style="top: 20%; left: 20%; width: 300px; height: 300px; background: #9b59b6;"></div>
+  <div class="light-blob" id="blob2" style="top: 40%; left: 60%; width: 250px; height: 250px; background: #8e44ad;"></div>
+  <div class="light-blob" id="blob3" style="top: 70%; left: 30%; width: 200px; height: 200px; background: #c0392b;"></div>
+</div>
 
-    <div class="floating-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+<div class="game-container">
+  <div class="game-header">
+    <h1 class="game-title">Mindtale</h1>
+    <div class="game-controls">
+      <button class="game-control-button" id="back-button">Back</button>
+      <button class="game-control-button" id="help-button">Help</button>
+      <button class="game-control-button hidden" id="inventory-button">Inventory</button>
     </div>
+  </div>
 
-    <div class="container">
-        <!-- Main Hero Section -->
-        <div class="hero-section">
-            <div class="hero-container">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg" alt="Mindtale Logo" class="logo">
-                <h1 class="hero-title">Mindtale</h1>
-                <p class="hero-subtitle">A Mythical Journey Awaits...</p>
-                <p class="hero-description">
-                    Embark on an epic adventure through a world of ancient mythology and fantasy.
-                </p>
-                <div class="coming-soon">
-                    <span class="sparkle">✨</span>
-                    <span>Coming Soon!</span>
-                    <span class="sparkle">✨</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Feature Showcase Grid -->
-        <div class="features-grid">
-            <!-- Open World 3D Map -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <div class="globe-icon">🌍</div>
-                </div>
-                <h3 class="feature-title">Open World 3D Map</h3>
-                <p class="feature-description">
-                    Explore a vast, immersive 3D world filled with ancient mysteries. Navigate through mystical
-                    landscapes, towering mountains, and forgotten ruins in complete freedom.
-                </p>
-            </div>
-
-            <!-- Multiple Regions -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <div>🗺️</div>
-                </div>
-                <h3 class="feature-title">Multiple Regions</h3>
-                <p class="feature-description">
-                    Unlock diverse realms each with unique lore, creatures, and challenges. From ethereal forests to
-                    volcanic wastelands, discover new territories as your legend grows.
-                </p>
-                <div class="feature-meta">
-                    <span>🔒</span>
-                    <span>Progress to unlock</span>
-                </div>
-            </div>
-
-            <!-- Easter Eggs -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <div class="eye-icon">👁️</div>
-                </div>
-                <h3 class="feature-title">Hidden Secrets</h3>
-                <p class="feature-description">
-                    Countless easter eggs and hidden secrets await the curious explorer. Uncover ancient artifacts,
-                    secret passages, and mythical references scattered throughout the world.
-                </p>
-                <div class="feature-meta">
-                    <span>🔍</span>
-                    <span>Seek and discover</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Additional Features Row -->
-        <div class="additional-features">
-            <div class="additional-feature">
-                <h4>Epic Storyline</h4>
-                <p>
-                    Immerse yourself in a rich narrative woven with ancient mythology and modern storytelling
-                </p>
-            </div>
-            <div class="additional-feature">
-                <h4>Mythical Creatures</h4>
-                <p>
-                    Encounter legendary beings from folklore and mythology in stunning detail
-                </p>
-            </div>
-        </div>
-
-        <!-- Bottom scroll text -->
-        <div class="scroll-text">
-            <p>Scrolls of lore are being woven...</p>
-        </div>
+  <div class="game-screen active" id="main-menu">
+    <div class="main-menu">
+      <h2 class="menu-title">Welcome to Mindtale</h2>
+      <p class="menu-subtitle">Embark on an educational adventure through the realms of mythology. Choose your character and explore the world to learn valuable skills.</p>
+      <button class="start-button" id="start-game">Start Your Adventure</button>
     </div>
+  </div>
+
+  <div class="game-screen" id="character-selection-screen">
+    <div class="character-selection">
+      <h2 class="character-selection-title">Choose Your Hero</h2>
+      <p class="character-selection-subtitle">Select a character to begin your journey. Each character has unique abilities and a different perspective on the world.</p>
+      <div class="character-grid">
+        <div class="character-card" data-character="scholar">
+          <div class="character-image">
+            <div class="character-avatar scholar-avatar"></div>
+          </div>
+          <h3 class="character-name">Scholar</h3>
+          <p class="character-description">A brilliant mind, skilled in all forms of knowledge.</p>
+        </div>
+        <div class="character-card" data-character="poet">
+          <div class="character-image">
+            <div class="character-avatar poet-avatar"></div>
+          </div>
+          <h3 class="character-name">Poet</h3>
+          <p class="character-description">A master of words, with a gift for persuasion.</p>
+        </div>
+        <div class="character-card" data-character="explorer">
+          <div class="character-image">
+            <div class="character-avatar explorer-avatar"></div>
+          </div>
+          <h3 class="character-name">Explorer</h3>
+          <p class="character-description">A brave adventurer, always seeking new horizons.</p>
+        </div>
+      </div>
+      <button class="start-adventure-button" id="start-adventure" disabled>Start Adventure</button>
+    </div>
+  </div>
+
+  <div class="game-screen" id="world-map-screen">
+    <div class="world-map">
+      <div class="map-container">
+        <div class="map-border"></div>
+        <h2 class="map-title">Realms of Mythology</h2>
+        <div class="map-compass"></div>
+
+        <div class="map-land" style="top: 20%; left: 20%; width: 200px; height: 150px;"></div>
+        <div class="map-ocean" style="top: 40%; left: 70%; width: 150px; height: 150px;"></div>
+        <div class="map-mountains" style="top: 70%; left: 40%;"></div>
+
+        <div class="player-marker" id="player-marker"></div>
+
+        <div class="mythology-region region-greek" data-region="greek">
+          <div class="region-icon">🏛️</div>
+          <span class="region-label">Greek Mythology</span>
+        </div>
+        <div class="mythology-region region-norse" data-region="norse">
+          <div class="region-icon">⚔️</div>
+          <span class="region-label">Norse Mythology</span>
+        </div>
+        <div class="mythology-region region-eden" data-region="eden">
+          <div class="region-icon">🌳</div>
+          <span class="region-label">Garden of Eden</span>
+        </div>
+        <div class="mythology-region region-roman" data-region="roman">
+          <div class="region-icon">🛡️</div>
+          <span class="region-label">Roman Mythology</span>
+        </div>
+        <div class="mythology-region region-egyptian" data-region="egyptian">
+          <div class="region-icon">🏺</div>
+          <span class="region-label">Egyptian Mythology</span>
+        </div>
+        <div class="mythology-region region-aztec" data-region="aztec">
+          <div class="region-icon">☀️</div>
+          <span class="region-label">Aztec Mythology</span>
+        </div>
+        <div class="mythology-region region-indian" data-region="indian">
+          <div class="region-icon">🕉️</div>
+          <span class="region-label">Indian Mythology</span>
+        </div>
+        <div class="mythology-region region-japanese" data-region="japanese">
+          <div class="region-icon">⛩️</div>
+          <span class="region-label">Japanese Mythology</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-screen" id="dialogue-screen">
+    <div class="dialogue-screen">
+      <div class="dialogue-background" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwMCIgaGVpZ2h0PSI1MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMDAiIGhlaWdodD0iNTAwIiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNTAwIiBjeT0iMjUwIiBmaWxsPSIjMTExIi8+PGNpcmNsZSBjeD0iNTAwIiBjeT0iMjUwIiBmaWxsPSIjMjIyIi8+PGNpcmNsZSBjeD0iNTAwIiBjeT0iMjUwIiBmaWxsPSIjMzMzIi8+PC9zdmc+');"></div>
+      <div class="dialogue-content">
+        <div class="character-display">
+          <div class="npc-avatar" id="dialogue-character-image"></div>
+        </div>
+        <div class="dialogue-box">
+          <div class="dialogue-header">
+            <span class="dialogue-name" id="dialogue-name">Character Name</span>
+          </div>
+          <p class="dialogue-text" id="dialogue-text">Dialogue text goes here.</p>
+          <p class="player-response hidden" id="player-response">Player response goes here.</p>
+          <div class="dialogue-options" id="dialogue-options">
+            <!-- Dialogue options will be dynamically added here -->
+          </div>
+          <div class="dialogue-continue" id="dialogue-continue">
+            <button class="continue-button" id="continue-button">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-screen" id="lesson-screen">
+    <div class="lesson-screen">
+      <h2 class="lesson-title" id="lesson-title">Lesson Title</h2>
+      <div class="lesson-content" id="lesson-content">
+        <!-- Lesson content will be dynamically added here -->
+      </div>
+      <button class="lesson-button" id="lesson-complete">Complete Lesson</button>
+    </div>
+  </div>
+
+  <div class="game-screen" id="test-screen">
+    <div class="test-screen">
+      <h2 class="test-title" id="test-title">Test Title</h2>
+      <div class="test-container" id="test-container">
+        <!-- Test questions will be dynamically added here -->
+      </div>
+      <button class="test-submit-button" id="test-submit">Submit Test</button>
+    </div>
+  </div>
+
+  <div class="game-screen" id="results-screen">
+    <div class="results-screen">
+      <h2 class="results-title">Test Results</h2>
+      <p class="results-score" id="results-score">Score: X/Y</p>
+      <p class="results-message" id="results-message">Result message goes here.</p>
+      <button class="results-continue-button" id="results-continue">Continue</button>
+    </div>
+  </div>
+
+  <div id="inventory-screen">
+    <div id="inventory-container">
+      <!-- Inventory items will be dynamically added here -->
+    </div>
+    <button id="inventory-close">Close Inventory</button>
+  </div>
+
+  <div id="loading-screen">
+    Loading...
+  </div>
+</div>
+
+<script>
+// Game state
+const gameState = {
+  currentScreen: 'main-menu',
+  playerCharacter: null,
+  currentRegion: null,
+  currentCharacter: null,
+  dialogueIndex: 0,
+  inventory: [],
+  completedLessons: [],
+  completedTests: [],
+  currentTest: {
+    questions: [],
+    answers: [],
+    score: 0
+  }
+};
+
+// Character data
+const characters = {
+  // Greek Mythology
+  athena: {
+    name: "Athena",
+    avatarClass: "athena-avatar",
+    region: "greek",
+    skill: "Subject Verb Agreement",
+    dialogues: [
+      "Hi kid, you look new.",
+      "Where's your manners?! I am Athena, The Greek God of everything smarts- Logic and Wisdom. Do they not talk about me anymore!",
+      "The Humans. The ones who used to worship me. Anyway, I was put up to this, and I don't have much of a job nowadays. I am here to teach you.",
+      "Did I stutter? We are in trouble.",
+      "Let's put that to a test, shall we?",
+      "Are you happy with that? You will need all the help against Avidora.",
+      "Nevermind. Good luck kid! See you around. We are counting on you! Here, take my sword. USE IT WELL!"
+    ],
+    playerResponses: [
+      "Hi? Who are you?",
+      "Who's they?",
+      "Teach me?",
+      "Well, that helped me.",
+      "Great, I love tests (folds their hand, and scoffs)",
+      "Who?",
+      "You can't leave me at that,"
+    ],
+    item: {
+      name: "Athena's Sword",
+      image: "🗡️",
+      description: "A sword gifted by Athena, the goddess of wisdom."
+    },
+    lesson: {
+      title: "Subject-Verb Agreement",
+      content: `
+        <div class="lesson-text">
+          <p>Subject-verb agreement is one of the fundamental rules in English grammar. It means that the subject and verb in a sentence must agree in number.</p>
+          <p>If the subject is singular, the verb must be singular. If the subject is plural, the verb must be plural.</p>
+        </div>
+        <div class="lesson-example">
+          <p><strong>Singular:</strong> The cat <em>runs</em> across the yard.</p>
+          <p><strong>Plural:</strong> The cats <em>run</em> across the yard.</p>
+        </div>
+        <div class="lesson-text">
+          <p>Here are some key rules to remember:</p>
+          <ul>
+            <li>Singular subjects take singular verbs (ends with -s or -es in present tense)</li>
+            <li>Plural subjects take plural verbs (no -s or -es in present tense)</li>
+            <li>Compound subjects joined by "and" take plural verbs</li>
+            <li>When subjects are joined by "or" or "nor," the verb agrees with the subject closest to it</li>
+          </ul>
+        </div>
+        <div class="lesson-example">
+          <p><strong>Example:</strong> Either the students or the teacher <em>is</em> responsible.</p>
+          <p><strong>Example:</strong> Either the teacher or the students <em>are</em> responsible.</p>
+        </div>
+      `
+    },
+    test: {
+      questions: [
+        {
+          text: "Which sentence demonstrates correct subject-verb agreement?",
+          options: [
+            "The group of students were studying for their exam.",
+            "The group of students was studying for their exam.",
+            "The group of students is studying for their exams.",
+            "The group of students are studying for their exam."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Select the sentence with proper subject-verb agreement:",
+          options: [
+            "Neither the dog nor the cats is outside.",
+            "Neither the dog nor the cats are outside.",
+            "Neither the cats nor the dog are outside.",
+            "Neither the cats nor the dog is outside."
+          ],
+          correctAnswer: 3
+        },
+        {
+          text: "Which sentence is grammatically correct?",
+          options: [
+            "Everyone in the class have their own textbook.",
+            "Everyone in the class has their own textbook.",
+            "Everyone in the class have his own textbook.",
+            "Everyone in the class has his own textbooks."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Choose the sentence with correct subject-verb agreement:",
+          options: [
+            "The jury are still deliberating.",
+            "The jury is still deliberating.",
+            "The jury have reached a verdict.",
+            "The jury were divided in their opinion."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Which of these shows proper agreement?",
+          options: [
+            "Each of the students have completed the assignment.",
+            "Each of the students has completed the assignment.",
+            "Each of the students were present.",
+            "Each of the students are responsible."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Select the correct sentence:",
+          options: [
+            "The news are not good today.",
+            "The news is not good today.",
+            "The news have shocked everyone.",
+            "The news were announced yesterday."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Which sentence has correct subject-verb agreement?",
+          options: [
+            "Mathematics are my favorite subject.",
+            "Mathematics is my favorite subject.",
+            "Mathematics have always been difficult for me.",
+            "Mathematics were taught differently when I was young."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Choose the correct option:",
+          options: [
+            "The committee disagree about the proposal.",
+            "The committee disagrees about the proposal.",
+            "The committee have voted.",
+            "The committee were divided."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Which sentence is correct?",
+          options: [
+            "My family are coming to visit.",
+            "My family is coming to visit.",
+            "My family have different opinions.",
+            "My family were photographed together."
+          ],
+          correctAnswer: 1
+        }
+      ]
+    }
+  },
+  // Norse Mythology
+  odin: {
+    name: "Odin",
+    avatarClass: "odin-avatar",
+    region: "norse",
+    skill: "Inferences",
+    dialogues: [
+      "Hello young boy, you're the chosen one I see.",
+      "Well, I hardly expected you to know anything. I believe introductions are in order, but I don't think there is much time for that- nor is there much use. I will proceed to help you without much adieu.",
+      "Well, according to the report I have received from Middle Earth you do.",
+      "Trust me my child, Many hath tried, Most hath failed.",
+      "Let's test you now.",
+      "You don't.",
+      "I trust you, you can leave now."
+    ],
+    playerResponses: [
+      "I don't know what you are talking about.",
+      "Help me? What might I need help with?",
+      "Well, I believe I cant fight you against it.",
+      "Like I have a choice",
+      "Has anyone ever told you that you are a hospitable person?"
+    ],
+    item: {
+      name: "Odin's Spear",
+      image: "🔱",
+      description: "A powerful spear gifted by Odin, the Allfather."
+    },
+    lesson: {
+      title: "Making Inferences",
+      content: `
+        <div class="lesson-text">
+          <p>An inference is a conclusion reached based on evidence and reasoning. When reading, we often need to make inferences by combining textual evidence with our own knowledge.</p>
+        </div>
+        <div class="lesson-example">
+          <p><strong>Text:</strong> "Maria looked at her watch, gasped, and began to run."</p>
+          <p><strong>Inference:</strong> Maria is late for something important.</p>
+        </div>
+        <div class="lesson-text">
+          <p>Steps for making valid inferences:</p>
+          <ol>
+            <li>Identify the relevant evidence in the text</li>
+            <li>Consider what you already know about the situation</li>
+            <li>Combine the textual evidence with your knowledge</li>
+            <li>Form a logical conclusion</li>
+          </ol>
+          <p>Remember that valid inferences must be supported by evidence and should not contradict other information in the text.</p>
+        </div>
+        <div class="lesson-example">
+          <p><strong>Text:</strong> "The streets were wet, and people hurried by with umbrellas."</p>
+          <p><strong>Valid inference:</strong> It had been raining.</p>
+          <p><strong>Invalid inference:</strong> It was winter. (No evidence supports this conclusion)</p>
+        </div>
+      `
+    },
+    test: {
+      questions: [
+        {
+          text: "Read the following: 'John's alarm didn't go off. He rushed to get dressed, skipped breakfast, and ran out the door.' What can you infer?",
+          options: [
+            "John is always late for work.",
+            "John is likely running late for something important.",
+            "John doesn't like breakfast.",
+            "John's alarm is broken permanently."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Based on this text: 'The audience erupted in applause. Sarah took a bow, her face flushed with excitement.' What can you infer?",
+          options: [
+            "Sarah was embarrassed by the audience's reaction.",
+            "Sarah had just given a poor performance.",
+            "Sarah had just completed a successful performance.",
+            "Sarah was angry at the audience."
+          ],
+          correctAnswer: 2
+        },
+        {
+          text: "From this passage: 'The detective examined the broken window and the muddy footprints leading away from it.' What is the most reasonable inference?",
+          options: [
+            "The detective broke the window.",
+            "Someone likely broke in through the window.",
+            "The homeowner left muddy footprints.",
+            "It was raining outside."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Read this: 'Emma's eyes widened as she opened the envelope. Her hands trembled as she read the letter inside.' What can you infer?",
+          options: [
+            "Emma received unexpected news.",
+            "Emma was cold.",
+            "Emma has poor eyesight.",
+            "Emma was writing a letter."
+          ],
+          correctAnswer: 0
+        },
+        {
+          text: "From this text: 'The classroom was empty. Papers were scattered across the floor, and a chair was overturned.' What can you infer?",
+          options: [
+            "School is closed for the summer.",
+            "There was likely a disturbance in the classroom.",
+            "The students are at lunch.",
+            "The janitor hasn't cleaned yet."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Based on this: 'Mark looked at his watch and sighed. The train platform was empty.' What is the most reasonable inference?",
+          options: [
+            "Mark missed his train.",
+            "Mark's watch is broken.",
+            "Mark enjoys being alone.",
+            "The train station is closed."
+          ],
+          correctAnswer: 0
+        },
+        {
+          text: "From this passage: 'The refrigerator was empty except for a carton of milk and some wilted lettuce. Lisa grabbed her purse and car keys.' What can you infer?",
+          options: [
+            "Lisa is moving to a new apartment.",
+            "Lisa is going grocery shopping.",
+            "Lisa doesn't like to cook.",
+            "Lisa is having guests over."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Read this: 'The sky darkened. Wind whipped through the trees, and people hurried to their cars.' What can you infer?",
+          options: [
+            "It's nighttime.",
+            "A storm is approaching.",
+            "There was a power outage.",
+            "People are leaving work."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Based on this text: 'Tom's fishing rod bent sharply. His eyes widened as the line began to unspool rapidly.' What can you infer?",
+          options: [
+            "Tom caught a small fish.",
+            "Tom's fishing rod is broken.",
+            "Tom caught a large fish.",
+            "Tom is new to fishing."
+          ],
+          correctAnswer: 2
+        }
+      ]
+    }
+  },
+  // Roman Mythology
+  janus: {
+    name: "Janus",
+    avatarClass: "janus-avatar",
+    region: "roman",
+    skill: "Punctuation",
+    dialogues: [
+      "Welcome!",
+      "Why are your toes pointing the wrong way?",
+      "Depends on what side you see them from. (Turns around)",
+      "GAHH!",
+      "Thank you, I feel better",
+      "I have a question? When you go to the restroom…",
+      "I would request you to stop right there.",
+      "Ahh cmon! You would have done the same, would you have not?",
+      "Look kid, no time for small talk. Let's get to the point. WE are here to teach you. So let's get to it.",
+      "But we don't need to. We can stay here and you know get to each other, and crack jokes",
+      "First of all, you are a thousandth of my age. (Second guy) Our! God; and secondly, We really don't have the time. Thirdly, you don't have a choice.",
+      "ahh geez.",
+      "Hope you got that, let's assess what you have really learned.",
+      "Who?",
+      "Well kid, you did well enough. You will be fine with Avidara",
+      "No, No, no (scream fades)"
+    ],
+    playerResponses: [
+      "Welcome to you too!",
+      "My toes? They're pointing the normal way...",
+      "Oh, I see what you mean now.",
+      "Whoa! You have two faces!",
+      "You're welcome. What did you want to talk about?",
+      "Um, that's a bit personal...",
+      "Sorry, I didn't mean to be inappropriate.",
+      "I probably would have, you're right.",
+      "Okay, I'm ready to learn.",
+      "That sounds nice actually.",
+      "I understand. Let's get started then.",
+      "Fine, let's do this.",
+      "I think I got it.",
+      "Who's Avidara?",
+      "Wait, what do you mean?",
+      "Wait! Don't go!"
+    ],
+    item: {
+      name: "Janus' Key",
+      image: "🔑",
+      description: "A mystical key gifted by Janus, god of beginnings and transitions."
+    },
+    lesson: {
+      title: "Punctuation Rules",
+      content: `
+        <div class="lesson-text">
+          <p>Proper punctuation is essential for clear communication in writing. Each punctuation mark serves a specific purpose and follows specific rules.</p>
+        </div>
+        <div class="lesson-example">
+          <p><strong>Comma:</strong> Used to separate elements in a list, introduce clauses, and set off parenthetical phrases.</p>
+          <p><strong>Semicolon:</strong> Used to connect two independent clauses that are closely related.</p>
+          <p><strong>Colon:</strong> Used to introduce a list, explanation, or example.</p>
+        </div>
+        <div class="lesson-text">
+          <p>Common punctuation mistakes to avoid:</p>
+          <ul>
+            <li>Misusing commas (comma splices, missing commas)</li>
+            <li>Incorrectly using semicolons and colons</li>
+            <li>Overusing exclamation points</li>
+            <li>Failing to use apostrophes correctly in possessives and contractions</li>
+          </ul>
+        </div>
+        <div class="lesson-example">
+          <p><strong>Incorrect:</strong> The dog ran fast, it caught the ball.</p>
+          <p><strong>Correct:</strong> The dog ran fast; it caught the ball.</p>
+          <p><strong>Correct:</strong> The dog ran fast, and it caught the ball.</p>
+        </div>
+      `
+    },
+    test: {
+      questions: [
+        {
+          text: "Which sentence uses punctuation correctly?",
+          options: [
+            "I went to the store I bought milk eggs and bread.",
+            "I went to the store; I bought milk, eggs, and bread.",
+            "I went to the store, I bought milk, eggs, and bread.",
+            "I went to the store: I bought milk eggs and bread."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Select the sentence with proper punctuation:",
+          options: [
+            "Its important to proofread your work carefully.",
+            "It's important to proofread your work carefully.",
+            "Its' important to proofread your work carefully.",
+            "Its important, to proofread your work carefully."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Which sentence is punctuated correctly?",
+          options: [
+            "The movie was long boring and predictable.",
+            "The movie was long, boring, and predictable.",
+            "The movie was long boring, and predictable.",
+            "The movie was long; boring; and predictable."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Choose the correctly punctuated sentence:",
+          options: [
+            "However we decided to go to the beach instead.",
+            "However, we decided to go to the beach instead.",
+            "However; we decided to go to the beach instead.",
+            "However: we decided to go to the beach instead."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Which sentence uses apostrophes correctly?",
+          options: [
+            "The childrens' toys were scattered across the floor.",
+            "The children's toys were scattered across the floor.",
+            "The childrens toys were scattered across the floor.",
+            "The children's' toys were scattered across the floor."
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Select the correctly punctuated sentence:",
+          options: [
+            "After running the marathon, he was exhausted he slept for twelve hours.",
+            "After running the marathon, he was exhausted, he slept for twelve hours.",
+            "After running the marathon, he was exhausted; he slept for twelve hours.",
+            "After running the marathon he was exhausted, he slept for twelve hours."
+          ],
+          correctAnswer: 2
+        },
+        {
+          text: "Which sentence uses quotation marks correctly?",
+          options: [
+            "She said \"I'll be there at eight o'clock\".",
+            "She said, \"I'll be there at eight o'clock.\"",
+            "She said, \"I'll be there at eight o'clock\".",
+            "She said \"I'll be there at eight o'clock.\""
+          ],
+          correctAnswer: 1
+        },
+        {
+          text: "Choose the sentence with correct colon usage:",
+          options: [
+            "I need three items from the store: milk, bread, and eggs.",
+            "I need: milk, bread, and eggs from the store.",
+            "I need three items from the store, milk: bread, and eggs.",
+            "I need three items from the store milk: bread: and eggs."
+          ],
+          correctAnswer: 0
+        },
+        {
+          text: "Which sentence uses commas correctly?",
+          options: [
+            "My friend, who lives in Paris sent me a postcard.",
+            "My friend who lives in Paris, sent me a postcard.",
+            "My friend who lives in Paris sent me a postcard.",
+            "My friend, who lives in Paris, sent me a postcard."
+          ],
+          correctAnswer: 3
+        }
+      ]
+    }
+  },
+// Egyptian Mythology
+anubis: {
+  name: "Anubis",
+  avatarClass: "anubis-avatar",
+  region: "egyptian",
+  skill: "Text Structure",
+  dialogues: [
+    "Greetings, mortal. You stand before Anubis, guardian of the scales.",
+    "I weigh the hearts of the dead against the feather of Ma'at. Truth is my domain.",
+    "In your world, truth is often hidden within the structure of text. I shall teach you to uncover it.",
+    "Understanding how information is organized is key to comprehension.",
+    "Let us test your knowledge of text structures.",
+    "You have learned well. This knowledge will serve you against Avidora.",
+    "Take this amulet. It will protect your mind from deception."
+  ],
+  playerResponses: [
+    "Hello... um, Lord Anubis?",
+    "That sounds... intense.",
+    "Text structure? Like paragraphs and such?",
+    "I'm ready to learn.",
+    "I'll do my best.",
+    "Who is Avidora?",
+    "Thank you for the gift."
+  ],
+  item: {
+    name: "Anubis' Amulet",
+    image: "🔮",
+    description: "An amulet that helps discern truth from falsehood."
+  },
+  lesson: {
+    title: "Text Structure",
+    content: `
+      <div class="lesson-text">
+        <p>Text structure refers to how information is organized in a piece of writing. Recognizing these patterns helps readers better understand and remember information.</p>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Common text structures include:</strong></p>
+        <ul>
+          <li>Chronological/Sequential: Events presented in time order</li>
+          <li>Cause and Effect: Shows relationships between events and their results</li>
+          <li>Compare and Contrast: Examines similarities and differences</li>
+          <li>Problem and Solution: Presents an issue and possible resolutions</li>
+          <li>Description: Provides details about a topic</li>
+        </ul>
+      </div>
+      <div class="lesson-text">
+        <p>Authors use signal words to indicate which structure they're using:</p>
+        <ul>
+          <li><strong>Chronological:</strong> first, next, then, finally, before, after</li>
+          <li><strong>Cause/Effect:</strong> because, therefore, as a result, consequently</li>
+          <li><strong>Compare/Contrast:</strong> similarly, however, unlike, whereas</li>
+          <li><strong>Problem/Solution:</strong> problem is, dilemma, solved by, resolution</li>
+          <li><strong>Description:</strong> for example, characteristics, features, attributes</li>
+        </ul>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Example:</strong> "First, preheat the oven. Next, mix the ingredients. Then, pour the batter into a pan. Finally, bake for 30 minutes."</p>
+        <p><strong>Structure:</strong> Chronological/Sequential</p>
+      </div>
+    `
+  },
+  test: {
+    questions: [
+      {
+        text: "Which text structure would best organize a history of ancient Egypt?",
+        options: [
+          "Problem and Solution",
+          "Chronological/Sequential",
+          "Compare and Contrast",
+          "Cause and Effect"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Identify the text structure: 'Smoking damages the lungs. This damage can lead to cancer and other respiratory diseases.'",
+        options: [
+          "Description",
+          "Problem and Solution",
+          "Cause and Effect",
+          "Compare and Contrast"
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Which signal words indicate a compare and contrast structure?",
+        options: [
+          "First, next, then, finally",
+          "Because, therefore, consequently",
+          "Similarly, however, whereas, unlike",
+          "Problem, solution, resolved, answer"
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "What text structure would be best for explaining how climate change affects different regions?",
+        options: [
+          "Compare and Contrast",
+          "Chronological",
+          "Problem and Solution",
+          "Description"
+        ],
+        correctAnswer: 0
+      },
+      {
+        text: "Identify the text structure: 'The city faced severe water shortages. Engineers developed a new filtration system that solved the crisis.'",
+        options: [
+          "Cause and Effect",
+          "Compare and Contrast",
+          "Problem and Solution",
+          "Chronological"
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Which signal words suggest a cause and effect structure?",
+        options: [
+          "First, second, third",
+          "Because, therefore, as a result",
+          "However, although, whereas",
+          "For instance, for example, such as"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "What text structure would be most effective for a recipe?",
+        options: [
+          "Description",
+          "Chronological/Sequential",
+          "Compare and Contrast",
+          "Problem and Solution"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Identify the text structure: 'Mammals have hair and produce milk for their young. Birds have feathers and lay eggs.'",
+        options: [
+          "Description",
+          "Chronological",
+          "Compare and Contrast",
+          "Cause and Effect"
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Which text structure would be most appropriate for explaining how a bill becomes a law?",
+        options: [
+          "Problem and Solution",
+          "Compare and Contrast",
+          "Chronological/Sequential",
+          "Description"
+        ],
+        correctAnswer: 2
+      }
+    ]
+  }
+},
+// Aztec Mythology
+quetzalcoatl: {
+  name: "Quetzalcoatl",
+  avatarClass: "quetzalcoatl-avatar",
+  region: "aztec",
+  skill: "Main Idea and Supporting Details",
+  dialogues: [
+    "I am Quetzalcoatl, the Feathered Serpent, bringer of knowledge and wisdom.",
+    "I have watched your kind grow and learn for centuries. Now I shall impart my wisdom to you.",
+    "To truly understand any text, you must identify its heart - the main idea.",
+    "Like the sun surrounded by stars, the main idea is supported by details that give it strength and clarity.",
+    "Let us see if you can distinguish between the core and its supporting elements.",
+    "You have learned to see the essence within complexity. This will serve you well against Avidora.",
+    "Take this feather. It contains a fragment of my power to discern truth."
+  ],
+  playerResponses: [
+    "It's an honor to meet you.",
+    "I'm ready to receive your wisdom.",
+    "So the main idea is like the central point?",
+    "That's a beautiful metaphor.",
+    "I'll do my best on the test.",
+    "Who is Avidora?",
+    "Thank you for this gift."
+  ],
+  item: {
+    name: "Quetzalcoatl's Feather",
+    image: "🪶",
+    description: "A feather that enhances one's ability to identify central themes."
+  },
+  lesson: {
+    title: "Main Idea and Supporting Details",
+    content: `
+      <div class="lesson-text">
+        <p>The main idea is the central point or most important thought in a text. Supporting details provide evidence, examples, or explanations that develop and strengthen the main idea.</p>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Main Idea:</strong> Exercise is beneficial for mental health.</p>
+        <p><strong>Supporting Details:</strong></p>
+        <ul>
+          <li>Regular exercise releases endorphins that improve mood.</li>
+          <li>Studies show exercise reduces symptoms of depression and anxiety.</li>
+          <li>Physical activity can improve sleep quality, which affects mental well-being.</li>
+        </ul>
+      </div>
+      <div class="lesson-text">
+        <p>To identify the main idea:</p>
+        <ol>
+          <li>Look for repeated words or concepts</li>
+          <li>Check the first and last sentences of paragraphs</li>
+          <li>Ask yourself: "What is this passage mostly about?"</li>
+          <li>Consider what all the details have in common</li>
+        </ol>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Example Paragraph:</strong> "The Great Barrier Reef is in danger. Rising ocean temperatures have caused widespread coral bleaching. Pollution from coastal development has reduced water quality. Overfishing has disrupted the reef's delicate ecosystem. Without immediate action, this natural wonder may be lost forever."</p>
+        <p><strong>Main Idea:</strong> The Great Barrier Reef is threatened by multiple environmental factors.</p>
+        <p><strong>Supporting Details:</strong> Coral bleaching, pollution, and overfishing.</p>
+      </div>
+    `
+  },
+  test: {
+    questions: [
+      {
+        text: "What is the main idea of this paragraph? 'Honeybees are vital pollinators. They help fertilize many of the crops humans eat. Without bees, food production would decrease dramatically. Many fruits and vegetables would become scarce.'",
+        options: [
+          "Honeybees make honey.",
+          "Honeybees are important for human food production.",
+          "Fruits and vegetables are nutritious.",
+          "Bees are disappearing."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Which of these is a supporting detail, not a main idea?",
+        options: [
+          "Climate change threatens global ecosystems.",
+          "Renewable energy can help reduce carbon emissions.",
+          "Solar panels have become 80% cheaper in the last decade.",
+          "Conservation efforts must increase to protect endangered species."
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "What is the main idea of this passage? 'The Renaissance began in Italy in the 14th century. It was characterized by renewed interest in classical learning. Artists like Leonardo da Vinci created masterpieces. Writers such as Shakespeare transformed literature. Scientific discoveries challenged old beliefs.'",
+        options: [
+          "Leonardo da Vinci was the most important Renaissance figure.",
+          "The Renaissance was primarily about art.",
+          "The Renaissance was a period of significant cultural and intellectual change.",
+          "Italy was the most important European country in the 14th century."
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Which sentence best expresses the main idea for a paragraph about the benefits of reading?",
+        options: [
+          "Books come in many different genres.",
+          "Reading regularly offers numerous cognitive and emotional benefits.",
+          "Libraries provide free access to books.",
+          "Some people prefer e-books to physical books."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Which is a supporting detail for the main idea 'Plastic pollution is harming marine life'?",
+        options: [
+          "Recycling programs should be expanded globally.",
+          "Sea turtles often mistake plastic bags for jellyfish and eat them.",
+          "Ocean conservation is important for the planet.",
+          "Plastic was invented in the early 20th century."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "What is the main idea of this paragraph? 'Regular sleep is essential for health. Sleep helps the body repair cells and tissues. It allows the brain to process information and form memories. Lack of sleep is linked to numerous health problems, including heart disease and diabetes.'",
+        options: [
+          "Dreams are an important part of sleep.",
+          "Sleep is necessary for physical and mental health.",
+          "Heart disease and diabetes are serious health conditions.",
+          "Most people need eight hours of sleep per night."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Which is NOT a supporting detail for the main idea 'Exercise improves cardiovascular health'?",
+        options: [
+          "Regular aerobic activity strengthens the heart muscle.",
+          "Exercise helps lower blood pressure in many people.",
+          "Physical activity can reduce the risk of heart disease.",
+          "Weight training builds stronger bones."
+        ],
+        correctAnswer: 3
+      },
+      {
+        text: "What is the main idea of this passage? 'Water covers about 71% of Earth's surface. Oceans hold about 96.5% of all Earth's water. Fresh water makes up only about 3.5% of the total. Of that fresh water, most is locked in ice caps and glaciers.'",
+        options: [
+          "Earth has more salt water than fresh water.",
+          "Glaciers are melting due to climate change.",
+          "Water is essential for human survival.",
+          "The ocean is the largest ecosystem on Earth."
+        ],
+        correctAnswer: 0
+      },
+      {
+        text: "Which sentence is a main idea that the others would support?",
+        options: [
+          "Smartphones have powerful cameras and processors.",
+          "Mobile apps can be downloaded from app stores.",
+          "Modern smartphones have transformed how people communicate and access information.",
+          "Many people check their phones immediately after waking up."
+        ],
+        correctAnswer: 2
+      }
+    ]
+  }
+},
+// Indian Mythology
+ganesha: {
+  name: "Ganesha",
+  avatarClass: "ganesha-avatar",
+  region: "indian",
+  skill: "Author's Purpose",
+  dialogues: [
+    "Namaste! I am Ganesha, remover of obstacles and patron of arts and sciences.",
+    "I see you face many challenges on your path to wisdom. I shall help clear the way.",
+    "To truly understand a text, one must discern the author's intent. Why was it written?",
+    "Authors write to persuade, inform, entertain, or express. Recognizing this purpose illuminates meaning.",
+    "Let us see if you can identify the various purposes behind different texts.",
+    "Well done! Understanding intent will help you navigate Avidora's deceptions.",
+    "Take this modaka sweet. It will nourish your mind and help you see through illusions."
+  ],
+  playerResponses: [
+    "Namaste, Lord Ganesha.",
+    "I would appreciate your guidance.",
+    "So it's about why someone wrote something?",
+    "That makes sense. Different purposes require different approaches.",
+    "I'm ready for the test.",
+    "Who is Avidora?",
+    "Thank you for this gift."
+  ],
+  item: {
+    name: "Ganesha's Modaka",
+    image: "🍬",
+    description: "A mystical sweet that enhances perception of intentions and motives."
+  },
+  lesson: {
+    title: "Author's Purpose",
+    content: `
+      <div class="lesson-text">
+        <p>Authors write texts for specific purposes. Understanding this purpose helps readers better comprehend and evaluate what they read. The main purposes can be remembered with the acronym PIE:</p>
+        <ul>
+          <li><strong>P</strong>ersuade: To convince readers of an opinion or to take action</li>
+          <li><strong>I</strong>nform: To provide information or teach readers about a topic</li>
+          <li><strong>E</strong>ntertain: To amuse readers or tell a story</li>
+        </ul>
+        <p>Some texts also aim to <strong>Express</strong> feelings or ideas (sometimes added to make PIEE).</p>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Persuade:</strong> Advertisements, opinion pieces, political speeches</p>
+        <p><strong>Inform:</strong> Textbooks, news articles, encyclopedias</p>
+        <p><strong>Entertain:</strong> Novels, poems, comic books</p>
+        <p><strong>Express:</strong> Personal essays, some poems, journals</p>
+      </div>
+      <div class="lesson-text">
+        <p>Clues to identify author's purpose:</p>
+        <ul>
+          <li>Language and tone (formal, emotional, humorous)</li>
+          <li>Text structure and format</li>
+          <li>Use of facts vs. opinions</li>
+          <li>Presence of calls to action</li>
+        </ul>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Example:</strong> "Studies show that reading for just 20 minutes daily improves vocabulary and reduces stress. Make time for reading every day—your brain will thank you!"</p>
+        <p><strong>Purpose:</strong> Persuade (uses facts to convince readers to read daily)</p>
+      </div>
+    `
+  },
+  test: {
+    questions: [
+      {
+        text: "What is the primary purpose of this text? 'The Great Pyramid of Giza was built around 2560 BCE. It stands 481 feet tall and was the tallest man-made structure for over 3,800 years. It consists of approximately 2.3 million stone blocks.'",
+        options: [
+          "To persuade",
+          "To inform",
+          "To entertain",
+          "To express"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Identify the author's purpose: 'Don't let another day go by without protecting your family's future. Our life insurance plans start at just $15 per month. Call now for a free quote!'",
+        options: [
+          "To inform",
+          "To entertain",
+          "To persuade",
+          "To express"
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "What is the main purpose of a cookbook?",
+        options: [
+          "To persuade people to become chefs",
+          "To inform readers how to prepare dishes",
+          "To entertain with food stories",
+          "To express the author's love of food"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Identify the author's purpose: 'Once upon a time, in a land far away, there lived a brave princess who befriended dragons instead of fearing them.'",
+        options: [
+          "To persuade",
+          "To inform",
+          "To entertain",
+          "To express"
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "What is the primary purpose of a political campaign speech?",
+        options: [
+          "To inform voters about policies",
+          "To persuade voters to support the candidate",
+          "To entertain the audience",
+          "To express personal feelings"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Identify the author's purpose: 'The water cycle is the process by which water circulates between the Earth's oceans, atmosphere, and land. It involves evaporation, condensation, precipitation, and collection.'",
+        options: [
+          "To persuade",
+          "To inform",
+          "To entertain",
+          "To express"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "What is the main purpose of a diary or personal journal?",
+        options: [
+          "To persuade others",
+          "To inform the public",
+          "To entertain readers",
+          "To express personal thoughts and feelings"
+        ],
+        correctAnswer: 3
+      },
+      {
+        text: "Identify the author's purpose: 'Climate change threatens our future. We must reduce carbon emissions now. Contact your representatives today and demand action on clean energy legislation.'",
+        options: [
+          "To persuade",
+          "To inform",
+          "To entertain",
+          "To express"
+        ],
+        correctAnswer: 0
+      },
+      {
+        text: "What is the primary purpose of a movie review?",
+        options: [
+          "To inform readers about the movie's content",
+          "To persuade readers to see or avoid the movie",
+          "To entertain with clever writing",
+          "All of the above"
+        ],
+        correctAnswer: 3
+      }
+    ]
+  }
+},
+// Japanese Mythology
+amaterasu: {
+  name: "Amaterasu",
+  avatarClass: "amaterasu-avatar",
+  region: "japanese",
+  skill: "Figurative Language",
+  dialogues: [
+    "I am Amaterasu, goddess of the sun and universe. My light reveals all truths.",
+    "Even when I hid in a cave, the world needed my illumination. So too does language need its brilliance.",
+    "Mortals often speak in shadows and reflections - using words to paint pictures beyond their literal meaning.",
+    "Metaphors, similes, personification - these are the colors with which skilled writers paint their thoughts.",
+    "Let us see if you can recognize these patterns of figurative expression.",
+    "Your mind shines brightly. This understanding will help you against Avidora's twisted words.",
+    "Take this mirror. It will reflect the true meaning behind deceptive language."
+  ],
+  playerResponses: [
+    "It's an honor to meet you, great goddess.",
+    "I've heard the story of your cave. It's fascinating.",
+    "You mean like metaphors and such?",
+    "That's a beautiful way to describe figurative language.",
+    "I'll do my best on the test.",
+    "Who is Avidora?",
+    "Thank you for this gift."
+  ],
+  item: {
+    name: "Amaterasu's Mirror",
+    image: "🪞",
+    description: "A sacred mirror that reveals hidden meanings in language."
+  },
+  lesson: {
+    title: "Figurative Language",
+    content: `
+      <div class="lesson-text">
+        <p>Figurative language uses words in ways that deviate from their literal meanings to create emphasis, imagery, or connections. Common types include:</p>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Simile:</strong> Compares two unlike things using "like" or "as"</p>
+        <p>Example: "Her smile was as bright as the sun."</p>
+
+        <p><strong>Metaphor:</strong> Directly compares two unlike things (without "like" or "as")</p>
+        <p>Example: "Time is a thief."</p>
+
+        <p><strong>Personification:</strong> Gives human qualities to non-human things</p>
+        <p>Example: "The wind whispered through the trees."</p>
+
+        <p><strong>Hyperbole:</strong> Extreme exaggeration</p>
+        <p>Example: "I've told you a million times."</p>
+
+        <p><strong>Idiom:</strong> Expression with a meaning different from its literal words</p>
+        <p>Example: "It's raining cats and dogs."</p>
+      </div>
+      <div class="lesson-text">
+        <p>Figurative language serves several purposes:</p>
+        <ul>
+          <li>Creates vivid imagery and memorable descriptions</li>
+          <li>Helps readers connect emotionally to the text</li>
+          <li>Explains complex or abstract ideas through familiar comparisons</li>
+          <li>Adds interest and beauty to writing</li>
+        </ul>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Example:</strong> "The classroom was a zoo. Paper airplanes darted through the air like exotic birds, while the teacher's patience melted away."</p>
+        <p>This passage contains a metaphor (classroom was a zoo), a simile (like exotic birds), and personification (patience melted away).</p>
+      </div>
+    `
+  },
+  test: {
+    questions: [
+      {
+        text: "Identify the type of figurative language: 'The stars danced in the night sky.'",
+        options: [
+          "Simile",
+          "Metaphor",
+          "Personification",
+          "Hyperbole"
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Which sentence contains a simile?",
+        options: [
+          "The ocean is a blanket of blue.",
+          "Time is money.",
+          "Her voice is like velvet.",
+          "The flowers nodded in the breeze."
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Identify the type of figurative language: 'I'm so hungry I could eat a horse.'",
+        options: [
+          "Metaphor",
+          "Simile",
+          "Hyperbole",
+          "Idiom"
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Which is an example of personification?",
+        options: [
+          "He's as strong as an ox.",
+          "The leaves danced in the wind.",
+          "Life is a journey.",
+          "The cake was sweeter than honey."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Identify the type of figurative language: 'Life is a roller coaster with ups and downs.'",
+        options: [
+          "Simile",
+          "Metaphor",
+          "Personification",
+          "Hyperbole"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Which sentence contains an idiom?",
+        options: [
+          "The baby was as light as a feather.",
+          "The sun smiled down on the children.",
+          "She's feeling under the weather today.",
+          "The mountain was a giant standing guard over the valley."
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Identify the type of figurative language: 'The thunder growled like an angry bear.'",
+        options: [
+          "Metaphor",
+          "Simile",
+          "Personification",
+          "Hyperbole"
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Which is an example of a metaphor?",
+        options: [
+          "Her eyes were like twinkling stars.",
+          "The classroom was a zoo during the substitute teacher's lesson.",
+          "The wind howled through the night.",
+          "I've been waiting forever for this moment."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Identify the type of figurative language: 'The news hit him hard.'",
+        options: [
+          "Simile",
+          "Metaphor",
+          "Personification",
+          "Idiom"
+        ],
+        correctAnswer: 3
+      }
+    ]
+  }
+},
+// Garden of Eden
+eve: {
+  name: "Eve",
+  avatarClass: "eve-avatar",
+  region: "eden",
+  skill: "Drawing Conclusions",
+  dialogues: [
+    "Welcome to Eden. I am Eve, the first woman, keeper of knowledge both bitter and sweet.",
+    "I chose to eat from the Tree of Knowledge, and that choice changed everything. Knowledge brings responsibility.",
+    "You must learn to draw conclusions from what you read - to see beyond the words to their deeper meaning.",
+    "Drawing valid conclusions requires evidence and reasoning. One must be careful not to reach beyond what the text supports.",
+    "Let us see if you can draw appropriate conclusions from the information provided.",
+    "You have learned to see the truth that lies beneath the surface. This will help you against Avidora's deceptions.",
+    "Take this apple seed. Plant it in your mind, and it will grow into a tree of discernment."
+  ],
+  playerResponses: [
+    "It's amazing to meet you, Eve.",
+    "That's a heavy responsibility to bear.",
+    "So it's about reading between the lines?",
+    "I understand. We need to be careful not to assume too much.",
+    "I'm ready for the test.",
+    "Who is Avidora?",
+    "Thank you for this gift."
+  ],
+  item: {
+    name: "Eden's Seed",
+    image: "🌱",
+    description: "A seed from Eden that enhances critical thinking and conclusion-drawing abilities."
+  },
+  lesson: {
+    title: "Drawing Conclusions",
+    content: `
+      <div class="lesson-text">
+        <p>Drawing conclusions means making logical judgments or decisions based on information in a text combined with your own knowledge. It's a key reading comprehension skill that helps you understand implied meanings.</p>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Process for Drawing Valid Conclusions:</strong></p>
+        <ol>
+          <li>Identify the facts and details provided in the text</li>
+          <li>Consider what you already know about the topic</li>
+          <li>Look for patterns or relationships in the information</li>
+          <li>Form a logical judgment based on the evidence</li>
+        </ol>
+      </div>
+      <div class="lesson-text">
+        <p>The difference between drawing conclusions and making inferences:</p>
+        <ul>
+          <li><strong>Inference:</strong> Using clues to figure out something not directly stated</li>
+          <li><strong>Conclusion:</strong> Making a judgment or decision based on inferences and evidence</li>
+        </ul>
+        <p>Conclusions should be:</p>
+        <ul>
+          <li>Logical and reasonable</li>
+          <li>Supported by textual evidence</li>
+          <li>Not contradicted by other information in the text</li>
+        </ul>
+      </div>
+      <div class="lesson-example">
+        <p><strong>Example:</strong></p>
+        <p>Text: "Sam's alarm didn't go off this morning. He rushed to get ready, skipping breakfast. When he arrived at work, his boss was standing by his empty desk with a stern expression."</p>
+        <p><strong>Facts:</strong> Sam's alarm didn't work, he rushed, skipped breakfast, arrived at work late, boss looked stern</p>
+        <p><strong>Conclusion:</strong> Sam was late for work and his boss was displeased about it.</p>
+      </div>
+    `
+  },
+  test: {
+    questions: [
+      {
+        text: "Read the passage: 'The sky darkened. Lightning flashed and thunder rumbled. People on the beach quickly packed their belongings.' What conclusion can you draw?",
+        options: [
+          "It was nighttime at the beach.",
+          "A storm was approaching and people were leaving for safety.",
+          "The beach was closing for the day.",
+          "People were afraid of lightning."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Based on this information: 'Maya studied for weeks. She knew all the material thoroughly. When she received her test results, she smiled broadly.' What conclusion can you draw?",
+        options: [
+          "Maya enjoys studying.",
+          "Maya likely performed well on the test.",
+          "Maya was surprised by the test results.",
+          "The test was easier than Maya expected."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Read this passage: 'The restaurant was empty. Chairs were stacked on tables, and the lights were dimmed. A sign on the door displayed the hours: 11 AM - 10 PM.' What conclusion can you draw?",
+        options: [
+          "The restaurant was closed for renovations.",
+          "The restaurant was not open for business at that time.",
+          "The restaurant was going out of business.",
+          "The restaurant was preparing for a private event."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Based on this information: 'Tim's bicycle was missing from the garage. The side door was open, and there were muddy footprints on the floor.' What is the most reasonable conclusion?",
+        options: [
+          "Tim took his bicycle for a ride.",
+          "Tim's bicycle was likely stolen.",
+          "Tim forgot to close the garage door.",
+          "Tim's bicycle was being repaired."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Read this passage: 'Jenny had never baked before. She carefully followed the recipe, measuring each ingredient precisely. When she took the cake out of the oven, it was flat and dense.' What conclusion can you draw?",
+        options: [
+          "Jenny made a mistake despite being careful.",
+          "The recipe was incorrect.",
+          "Jenny's oven wasn't working properly.",
+          "Jenny doesn't like baking."
+        ],
+        correctAnswer: 0
+      },
+      {
+        text: "Based on this information: 'The hiking trail was muddy and slippery. Several tree branches were down across the path. Park rangers stood at the trailhead turning people away.' What conclusion can you draw?",
+        options: [
+          "The park was closed for the season.",
+          "The trail was likely unsafe due to recent weather conditions.",
+          "The rangers were being unnecessarily cautious.",
+          "The hikers were unprepared for the conditions."
+        ],
+        correctAnswer: 1
+      },
+      {
+        text: "Read this passage: 'Mark checked his watch again. The train was already 30 minutes late. Several other passengers were pacing the platform, looking down the tracks anxiously.' What conclusion can you draw?",
+        options: [
+          "Mark is always impatient.",
+          "The train is frequently late.",
+          "The passengers are concerned about the train's delay.",
+          "Mark has an important appointment."
+        ],
+        correctAnswer: 2
+      },
+      {
+        text: "Based on this information: 'The team practiced every day for months. They studied their opponents' strategies and developed counter-moves. When the championship game ended, they lifted the trophy high.' What conclusion can you draw?",
+        options: [
+          "The team won the championship.",
+          "The team was surprised by their victory.",
+          "The team was the favorite to win.",
+          "The team had never won before."
+        ],
+        correctAnswer: 0
+      },
+      {
+        text: "Read this passage: 'The streets were wet, and people hurried by with umbrellas. Inside the café, customers shook water from their coats and ordered hot drinks.' What conclusion can you draw?",
+        options: [
+          "It was winter.",
+          "It was raining or had recently rained.",
+          "The café was famous for its hot drinks.",
+          "People in this town always carry umbrellas."
+        ],
+        correctAnswer: 1
+      }
+    ]
+  }
+}
+};
+
+// DOM elements - with error handling
+function getElement(id) {
+  const element = document.getElementById(id);
+  if (!element) {
+    console.error(`Element with ID "${id}" not found!`);
+    return null;
+  }
+  return element;
+}
+
+// Get all required DOM elements
+const mainMenu = getElement('main-menu');
+const characterSelectionScreen = getElement('character-selection-screen');
+const worldMapScreen = getElement('world-map-screen');
+const dialogueScreen = getElement('dialogue-screen');
+const lessonScreen = getElement('lesson-screen');
+const testScreen = getElement('test-screen');
+const resultsScreen = getElement('results-screen');
+const inventoryScreen = getElement('inventory-screen');
+const loadingScreen = getElement('loading-screen');
+
+const gameTitle = document.querySelector('.game-title');
+const backButton = getElement('back-button');
+const helpButton = getElement('help-button');
+const inventoryButton = getElement('inventory-button');
+
+const characterGrid = document.querySelector('.character-grid');
+const characterCards = document.querySelectorAll('.character-card');
+const startAdventureButton = getElement('start-adventure');
+
+const playerMarker = getElement('player-marker');
+const mythologyRegions = document.querySelectorAll('.mythology-region');
+
+const dialogueCharacterImage = getElement('dialogue-character-image');
+const dialogueName = getElement('dialogue-name');
+const dialogueText = getElement('dialogue-text');
+const playerResponse = getElement('player-response');
+const dialogueOptions = getElement('dialogue-options');
+const dialogueContinue = getElement('dialogue-continue');
+const continueButton = getElement('continue-button');
+
+const lessonTitle = getElement('lesson-title');
+const lessonContent = getElement('lesson-content');
+const lessonCompleteButton = getElement('lesson-complete');
+
+const testTitle = getElement('test-title');
+const testContainer = getElement('test-container');
+const testSubmitButton = getElement('test-submit');
+
+const resultsScore = getElement('results-score');
+const resultsMessage = getElement('results-message');
+const resultsContinueButton = getElement('results-continue');
+
+const inventoryContainer = getElement('inventory-container');
+const inventoryCloseButton = getElement('inventory-close');
+
+// Event listeners with error handling
+function addClickListener(element, handler) {
+  if (!element) {
+    console.error("Cannot add click listener to null element");
+    return;
+  }
+
+  element.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      handler(e);
+    } catch (error) {
+      console.error("Error in click handler:", error);
+    }
+  });
+}
+
+// Start game button
+const startGameButton = getElement('start-game');
+if (startGameButton) {
+  addClickListener(startGameButton, function() {
+    showScreen('character-selection-screen');
+  });
+}
+
+// Back button
+if (backButton) {
+  addClickListener(backButton, function() {
+    if (gameState.currentScreen === 'character-selection-screen') {
+      showScreen('main-menu');
+    } else if (gameState.currentScreen === 'world-map-screen') {
+      showScreen('character-selection-screen');
+      if (inventoryButton) inventoryButton.classList.add('hidden');
+    } else if (gameState.currentScreen === 'dialogue-screen') {
+      showScreen('world-map-screen');
+    } else if (gameState.currentScreen === 'lesson-screen') {
+      showScreen('dialogue-screen');
+    } else if (gameState.currentScreen === 'test-screen') {
+      showScreen('lesson-screen');
+    } else if (gameState.currentScreen === 'results-screen') {
+      showScreen('test-screen');
+    }
+  });
+}
+
+// Help button
+if (helpButton) {
+  addClickListener(helpButton, function() {
+    alert('Welcome to Mindtale!\n\n- Start by selecting a character\n\n- Explore the mythological regions on the map\n\n- Learn from legendary teachers\n\n- Complete lessons and tests to gain items\n\n- Use your knowledge to defeat Avidora');
+  });
+}
+
+// Inventory button
+if (inventoryButton) {
+  addClickListener(inventoryButton, function() {
+    showInventory();
+  });
+}
+
+// Character cards
+characterCards.forEach(card => {
+  addClickListener(card, function() {
+    characterCards.forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    gameState.playerCharacter = card.dataset.character;
+    if (startAdventureButton) startAdventureButton.disabled = false;
+  });
+});
+
+// Start adventure button
+if (startAdventureButton) {
+  addClickListener(startAdventureButton, function() {
+    showScreen('world-map-screen');
+    if (inventoryButton) inventoryButton.classList.remove('hidden');
+
+    // Set player marker icon based on character
+    if (playerMarker) {
+      if (gameState.playerCharacter === 'scholar') {
+        playerMarker.innerHTML = '📚';
+      } else if (gameState.playerCharacter === 'poet') {
+        playerMarker.innerHTML = '🖋️';
+      } else if (gameState.playerCharacter === 'explorer') {
+        playerMarker.innerHTML = '🧭';
+      }
+
+      // Position player marker in center of map initially
+      const mapContainer = document.querySelector('.map-container');
+      if (mapContainer) {
+        const rect = mapContainer.getBoundingClientRect();
+        playerMarker.style.top = (rect.top + rect.height / 2) + 'px';
+        playerMarker.style.left = (rect.left + rect.width / 2) + 'px';
+      }
+    }
+  });
+}
+
+// Mythology regions
+mythologyRegions.forEach(region => {
+  addClickListener(region, function(e) {
+    e.preventDefault(); // Prevent default link behavior
+    e.stopPropagation(); // Stop event propagation
+
+    const regionName = region.dataset.region;
+    gameState.currentRegion = regionName;
+
+    // Move player to region
+    if (playerMarker && region) {
+      const rect = region.getBoundingClientRect();
+      playerMarker.style.top = (rect.top + rect.height / 2) + 'px';
+      playerMarker.style.left = (rect.left + rect.width / 2) + 'px';
+    }
+
+    // Only load dialogue for implemented regions
+    if (regionName === 'greek' || regionName === 'norse' || regionName === 'roman' || regionName === 'egyptian' || regionName === 'aztec' || regionName === 'indian' || regionName === 'japanese' || regionName === 'eden') {
+      loadDialogue(regionName);
+    } else {
+      alert('This region is not yet available. More content coming soon!');
+    }
+
+    return false; // Prevent default behavior
+  });
+});
+
+// Continue button
+if (continueButton) {
+  addClickListener(continueButton, function() {
+    continueDialogue();
+  });
+}
+
+// Lesson complete button
+if (lessonCompleteButton) {
+  addClickListener(lessonCompleteButton, function() {
+    completeLesson();
+  });
+}
+
+// Test submit button
+if (testSubmitButton) {
+  addClickListener(testSubmitButton, function() {
+    submitTest();
+  });
+}
+
+// Results continue button
+if (resultsContinueButton) {
+  addClickListener(resultsContinueButton, function() {
+    // Add item to inventory
+    const character = characters[gameState.currentCharacter];
+    if (character) {
+      gameState.inventory.push(character.item);
+    }
+    showScreen('world-map-screen');
+  });
+}
+
+// Inventory close button
+if (inventoryCloseButton) {
+  addClickListener(inventoryCloseButton, function() {
+    hideInventory();
+  });
+}
+
+// Game functions
+function showScreen(screenId) {
+  const screens = document.querySelectorAll('.game-screen');
+  screens.forEach(screen => {
+    screen.classList.remove('active');
+  });
+
+  const screenToShow = getElement(screenId);
+  if (screenToShow) {
+    screenToShow.classList.add('active');
+    gameState.currentScreen = screenId;
+  } else {
+    console.error(`Screen with ID "${screenId}" not found!`);
+  }
+}
+
+function loadDialogue(regionName) {
+  gameState.dialogueIndex = 0;
+
+  switch (regionName) {
+    case 'greek':
+      gameState.currentCharacter = 'athena';
+      break;
+    case 'norse':
+      gameState.currentCharacter = 'odin';
+      break;
+    case 'roman':
+      gameState.currentCharacter = 'janus';
+      break;
+    case 'egyptian':
+      gameState.currentCharacter = 'anubis';
+      break;
+    case 'aztec':
+      gameState.currentCharacter = 'quetzalcoatl';
+      break;
+    case 'indian':
+      gameState.currentCharacter = 'ganesha';
+      break;
+    case 'japanese':
+      gameState.currentCharacter = 'amaterasu';
+      break;
+    case 'eden':
+      gameState.currentCharacter = 'eve';
+      break;
+    default:
+      gameState.currentCharacter = null;
+      return;
+  }
+
+  const character = characters[gameState.currentCharacter];
+  if (character && dialogueCharacterImage && dialogueName && dialogueText) {
+    // Set character avatar class
+    dialogueCharacterImage.className = 'npc-avatar ' + character.avatarClass;
+    dialogueName.textContent = character.name;
+    dialogueText.textContent = character.dialogues[gameState.dialogueIndex];
+
+    // Show player response if available
+    if (playerResponse) {
+      if (character.playerResponses && character.playerResponses[gameState.dialogueIndex]) {
+        playerResponse.textContent = character.playerResponses[gameState.dialogueIndex];
+        playerResponse.classList.remove('hidden');
+      } else {
+        playerResponse.classList.add('hidden');
+      }
+    }
+
+    showScreen('dialogue-screen');
+  }
+}
+
+function continueDialogue() {
+  const character = characters[gameState.currentCharacter];
+  if (!character || !dialogueText) return;
+
+  gameState.dialogueIndex++;
+
+  if (gameState.dialogueIndex < character.dialogues.length) {
+    dialogueText.textContent = character.dialogues[gameState.dialogueIndex];
+
+    // Show player response if available
+    if (playerResponse) {
+      if (character.playerResponses && character.playerResponses[gameState.dialogueIndex]) {
+        playerResponse.textContent = character.playerResponses[gameState.dialogueIndex];
+        playerResponse.classList.remove('hidden');
+      } else {
+        playerResponse.classList.add('hidden');
+      }
+    }
+  } else {
+    startLesson();
+  }
+}
+
+function startLesson() {
+  const character = characters[gameState.currentCharacter];
+  if (!character || !lessonTitle || !lessonContent) return;
+
+  lessonTitle.textContent = character.lesson.title;
+  lessonContent.innerHTML = character.lesson.content;
+  showScreen('lesson-screen');
+}
+
+function completeLesson() {
+  gameState.completedLessons.push(gameState.currentCharacter);
+  startTest();
+}
+
+function startTest() {
+  const character = characters[gameState.currentCharacter];
+  if (!character || !testTitle || !testContainer) return;
+
+  gameState.currentTest.questions = character.test.questions;
+  gameState.currentTest.answers = [];
+  gameState.currentTest.score = 0;
+
+  testTitle.textContent = `Test: ${character.skill}`;
+  testContainer.innerHTML = '';
+
+  gameState.currentTest.questions.forEach((question, index) => {
+    const questionCard = document.createElement('div');
+    questionCard.classList.add('question-card');
+    questionCard.innerHTML = `
+      <div class="question-text">${question.text}</div>
+      <div class="question-options">
+        ${question.options.map((option, optionIndex) => `
+          <div class="question-option" data-index="${optionIndex}" data-question="${index}">
+            <div class="option-marker"></div>
+            <span class="option-text">${option}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    testContainer.appendChild(questionCard);
+  });
+
+  const questionOptions = document.querySelectorAll('.question-option');
+  questionOptions.forEach(option => {
+    addClickListener(option, function() {
+      const questionIndex = parseInt(option.dataset.question);
+      const optionIndex = parseInt(option.dataset.index);
+
+      // Remove previous selections for this question
+      const optionsForQuestion = document.querySelectorAll(`.question-option[data-question="${questionIndex}"]`);
+      optionsForQuestion.forEach(opt => opt.classList.remove('selected'));
+
+      // Select the clicked option
+      option.classList.add('selected');
+
+      // Store the answer
+      gameState.currentTest.answers[questionIndex] = optionIndex;
+    });
+  });
+
+  showScreen('test-screen');
+}
+
+function submitTest() {
+  if (!gameState.currentTest.questions || !resultsScore || !resultsMessage) return;
+
+  gameState.currentTest.score = 0;
+  gameState.currentTest.questions.forEach((question, index) => {
+    if (gameState.currentTest.answers[index] === question.correctAnswer) {
+      gameState.currentTest.score++;
+    }
+  });
+
+  const totalQuestions = gameState.currentTest.questions.length;
+  resultsScore.textContent = `${gameState.currentTest.score}/${totalQuestions}`;
+
+  let resultMessage = '';
+  if (gameState.currentTest.score >= totalQuestions * 0.8) {
+    resultMessage = 'Excellent! You have a strong grasp of the material.';
+  } else if (gameState.currentTest.score >= totalQuestions * 0.5) {
+    resultMessage = 'Good job! You have a decent understanding, but could use some more practice.';
+  } else {
+    resultMessage = 'You need to review the material. Try the lesson again.';
+  }
+  resultsMessage.textContent = resultMessage;
+
+  gameState.completedTests.push(gameState.currentCharacter);
+  showScreen('results-screen');
+}
+
+function showInventory() {
+  if (!inventoryContainer || !inventoryScreen) return;
+
+  inventoryContainer.innerHTML = '';
+
+  if (gameState.inventory.length === 0) {
+    const emptyMessage = document.createElement('div');
+    emptyMessage.style.gridColumn = '1 / -1';
+    emptyMessage.style.textAlign = 'center';
+    emptyMessage.style.padding = '20px';
+    emptyMessage.textContent = 'Your inventory is empty. Complete lessons to earn items!';
+    inventoryContainer.appendChild(emptyMessage);
+  } else {
+    gameState.inventory.forEach(item => {
+      const itemElement = document.createElement('div');
+      itemElement.classList.add('inventory-item');
+      itemElement.innerHTML = `
+        <div class="item-image">${item.image}</div>
+        <div class="item-name">${item.name}</div>
+      `;
+      itemElement.title = item.description;
+      inventoryContainer.appendChild(itemElement);
+    });
+  }
+
+  inventoryScreen.style.display = 'flex';
+}
+
+function hideInventory() {
+  if (inventoryScreen) {
+    inventoryScreen.style.display = 'none';
+  }
+}
+
+// Blob animation
+function animateBlobs() {
+  const blob1 = getElement('blob1');
+  const blob2 = getElement('blob2');
+  const blob3 = getElement('blob3');
+
+  if (!blob1 || !blob2 || !blob3) {
+    console.error("One or more blob elements not found");
+    return;
+  }
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let currentX1 = mouseX;
+  let currentY1 = mouseY;
+  let currentX2 = mouseX;
+  let currentY2 = mouseY;
+  let currentX3 = mouseX;
+  let currentY3 = mouseY;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function updateBlobs() {
+    // Calculate new positions with easing for liquid-like effect
+    currentX1 += (mouseX - currentX1) * 0.1;
+    currentY1 += (mouseY - currentY1) * 0.1;
+
+    currentX2 += (mouseX - currentX2) * 0.05;
+    currentY2 += (mouseY - currentY2) * 0.05;
+
+    currentX3 += (mouseX - currentX3) * 0.02;
+    currentY3 += (mouseY - currentY3) * 0.02;
+
+    // Apply transforms with slight offsets for parallax effect
+    blob1.style.transform = `translate(${currentX1 - 300}px, ${currentY1 - 300}px)`;
+    blob2.style.transform = `translate(${currentX2 - 200}px, ${currentY2 - 200}px)`;
+    blob3.style.transform = `translate(${currentX3 - 150}px, ${currentY3 - 150}px)`;
+
+    requestAnimationFrame(updateBlobs);
+  }
+
+  updateBlobs();
+}
+
+// Enhanced book animation with better error handling and longer reading times
+function setupBookAnimation() {
+  console.log("Setting up book animation");
+  const bookWrapper = document.querySelector('.book-wrapper');
+  const book = document.querySelector('.book');
+  const frontCover = document.querySelector('.book-front-cover');
+  const page1 = document.querySelector('.page1');
+  const page2 = document.querySelector('.page2');
+  const page3 = document.querySelector('.page3');
+  const page1Content = document.getElementById('page1-content');
+  const page2Content = document.getElementById('page2-content');
+  const page3Content = document.getElementById('page3-content');
+  const introLogo = document.querySelector('.intro-logo');
+  const introTagline = document.querySelector('.intro-tagline');
+  const introContinue = document.querySelector('.intro-continue');
+
+  if (!bookWrapper || !book || !frontCover || !page1 || !page2 || !page3) {
+    console.error("Book animation elements not found", {
+      bookWrapper, book, frontCover, page1, page2, page3
+    });
+    return;
+  }
+
+  console.log("Book elements found, starting animation sequence");
+
+  // Initial book position
+  book.style.transform = 'rotateY(0deg)';
+
+  // Open front cover
+  setTimeout(() => {
+    console.log("Opening front cover");
+    frontCover.style.transform = 'rotateY(-160deg)';
+
+    // Add subtle book tilt when opened
+    book.style.transform = 'rotateY(-5deg) rotateX(5deg)';
+  }, 2000); // Slightly longer delay before opening
+
+  // Show first page content
+  setTimeout(() => {
+    console.log("Showing page 1 content");
+    if (page1Content) page1Content.style.opacity = '1';
+  }, 3000);
+
+  // Turn first page - much longer delay to read page 1
+  setTimeout(() => {
+    console.log("Turning page 1");
+    if (page1) {
+      page1.style.transform = 'rotateY(-160deg)';
+      page1.style.boxShadow = '-5px 5px 5px rgba(0, 0, 0, 0.2)';
+    }
+  }, 8000); // 5 seconds to read page 1
+
+  // Show second page content
+  setTimeout(() => {
+    console.log("Showing page 2 content");
+    if (page2Content) page2Content.style.opacity = '1';
+  }, 8500);
+
+  // Turn second page - much longer delay to read page 2
+  setTimeout(() => {
+    console.log("Turning page 2");
+    if (page2) {
+      page2.style.transform = 'rotateY(-160deg)';
+      page2.style.boxShadow = '-5px 5px 5px rgba(0, 0, 0, 0.2)';
+    }
+  }, 13500); // 5 seconds to read page 2
+
+  // Show third page content
+  setTimeout(() => {
+    console.log("Showing page 3 content");
+    if (page3Content) page3Content.style.opacity = '1';
+  }, 14000);
+
+  // Fade out book after reading - much longer delay to read page 3
+  setTimeout(() => {
+    console.log("Fading out book");
+    if (bookWrapper) bookWrapper.style.animation = 'fadeOut 1s ease forwards';
+
+    // Wait for book to completely fade out before showing title
+    setTimeout(() => {
+      console.log("Showing title and tagline");
+      if (introLogo) {
+        introLogo.style.animation = 'fadeIn 2s ease forwards';
+      }
+
+      setTimeout(() => {
+        if (introTagline) {
+          introTagline.style.animation = 'fadeIn 2s ease forwards';
+        }
+      }, 500);
+
+      setTimeout(() => {
+        if (introContinue) {
+          introContinue.style.animation = 'fadeIn 1s ease forwards';
+          introContinue.style.pointerEvents = 'auto';
+        }
+      }, 1000);
+    }, 1000); // Wait 1 second after book starts fading out
+  }, 19000); // 5 seconds to read page 3
+}
+
+// Handle intro animation with improved button handling
+function setupIntroAnimation() {
+  console.log("Setting up intro animation");
+  const introAnimation = document.getElementById('intro-animation');
+  const introContinue = document.getElementById('intro-continue');
+  const mainMenu = document.querySelector('.main-menu');
+
+  if (!introAnimation || !introContinue || !mainMenu) {
+    console.error("Intro animation elements not found", {
+      introAnimation, introContinue, mainMenu
+    });
+    return;
+  }
+
+  console.log("Intro elements found, setting up book animation");
+
+  // Setup book animation
+  setupBookAnimation();
+
+  // Skip intro on continue button click with improved error handling
+  introContinue.addEventListener('click', (e) => {
+    console.log("Continue button clicked");
+    e.preventDefault();
+    introAnimation.classList.add('hidden');
+    mainMenu.classList.add('fade-in');
+  });
+
+  // Auto skip after 25 seconds (extended to account for the full animation sequence)
+  setTimeout(() => {
+    if (introAnimation && !introAnimation.classList.contains('hidden')) {
+      console.log("Auto-skipping intro animation");
+      introAnimation.classList.add('hidden');
+      mainMenu.classList.add('fade-in');
+    }
+  }, 25000);
+}
+
+// Initialize game
+function initGame() {
+  try {
+    console.log("Mindtale game initializing...");
+
+    // Setup intro animation first
+    setupIntroAnimation();
+
+    // Start blob animation
+    animateBlobs();
+
+    // Set initial screen (but don't show it yet, intro animation is showing)
+    // The intro animation will reveal the main menu when it's done
+    const mainMenu = document.querySelector('.main-menu');
+    if (mainMenu) {
+      mainMenu.classList.remove('fade-in');
+    }
+
+    // Hide inventory button initially
+    if (inventoryButton) {
+      inventoryButton.classList.add('hidden');
+    }
+
+    console.log("Game initialization complete");
+  } catch (error) {
+    console.error("Error initializing game:", error);
+
+    // Emergency fallback - force main menu to be visible
+    const introAnimation = document.getElementById('intro-animation');
+    if (introAnimation) {
+      introAnimation.classList.add('hidden');
+    }
+
+    if (mainMenu) {
+      mainMenu.style.display = 'block';
+      mainMenu.style.opacity = '1';
+      mainMenu.classList.add('fade-in');
+    }
+  }
+}
+
+// Start the game when the page loads
+window.addEventListener('DOMContentLoaded', function() {
+  console.log("DOM Content Loaded");
+  initGame();
+});
+
+// Fallback initialization
+window.onload = function() {
+  console.log("Window Loaded");
+  // Check if game is already initialized
+  const introAnimation = document.getElementById('intro-animation');
+  if (introAnimation && !introAnimation.classList.contains('hidden')) {
+    console.log("Fallback initialization triggered");
+    // Try to initialize again if the intro is still showing
+    setupIntroAnimation();
+  }
+};
+</script>
 </body>
 </html>
