@@ -1,0 +1,44 @@
+QUESTION_START
+Question: The biologist's ___ approach to conservation emphasized working with local communities rather than imposing top-down solutions. Which choice completes the text with the most logical and precise word or phrase?
+A: authoritarian
+B: collaborative
+C: theoretical
+D: experimental
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The old library building, once a center of intellectual life, had become ___ over decades of neglect, its shelves empty and its halls silent.
+A: vibrant
+B: dilapidated
+C: fortified
+D: renovated
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Scientists were ___ by the unexpected discovery that plants could communicate through underground fungal networks, challenging their previous understanding of plant behavior.
+A: bored
+B: intrigued
+C: disappointed
+D: skeptical
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The artist's work was often described as ___, blending elements from multiple cultures into a unified aesthetic vision.
+A: derivative
+B: eclectic
+C: primitive
+D: conventional
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Photosynthesis is the process by which plants convert sunlight into chemical energy stored in glucose. This process requires three essential inputs: sunlight, water, and carbon dioxide. ___ the efficiency of photosynthesis depends on the availability of all three components working together. Which choice completes the text with the most logical transition?
+A: However,
+B: Consequently,
+C: In contrast,
+D: Nevertheless,
+ANSWER: B
+QUESTION_END

@@ -1,0 +1,44 @@
+QUESTION_START
+Question: Solve for x: 2x + 5 = 13
+A: x = 2
+B: x = 4
+C: x = 6
+D: x = 9
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Which value of y satisfies y - 3 > 7?
+A: y = 8
+B: y = 10
+C: y = 12
+D: y = 15
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: If f(x) = 3x - 2 what is f(4)?
+A: 10
+B: 12
+C: 14
+D: 16
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: Solve for m: 5m - 8 = 12
+A: m = 2
+B: m = 3
+C: m = 4
+D: m = 5
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: A rectangle has length 8 cm and width 5 cm. What is its area?
+A: 13 cm²
+B: 26 cm²
+C: 40 cm²
+D: 80 cm²
+ANSWER: C
+QUESTION_END

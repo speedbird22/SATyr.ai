@@ -1,0 +1,44 @@
+QUESTION_START
+Question: Rewilding refers to the large-scale restoration of ecosystems by reintroducing native species and allowing natural processes to resume their historical patterns. Proponents argue that this approach offers a more ___ alternative to traditional conservation methods, which often focus on preserving ecosystems in their current state rather than restoring them to their former complexity.
+A: static
+B: dynamic
+C: temporary
+D: controversial
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Before their extirpation in the early twentieth century, wolves had shaped the park's ecosystem for thousands of years. Their absence created an ecological vacuum that allowed elk populations to proliferate unchecked, leading to overgrazing and the ___ of riparian vegetation.
+A: restoration
+B: degradation
+C: expansion
+D: documentation
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: When wolves returned, they didn't simply reduce elk numbers; they fundamentally altered elk behavior. The predators forced elk to avoid vulnerable areas near streams, allowing willows and aspens to recover. This recovery, in turn, stabilized riverbanks and created habitat for beavers, whose dams further modified the landscape. Scientists call this phenomenon a "trophic cascade"-a chain reaction where the presence or absence of a top predator ___ an entire ecosystem.
+A: echoes
+B: reverberates
+C: spreads
+D: bounces
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Marine biologists discovered that certain species of deep-sea fish produce their own light through bioluminescence, a chemical reaction that occurs within specialized cells. ___ anglerfish use this adaptation to attract prey in the pitch-black depths of the ocean, while other species use it primarily for communication with potential mates. Which choice completes the text with the most logical transition?
+A: However,
+B: For example,
+C: Consequently,
+D: In contrast,
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The invention of the printing press in the 15th century dramatically increased the availability of books and reduced their cost. ___ literacy rates began to rise across Europe as more people gained access to written materials and felt motivated to learn to read. Which choice completes the text with the most logical transition?
+A: Nevertheless,
+B: As a result,
+C: Similarly,
+D: On the other hand,
+ANSWER: B
+QUESTION_END
