@@ -1,0 +1,233 @@
+QUESTION_START
+Question: Rewilding seeks to restore ecosystems to former complexity. What is the primary meaning of describing it as a more ___ alternative to traditional conservation?
+A: static
+B: dynamic
+C: temporary
+D: controversial
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Wolves' absence led to overgrazing and the ___ of riparian vegetation.
+A: restoration
+B: degradation
+C: expansion
+D: documentation
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Scientists describe a trophic cascade as a chain reaction where a top predator ___ through an entire ecosystem.
+A: echoes
+B: reverberates
+C: spreads
+D: bounces
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Critics argue rewilding projects often ___ a romanticized vision of nature onto landscapes shaped by humans.
+A: impose
+B: suggest
+C: reflect
+D: demonstrate
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: Sylvia Earle described the ocean not as a resource but as a living entity. What is the function of this detail?
+A: It shows scientific error.
+B: It illustrates how childhood experiences shaped her philosophy.
+C: It suggests personal tragedy.
+D: It proves marine biology was unusual.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The printing press both threatened scribes and expanded opportunities. What is the function of this contrast?
+A: It refutes scribes’ fears.
+B: It confirms their fears were unfounded.
+C: It introduces a counterintuitive consequence.
+D: It explains immediate acceptance.
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: A participant described her garden as “a small rebellion against concrete and isolation.” What is the function of this quotation?
+A: It contradicts earlier claims.
+B: It reinforces the broader claim about community agency.
+C: It proves political motivation.
+D: It limits gardens to activism.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Monarch butterflies migrate across generations. What does this reveal?
+A: They are more resilient than others.
+B: Their migration differs from typical patterns.
+C: They navigate better than other species.
+D: Climate change threatens them uniquely.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Text 1 debates whether the Renaissance was sudden or gradual. Text 2 argues periodization oversimplifies history. How would Text 2 respond?
+A: Renaissance was religious.
+B: Sudden vs gradual is a false distinction.
+C: Classical texts were irrelevant.
+D: Renaissance should be abandoned.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Deep-sea creatures communicate using chemical signals and vibrations in addition to bioluminescence. What can be inferred?
+A: Light is ineffective.
+B: Bioluminescence may not be primary.
+C: Species abandoned light entirely.
+D: Communication improved over time.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Manuscript illumination declined before the printing press became widespread. What does this suggest?
+A: Printing caused decline.
+B: Other factors influenced decline.
+C: Illumination quality decreased.
+D: Monks became printers.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Epistolary novels declined before telegraph technology spread. What can be concluded?
+A: Telegraph caused abandonment.
+B: Literary trends likely played a role.
+C: Epistolary novels were superior.
+D: Popularity increased later.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Arctic terns begin migration before temperature drops. What does this imply?
+A: Temperature solely drives migration.
+B: Birds adapted recently.
+C: Other environmental cues influence migration.
+D: Climate change disrupted patterns.
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Marine biologists believed temperature triggered migration. New data contradicts this. What is the broader implication?
+A: Temperature is irrelevant.
+B: Scientific assumptions must be reevaluated with new evidence.
+C: Birds migrated randomly.
+D: Data collection is flawed.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The Great Wall stretches over 13,000 miles and required millions of workers. Which choice best emphasizes scale and historical significance?
+A: It stretches 13,000 miles.
+B: It was built by dynasties.
+C: It stretches over 13,000 miles and is one of the greatest engineering achievements influencing regional history.
+D: It attracts tourists.
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: The Amazon and Congo rainforests both support biodiversity and regulate environmental systems. Which statement emphasizes similarity?
+A: Amazon is larger.
+B: Both are vital ecosystems influencing global systems.
+C: Amazon produces oxygen.
+D: Congo has endemic species.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The Wright Brothers’ Flyer flew for 12 seconds in 1903, while the Concorde carried 100 passengers at supersonic speeds decades later. What does this emphasize?
+A: Both are aircraft.
+B: Technological advancement over time.
+C: Concorde’s speed.
+D: Flyer’s weight.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The philosopher’s argument failed to account for contradictory evidence. What does this suggest about her reasoning?
+A: It was flawless.
+B: It lacked empirical support.
+C: It was emotionally persuasive.
+D: It was historically accurate.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The diplomat’s carefully chosen remarks avoided offense. What does this imply?
+A: She was ambiguous.
+B: She demonstrated strategic experience.
+C: She lacked conviction.
+D: She was inflammatory.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The scientist dismissed unexpected results as measurement error. What does this reveal?
+A: Strong methodology.
+B: Departure from rigorous inquiry.
+C: Accurate conclusion.
+D: Innovation.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The Code of Hammurabi codified laws publicly but varied penalties by status. What broader conclusion follows?
+A: Written codes guarantee equality.
+B: Written law does not automatically ensure justice.
+C: Ancient societies were egalitarian.
+D: Legal systems were uniform.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: AI systems challenge our understanding of consciousness. What is the broader philosophical implication?
+A: AI already conscious.
+B: Consciousness must be reconceptualized.
+C: Biology defines morality.
+D: AI discussion is irrelevant.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Technological disruption creates long-term gains but transition costs. What must policymakers consider?
+A: Ignore costs.
+B: Address social instability during transitions.
+C: Ban innovation.
+D: Favor agriculture.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Modernist writers fragmented narrative structure. What does this reflect?
+A: Simplicity.
+B: Philosophical insight about perception.
+C: Inferior storytelling.
+D: Reader confusion.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Written legal systems create frameworks within which societies negotiate justice. What does this imply?
+A: Justice is automatic.
+B: Legal ideals and reality may diverge.
+C: Codes are unnecessary.
+D: Oral law superior.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Transition periods during economic change often create instability. What inference can be made?
+A: Change is painless.
+B: Social costs accompany innovation.
+C: Technology halts progress.
+D: Workers resist benefit.
+ANSWER: B
+QUESTION_END

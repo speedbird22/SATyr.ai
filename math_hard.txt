@@ -1,0 +1,186 @@
+QUESTION_START
+Question: In the system below, a and b are constants. If the system has infinitely many solutions, what is 2a − b? 
+5x + ay = 15 
+bx + 6y = 18
+A: 2
+B: 4
+C: 6
+D: 8
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: In the system below, what is x + y + z? 
+2x + y − z = 5 
+x − y + 2z = 3 
+3x + 2y + z = 12
+A: 4
+B: 5
+C: 6
+D: 7
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Given f(x) = {2x + 1 if x < 2; x² − 3 if x ≥ 2}, what is f(2) + f(−1)?
+A: 0
+B: 1
+C: 2
+D: 3
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: What is the minimum value of y = 2x² + 16x + 5?
+A: −27
+B: −4
+C: 5
+D: −32
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: Circle P has a circumference of 8πk, and Circle Q has a radius of 2k. The area of Circle P is how many times the area of Circle Q?
+A: 2
+B: 4
+C: 8
+D: 16
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A circle has a diameter with endpoints (2, 3) and (2, 11). Which equation represents this circle?
+A: (x − 2)² + (y − 7)² = 16
+B: (x − 2)² + (y − 7)² = 64
+C: (x − 2)² + (y − 7)² = 32
+D: (x − 7)² + (y − 2)² = 16
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: In the system below, m and n are constants. If the system has infinitely many solutions, what is m + n? 
+3x + my = 9 
+nx + 4y = 12
+A: 4
+B: 6
+C: 8
+D: 10
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Marcus earns $14 per hour tutoring and $10 per hour babysitting. He needs to earn at least $280 this week and can work at most 24 hours total. Which system represents this?
+A: 14t + 10b ≥ 280 and t + b ≤ 24
+B: 14t + 10b ≤ 280 and t + b ≥ 24
+C: 14t + 10b ≥ 280 and t + b ≥ 24
+D: 14(t + b) ≥ 280 and t + b ≤ 24
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: Simplify: (√48 + √12) / √3
+A: 4
+B: 6
+C: 8
+D: 10
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: If 2^(x+1) = 64, what is the value of x?
+A: 4
+B: 5
+C: 6
+D: 32
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: In a right triangle ABC with right angle at B, cos(A) = 5/13. What is sin(C)?
+A: 5/13
+B: 12/13
+C: 5/12
+D: 13/5
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: Lines m and n are parallel. If one angle measures 3x + 20 degrees and its corresponding angle measures 5x − 10 degrees, what is x?
+A: 10
+B: 15
+C: 20
+D: 25
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A metal sphere has a radius of 2 meters and a density of 7.5 grams per cubic meter. What is its approximate mass in grams?
+A: 251
+B: 502
+C: 1,005
+D: 2,010
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: A cylinder has a radius of 3 inches and height of 8 inches. A cone with the same radius and height is removed from the top. What is the remaining volume?
+A: 72π cubic inches
+B: 96π cubic inches
+C: 120π cubic inches
+D: 144π cubic inches
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A jar initially contains 80 marbles: 20 red and 60 blue. How many red marbles must be added so that the probability of drawing a blue marble is 50%?
+A: 20
+B: 40
+C: 60
+D: 80
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: An equilateral triangle has a height of 6√3 inches. What is its perimeter?
+A: 12 inches
+B: 24 inches
+C: 36 inches
+D: 48 inches
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: If two similar triangles have corresponding sides in the ratio 2:5, what is the ratio of their areas?
+A: 2:5
+B: 4:25
+C: 2:10
+D: 4:10
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A cone is inscribed in a cylinder with radius 4 and height 9. If the cone has the same base and height as the cylinder, what is the volume of the space between them?
+A: 48π
+B: 72π
+C: 96π
+D: 144π
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: A sphere has a radius of 5 cm. What is its surface area?
+A: 50π cm²
+B: 100π cm²
+C: 125π cm²
+D: 500π cm²
+ANSWER: D
+QUESTION_END
+
+QUESTION_START
+Question: Solve for x: log₂(x) = 5
+A: 10
+B: 25
+C: 32
+D: 64
+ANSWER: C
+QUESTION_END

@@ -1,0 +1,188 @@
+QUESTION_START
+Question: Solve for m: 2m − 15 = 5m − 3
+A: m = −4
+B: m = −2
+C: m = 2
+D: m = 4
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: A package weighs 5,500 pounds. What is its approximate weight in kilograms? (1 kilogram = 2.205 pounds)
+A: 2,494 kg
+B: 2,721 kg
+C: 12,128 kg
+D: 2,495 kg
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: If f(x) = 3√x, for what value of x does f(x) = 24?
+A: x = 8
+B: x = 64
+C: x = 512
+D: x = 4,096
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Given f(x) = 2x − 5 and g(x) = x² + 4, which equation defines g(f(x))?
+A: 4x² − 20x + 29
+B: 2x² + 3
+C: 4x² − 20x + 21
+D: x² + 2x − 1
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: How many real solutions does y = x² + 5x + 8 have?
+A: 0
+B: 1
+C: 2
+D: Infinitely many
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: Solve the system: y = x² − 4 and y = 2x − 1. What is the sum of all x-coordinates of the solutions?
+A: 2
+B: 3
+C: 4
+D: 5
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: How many solutions does the system have? y = |x − 2| and y = −x + 4
+A: 0
+B: 1
+C: 2
+D: 3
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Given f(x) = √(x − 3) and g(x) = x² + 2, find g(f(7)).
+A: 6
+B: 18
+C: 20
+D: 38
+ANSWER: D
+QUESTION_END
+
+QUESTION_START
+Question: If f(x) = (3x − 5)/2, what is f⁻¹(4)?
+A: 1
+B: 2
+C: 3
+D: 4
+ANSWER: D
+QUESTION_END
+
+QUESTION_START
+Question: What is the minimum value of y = x² − 8x + 7?
+A: −9
+B: −8
+C: 4
+D: 7
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: For which values of x is x² − 5x + 6 < 0?
+A: x < 2 or x > 3
+B: 2 < x < 3
+C: x < 3
+D: x > 2
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A deck has 52 cards. You draw one card, do not replace it, then draw another. What is the probability both are hearts?
+A: (13/52) × (12/51)
+B: (13/52)²
+C: (13/52) × (13/51)
+D: 13/51
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: A student guesses on 5 multiple-choice questions, each with 4 options. What is the probability of getting exactly 2 correct?
+A: C(5,2) × (1/4)² × (3/4)³
+B: (1/4)² × (3/4)³
+C: C(5,2) × (1/2)⁵
+D: (1/4)⁵
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: A bag contains 4 red marbles and 6 blue marbles. If you draw two marbles with replacement, what is the probability of drawing at least one red marble?
+A: 1 − (6/10)²
+B: (4/10)²
+C: 2 × (4/10) × (6/10)
+D: (4/10) + (6/10)
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: Solve for x: (x + 2)/(x − 3) = (x − 1)/(x + 1)
+A: x = 1
+B: x = −1
+C: x = 5
+D: x = −5
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: A bacteria population doubles every 3 hours. If there are initially 100 bacteria, how many will there be after 12 hours?
+A: 400
+B: 800
+C: 1,600
+D: 3,200
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Solve for x: log₂(x) = 5
+A: 10
+B: 25
+C: 32
+D: 64
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Simplify: (x² − 4)/(x² − 5x + 6) ÷ (x + 2)/(x − 3)
+A: (x − 2)/(x − 3)
+B: (x − 2)
+C: (x + 2)/(x − 2)
+D: 1
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: What is the domain of f(x) = √(9 − x²)?
+A: All real numbers
+B: −3 ≤ x ≤ 3
+C: x ≥ 3
+D: x ≤ −3
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: For what value of k does x² + kx + 9 = 0 have exactly one real solution?
+A: k = ±3
+B: k = ±6
+C: k = ±9
+D: k = ±12
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A parabola has vertex (3, −5) and passes through (5, 3). What is the equation?
+A: y = 2(x − 3)² − 5
+B: y = (x − 3)² − 5
+C: y = 3(x − 3)² − 5
+D: y = (1/2)(x − 3)² − 5
+ANSWER: A
+QUESTION_END

@@ -1,0 +1,180 @@
+QUESTION_START
+Question: The biologist's ___ approach to conservation emphasized working with local communities rather than imposing top-down solutions.
+A: authoritarian
+B: collaborative
+C: theoretical
+D: experimental
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The old library building, once a center of intellectual life, had become ___ over decades of neglect, its shelves empty and its halls silent.
+A: vibrant
+B: dilapidated
+C: fortified
+D: renovated
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Scientists were ___ by the unexpected discovery that plants could communicate through underground fungal networks.
+A: bored
+B: intrigued
+C: disappointed
+D: skeptical
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The artist's work was often described as ___, blending elements from multiple cultures into a unified aesthetic vision.
+A: derivative
+B: eclectic
+C: primitive
+D: conventional
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The research team ___ their findings in a peer-reviewed journal, establishing credibility within the scientific community.
+A: publish
+B: publishes
+C: published
+D: publishing
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: The ancient Roman roads, many of which ___ still visible today, connected distant regions of the empire.
+A: are
+B: is
+C: was
+D: were
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: The documentary explores the lives of three environmental activists ___ have dedicated their careers to protecting endangered species.
+A: which
+B: who
+C: whom
+D: that
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The museum's collection includes artifacts from multiple civilizations ___ pottery, tools, and written documents.
+A: such as
+B: for example,
+C: including
+D: like
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: The athlete's dedication to training ___ her success in the competition.
+A: contributed to
+B: contributed in
+C: contributed for
+D: contributed with
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: The novel explores themes of identity and belonging ___ following a young woman's journey across multiple continents.
+A: while
+B: during
+C: throughout
+D: within
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: The city's public transportation system ___ buses, trains, and bicycle lanes—provides residents with multiple commuting options.
+A: including
+B: includes
+C: include
+D: to include
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Photosynthesis requires sunlight, water, and carbon dioxide. ___ the efficiency of photosynthesis depends on the availability of all three.
+A: However,
+B: Consequently,
+C: In contrast,
+D: Nevertheless,
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The invention of antibiotics transformed medicine. ___ the overuse of antibiotics has led to resistant bacteria.
+A: Similarly,
+B: For example,
+C: However,
+D: Furthermore,
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Renewable energy sources reduce greenhouse gas emissions. ___ fossil fuels still dominate global energy production.
+A: Therefore,
+B: As a result,
+C: Yet,
+D: Consequently,
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: The Renaissance period saw renewed interest in classical texts. ___ this intellectual movement sparked innovations in art and science.
+A: However,
+B: In contrast,
+C: As a result,
+D: On the other hand,
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Jazz musicians Miles Davis and John Coltrane ___ their improvisational techniques to create influential recordings.
+A: combines
+B: combine
+C: combining
+D: combined
+ANSWER: D
+QUESTION_END
+
+QUESTION_START
+Question: The invention of the printing press in the fifteenth century ___ revolutionized the spread of information.
+A: have
+B: has
+C: having
+D: to have
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The research team's findings ___ contradicted the prevailing theory.
+A: significant
+B: significantly
+C: significance
+D: signify
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The novel's protagonist, along with her two companions, ___ determined to uncover the truth.
+A: were
+B: was
+C: are
+D: have been
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The Great Wall of China stretches over 13,000 miles and required millions of workers to construct, making it one of the greatest engineering achievements in history.
+Which choice best emphasizes both scale and significance?
+A: It stretches over 13,000 miles.
+B: It was built over many centuries.
+C: It required millions of workers.
+D: It stretches over 13,000 miles and is considered one of the greatest engineering achievements in human history.
+ANSWER: D
+QUESTION_END

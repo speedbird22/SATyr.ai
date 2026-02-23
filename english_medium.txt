@@ -1,0 +1,233 @@
+QUESTION_START
+Question: The traditional correspondence theory of truth posits that a statement is true if it accurately represents reality. However, alternative theories such as coherence and pragmatic theories suggest different criteria. Which choice best describes the main idea?
+A: The correspondence theory is superior.
+B: Mathematical statements cannot be true.
+C: Different theories of truth suggest that truth may be more complex than traditionally thought.
+D: Philosophers have abandoned correspondence theory.
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Technological innovation often creates long-term benefits but involves significant transition costs for displaced workers. Which choice best describes the main idea?
+A: Innovation always benefits society.
+B: Workers resist progress.
+C: Long-term benefits exist, but transition costs must be addressed.
+D: Agriculture was superior to industry.
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Modernist literature fragmented narrative structure and reflected philosophical shifts about perception. Which choice best describes the main idea?
+A: Realism was inferior.
+B: Modernist innovations reflected insights about consciousness.
+C: Unreliable narrators are confusing.
+D: Modernists invented consciousness.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Written legal codes represented progress toward justice but often failed to ensure equality in practice. Which choice best describes the main idea?
+A: Hammurabi created the first legal system.
+B: Written codes guarantee justice.
+C: Written law is progress, but implementation may fall short.
+D: Ancient systems were superior.
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Artificial intelligence raises philosophical questions about consciousness and moral status. Which choice best describes the main idea?
+A: AI already deserves rights.
+B: Consciousness is only biological.
+C: Machine consciousness challenges existing philosophical frameworks.
+D: Philosophers should ignore AI.
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Text 1 argues universal basic income reduces poverty. Text 2 argues it is expensive and inflationary. Which finding would most support Text 1?
+A: Taxes would increase.
+B: Countries implementing UBI reduced poverty without inflation.
+C: Young voters prefer UBI.
+D: Some citizens pursue education.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Cities prioritizing pedestrian infrastructure report improved health outcomes. Which finding supports this claim?
+A: Cars are convenient.
+B: Cities with bike lanes show lower obesity rates.
+C: Public transport is expensive.
+D: Car ownership is common.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Some argue social media creates echo chambers. Which finding supports this?
+A: Social media employs engineers.
+B: Heavy users report higher polarization.
+C: Billions use social media.
+D: Some seek diverse views.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Technological innovations such as printing enabled Renaissance ideas to spread. Which finding supports this?
+A: Merchant families were wealthy.
+B: Regions adopting printing earliest spread Renaissance ideas fastest.
+C: Classical texts were difficult.
+D: Renaissance spread beyond Italy.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The Industrial Revolution increased productivity. ___ it also created harsh working conditions.
+A: As a result,
+B: Therefore,
+C: Yet,
+D: Consequently,
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Quantum mechanics describes subatomic behavior. ___ general relativity describes gravity at cosmic scales.
+A: Similarly,
+B: In contrast,
+C: However,
+D: Meanwhile,
+ANSWER: D
+QUESTION_END
+
+QUESTION_START
+Question: Coral reefs support many marine species. ___ they are vulnerable to climate change.
+A: Similarly,
+B: Consequently,
+C: Yet,
+D: For instance,
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Online learning platforms personalize instruction and often improve outcomes. Which finding supports this?
+A: Online learning is convenient.
+B: Personalized instruction improves test scores.
+C: Online learning is cheaper.
+D: Enrollment increases yearly.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Certain video games enhance cognitive skills. Which finding supports this?
+A: Video games are popular.
+B: Strategy game players improve logical reasoning scores.
+C: Companies earn billions.
+D: Parents limit usage.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Archaeological evidence suggests economic factors contributed to Rome’s decline. Which finding supports this?
+A: Rome was large.
+B: Records show declining trade and currency circulation.
+C: Military leaders were weaker.
+D: Rome lasted long.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Community gardens strengthen neighborhood connections. What is the function of the quoted description?
+A: It contradicts benefits.
+B: It provides a vivid example reinforcing the claim.
+C: It proves activism is primary.
+D: It limits gardening to politics.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Monarch butterflies migrate across generations. What is the function of the explanation?
+A: It proves resilience.
+B: It clarifies a counterintuitive aspect of migration.
+C: It shows superior navigation.
+D: It predicts extinction.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Historical periodization may oversimplify transitions between eras. How would Text 2 respond?
+A: Renaissance was religious.
+B: Sudden vs gradual is a false choice.
+C: Classical texts were unimportant.
+D: Abandon Renaissance concept.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Bioluminescence may not be central to deep-sea communication. What can be concluded?
+A: Chemical signals are superior.
+B: Other factors may be equally important.
+C: Bioluminescence is oldest method.
+D: Creatures abandoned light.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Decline of manuscript illumination began before printing. What can be concluded?
+A: Printing was sole cause.
+B: Other factors may have caused decline.
+C: Quality decreased after printing.
+D: Manuscripts stayed popular.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Epistolary novels declined before telegraph use became widespread. What can be concluded?
+A: Telegraph caused abandonment.
+B: Literary factors may explain decline.
+C: Epistolary novels were superior.
+D: Popularity increased after telegraph.
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Arctic terns migrate before temperatures drop significantly. What can be inferred?
+A: Temperature is only factor.
+B: Birds are less sensitive now.
+C: Other factors likely influence migration timing.
+D: Migration became unpredictable.
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Marine biologists discovered bioluminescent fish. ___ anglerfish use this to attract prey.
+A: However,
+B: For example,
+C: Consequently,
+D: In contrast,
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: The printing press increased book availability. ___ literacy rates rose across Europe.
+A: Nevertheless,
+B: As a result,
+C: Similarly,
+D: On the other hand,
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Traditional farming is labor-intensive. Modern technology improves efficiency. ___ some regions still depend on traditional methods.
+A: Thus,
+B: For instance,
+C: However,
+D: Furthermore,
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: Sue and Big Mike are both members of the genus Tyrannosaurus. What is emphasized?
+A: Museum location.
+B: Fossil nickname.
+C: Shared classification.
+D: Regional difference.
+ANSWER: C
+QUESTION_END

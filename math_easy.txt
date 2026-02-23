@@ -1,0 +1,179 @@
+QUESTION_START
+Question: Solve for x: 2x + 5 = 13
+A: x = 2
+B: x = 4
+C: x = 6
+D: x = 9
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: Which value of y satisfies y − 3 > 7?
+A: y = 8
+B: y = 10
+C: y = 12
+D: y = 15
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: If f(x) = 3x − 2, what is f(4)?
+A: 10
+B: 12
+C: 14
+D: 16
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: Solve for m: 5m − 8 = 12
+A: m = 2
+B: m = 3
+C: m = 4
+D: m = 5
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: A rectangle has length 8 cm and width 5 cm. What is its area?
+A: 13 cm²
+B: 26 cm²
+C: 40 cm²
+D: 80 cm²
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: A circle has a radius of 6 inches. What is its circumference?
+A: 6π inches
+B: 12π inches
+C: 36π inches
+D: 12 inches
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A triangle has a base of 10 meters and height of 6 meters. What is its area?
+A: 16 m²
+B: 30 m²
+C: 60 m²
+D: 120 m²
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A square has a side length of 7 inches. What is its perimeter?
+A: 14 inches
+B: 21 inches
+C: 28 inches
+D: 49 inches
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: A rectangular box has length 5 cm, width 4 cm, and height 3 cm. What is its volume?
+A: 12 cm³
+B: 30 cm³
+C: 40 cm³
+D: 60 cm³
+ANSWER: D
+QUESTION_END
+
+QUESTION_START
+Question: A bag contains 3 red balls and 7 blue balls. What is the probability of drawing a red ball?
+A: 3/10
+B: 7/10
+C: 3/7
+D: 1/3
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: If you flip a fair coin once, what is the probability of getting heads?
+A: 1/4
+B: 1/3
+C: 1/2
+D: 2/3
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: What is the probability of rolling a 3 on a standard six-sided die?
+A: 1/6
+B: 1/3
+C: 1/2
+D: 2/3
+ANSWER: A
+QUESTION_END
+
+QUESTION_START
+Question: What is 25% of 80?
+A: 16
+B: 20
+C: 25
+D: 40
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: A shirt originally costs $40. If it is on sale for 20% off, what is the sale price?
+A: $8
+B: $20
+C: $32
+D: $48
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: What is 15% of 200?
+A: 15
+B: 20
+C: 30
+D: 45
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: If 30% of a number is 45, what is the number?
+A: 90
+B: 120
+C: 150
+D: 180
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: What is 2⁵?
+A: 10
+B: 25
+C: 32
+D: 64
+ANSWER: C
+QUESTION_END
+
+QUESTION_START
+Question: What is √64?
+A: 4
+B: 8
+C: 16
+D: 32
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: What is 3⁻²?
+A: -9
+B: 1/9
+C: 1/6
+D: 9
+ANSWER: B
+QUESTION_END
+
+QUESTION_START
+Question: If 5 apples cost $3, what is the cost per apple?
+A: $0.50
+B: $0.60
+C: $1.50
+D: $5.00
+ANSWER: B
+QUESTION_END
