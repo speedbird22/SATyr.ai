@@ -7,10 +7,8 @@
     <link rel="icon" type="image/x-icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo.jpg-C47PASs8jCKcVzcxbU7LHdiIdWJHY5.jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Load configuration first -->
     <script src="config.js"></script>
     
-    <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updateProfile, GoogleAuthProvider, signInWithPopup, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
@@ -627,7 +625,7 @@
             line-height: 1.4;
         }
 
-        /* Message limit warning */
+        /* Message limit warning (Kept for future use, though disabled for now) */
         .message-limit-warning {
             background: rgba(239, 68, 68, 0.2);
             border: 1px solid rgba(239, 68, 68, 0.3);
@@ -1988,14 +1986,11 @@
     </style>
 </head>
 <body class="theme-chatgpt-dark">
-    <!-- App Loading Screen -->
     <div class="app-loading" id="app-loading">
         <div class="spinner"></div>
     </div>
 
-    <!-- Authentication Container -->
     <div class="auth-container" id="auth-container" style="display: none;">
-        <!-- Floating Bubbles -->
         <div class="bubble"></div>
         <div class="bubble"></div>
         <div class="bubble"></div>
@@ -2003,7 +1998,6 @@
         <div class="bubble"></div>
         <div class="bubble"></div>
         
-        <!-- Stars -->
         <div class="star"></div>
         <div class="star"></div>
         <div class="star"></div>
@@ -2018,7 +2012,6 @@
                 <p>AI SAT Preparation Assistant</p>
             </div>
 
-            <!-- Main Login Form -->
             <form id="login-form" class="auth-form">
                 <button type="button" class="auth-button google-btn" onclick="signInWithGoogle()">
                     <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; margin-right: 8px;">
@@ -2038,12 +2031,10 @@
                     Continue as Guest
                 </button>
 
-                <!-- Guest mode warning -->
                 <div class="guest-warning">
-                    <strong>Guest Mode:</strong> Limited to 5 messages. Chat history won't be saved. Create an account for unlimited access and saved conversations.
+                    <strong>Guest Mode:</strong> Chat history won't be saved. Create an account to save your conversations and access them anywhere.
                 </div>
 
-                <!-- Terms and Conditions Text -->
                 <div class="terms-text">
                     By using SATyr, you accept our <a href="terms.html" target="_blank">Terms and Conditions</a>
                 </div>
@@ -2051,7 +2042,6 @@
         </div>
     </div>
 
-    <!-- Welcome Modal for New Users -->
     <div class="welcome-modal" id="welcome-modal">
         <div class="welcome-modal-content">
             <h2 id="welcome-modal-title">Welcome to SATyr! 🎉</h2>
@@ -2116,7 +2106,6 @@
         </div>
     </div>
 
-    <!-- Edit Chat Name Modal -->
     <div class="modal edit-chat-modal" id="edit-chat-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -2131,7 +2120,6 @@
         </div>
     </div>
 
-    <!-- Mobile Menu Toggle -->
     <div class="mobile-menu-toggle" id="mobile-menu-toggle">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -2140,9 +2128,7 @@
         </svg>
     </div>
 
-    <!-- Chat Interface -->
     <div class="chat-interface" id="chat-interface">
-        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo-container">
@@ -2170,8 +2156,7 @@
             <div class="sidebar-nav">
                 <div class="nav-section-title">Chat History</div>
                 <div class="chat-history" id="chat-history">
-                    <!-- Chat history items will be added here dynamically -->
-                </div>
+                    </div>
             </div>
 
             <div class="sidebar-footer">
@@ -2186,7 +2171,6 @@
             </div>
         </div>
         
-        <!-- Main Content -->
         <div class="main-content">
             <div class="main-header">
                 <h1 class="header-title" id="chat-title">Welcome to SATyr</h1>
@@ -2259,7 +2243,6 @@
             </div>
         </div>
         
-        <!-- Settings Toggle -->
         <div class="settings-toggle" id="settings-toggle">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
@@ -2267,7 +2250,6 @@
             </svg>
         </div>
         
-        <!-- Settings Panel -->
         <div class="settings-panel" id="settings-panel">
             <div class="settings-header">
                 <h2 class="settings-title">Settings</h2>
@@ -2323,8 +2305,6 @@
 
         // Guest mode state
         let isGuestMode = false;
-        let guestMessageCount = 0;
-        const GUEST_MESSAGE_LIMIT = 5;
 
         // Firebase Services (will be available after Firebase loads)
         let auth, firestore, firebaseServices;
@@ -2828,8 +2808,6 @@
         // Initialize theme manager
         const themeManager = new ThemeManager();
 
-        // MISSING FUNCTIONS - Adding all the missing function implementations
-
         // Guest Mode Functions
         function continueAsGuest() {
             console.log('👤 Starting guest mode...');
@@ -2838,7 +2816,6 @@
             isGuestMode = true;
             isLoggedIn = false;
             currentUser = null;
-            guestMessageCount = 0;
             
             // Set AI chat user name
             aiChat.setUserName("Guest");
@@ -2863,54 +2840,6 @@
             console.log('✅ Guest mode activated');
         }
 
-        function checkGuestMessageLimit() {
-            if (!isGuestMode) return false;
-            
-            if (guestMessageCount >= GUEST_MESSAGE_LIMIT) {
-                // Show message limit warning
-                showMessageLimitWarning();
-                return true;
-            }
-            
-            return false;
-        }
-
-        function showMessageLimitWarning() {
-            const messagesContainer = document.getElementById('chat-messages');
-            
-            // Remove existing warning if present
-            const existingWarning = messagesContainer.querySelector('.message-limit-warning');
-            if (existingWarning) {
-                existingWarning.remove();
-            }
-            
-            const warningDiv = document.createElement('div');
-            warningDiv.className = 'message-limit-warning';
-            warningDiv.innerHTML = `
-                <div>
-                    <strong>Message limit reached!</strong><br>
-                    You've used all ${GUEST_MESSAGE_LIMIT} free messages in guest mode.
-                </div>
-                <button class="create-account-btn" onclick="showCreateAccountPrompt()">
-                    Create Account to Continue
-                </button>
-            `;
-            
-            messagesContainer.appendChild(warningDiv);
-            
-            // Scroll to show the warning
-            setTimeout(() => {
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 100);
-            
-            // Disable input
-            const chatInput = document.getElementById('chat-input');
-            const sendButton = document.getElementById('send-button');
-            chatInput.disabled = true;
-            chatInput.placeholder = 'Create an account to continue chatting...';
-            sendButton.disabled = true;
-        }
-
         function showCreateAccountPrompt() {
             // Hide chat interface and show auth
             document.getElementById('chat-interface').classList.remove('active');
@@ -2918,7 +2847,6 @@
             
             // Reset guest mode
             isGuestMode = false;
-            guestMessageCount = 0;
             
             showNotification('Create an account to continue with unlimited messages and saved chat history!', 'info');
         }
@@ -2942,7 +2870,6 @@
                 if (isGuestMode) {
                     // For guest mode, just reset the application
                     isGuestMode = false;
-                    guestMessageCount = 0;
                     resetUIToInitialState();
                     document.getElementById('chat-interface').classList.remove('active');
                     document.getElementById('auth-container').style.display = 'flex';
@@ -3673,11 +3600,6 @@
             
             if (!message || isLoading) return;
             
-            // Check guest mode message limit
-            if (checkGuestMessageLimit()) {
-                return;
-            }
-            
             console.log('💬 Sending message:', message);
             
             // Ensure we have a chat ID
@@ -3691,11 +3613,6 @@
             // Add user message to chat
             addMessageToChat(message, 'user');
             input.value = '';
-            
-            // Increment guest message count
-            if (isGuestMode) {
-                guestMessageCount++;
-            }
             
             // Hide welcome section on first message
             if (!hasStartedTyping) {
