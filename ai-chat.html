@@ -625,37 +625,6 @@
             line-height: 1.4;
         }
 
-        /* Message limit warning (Kept for future use, though disabled for now) */
-        .message-limit-warning {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 12px;
-            padding: 16px;
-            color: #ef4444;
-            text-align: center;
-            margin: 16px 0;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .message-limit-warning .create-account-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .message-limit-warning .create-account-btn:hover {
-            background: var(--accent-color);
-            transform: translateY(-1px);
-        }
-
         /* Terms and Conditions Text */
         .terms-text {
             text-align: center;
@@ -1309,6 +1278,23 @@
             color: var(--text-primary);
         }
 
+        /* Glowing Text Animation for Loading AI Bubbles */
+        .loading-phrase {
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { opacity: 0.5; filter: drop-shadow(0 0 2px var(--primary-glow)); }
+            100% { opacity: 1; filter: drop-shadow(0 0 8px var(--primary-color)); }
+        }
+
         /* Preserve formatting in AI messages */
         .chat-message.ai ul,
         .chat-message.ai ol {
@@ -1327,7 +1313,7 @@
         .chat-input-container {
             position: sticky;
             bottom: 0;
-            padding: 24px 32px;
+            padding: 24px 32px 10px 32px; /* Adjusted padding for word counter */
             background: var(--bg-primary);
             border-top: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
@@ -1408,6 +1394,17 @@
             cursor: not-allowed !important;
             transform: none !important;
             box-shadow: var(--shadow-sm) !important;
+        }
+
+        /* Word Counter Styling */
+        #word-counter {
+            text-align: right;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 8px;
+            margin-right: 15px;
+            transition: color 0.3s ease;
         }
 
         /* Settings */
@@ -1900,89 +1897,6 @@
             cursor: not-allowed;
             transform: none;
         }
-
-        /* Enhanced AI message formatting */
-        .chat-message.ai .formatted-list {
-            margin: 12px 0;
-            padding-left: 20px;
-        }
-
-        .chat-message.ai .formatted-list li {
-            margin: 6px 0;
-            line-height: 1.4;
-        }
-
-        .chat-message.ai .formatted-sub-list {
-            margin: 8px 0 8px 20px;
-            padding-left: 16px;
-        }
-
-        .chat-message.ai .formatted-paragraph {
-            margin: 12px 0;
-            line-height: 1.6;
-        }
-
-        .chat-message.ai .formatted-paragraph:first-child {
-            margin-top: 0;
-        }
-
-        .chat-message.ai .formatted-paragraph:last-child {
-            margin-bottom: 0;
-        }
-
-        .chat-message.ai .section-header {
-            font-weight: 600;
-            color: var(--primary-color);
-            margin: 16px 0 8px 0;
-            font-size: 16px;
-        }
-
-        .chat-message.ai ol.formatted-list {
-            counter-reset: list-counter;
-        }
-
-        .chat-message.ai ol.formatted-list li.numbered-item {
-            counter-increment: list-counter;
-            list-style: none;
-            position: relative;
-        }
-
-        .chat-message.ai ol.formatted-list li.numbered-item::before {
-            content: counter(list-counter) ".";
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-right: 8px;
-        }
-
-        .chat-message.ai ul.formatted-list li.bullet-item {
-            list-style: none;
-            position: relative;
-        }
-
-        .chat-message.ai ul.formatted-list li.bullet-item::before {
-            content: "•";
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-right: 8px;
-        }
-
-        .chat-message.ai code {
-            background: var(--card-bg);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-
-        .chat-message.ai strong {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .chat-message.ai em {
-            font-style: italic;
-            color: var(--text-secondary);
-        }
     </style>
 </head>
 <body class="theme-chatgpt-dark">
@@ -2240,6 +2154,7 @@
                         </svg>
                     </button>
                 </div>
+                <div id="word-counter">0 / 500 words</div>
             </div>
         </div>
         
@@ -2305,6 +2220,26 @@
 
         // Guest mode state
         let isGuestMode = false;
+
+        // Loading Bubble State
+        const loadingPhrases = [
+            "Analyzing your prompt...",
+            "Consulting the SAT guides...",
+            "Crunching the numbers...",
+            "Cooking up a great explanation...",
+            "Connecting the dots...",
+            "Formulating the perfect response...",
+            "Brainstorming strategies...",
+            "Reviewing grammar rules...",
+            "Deciphering reading passages...",
+            "Calculating variables...",
+            "Polishing the vocabulary...",
+            "Structuring the feedback...",
+            "Just a moment, gathering thoughts...",
+            "Synthesizing knowledge...",
+            "Getting things ready for you..."
+        ];
+        let loadingInterval = null;
 
         // Firebase Services (will be available after Firebase loads)
         let auth, firestore, firebaseServices;
@@ -2606,7 +2541,7 @@
                 this.debouncedSave(currentChatId, title, messages, sessionData);
             }
 
-            // FIXED: Update chat name function with better conflict resolution
+            // Update chat name function with better conflict resolution
             async updateChatName(chatId, newTitle) {
                 if (!currentUser || isGuestMode) return false;
                 
@@ -3119,10 +3054,14 @@
             // Clear chat input and re-enable it
             const chatInput = document.getElementById('chat-input');
             const sendButton = document.getElementById('send-button');
+            const wordCounter = document.getElementById('word-counter');
+            
             chatInput.value = '';
             chatInput.disabled = false;
             chatInput.placeholder = 'Ask me anything about SAT preparation...';
             sendButton.disabled = false;
+            wordCounter.textContent = '0 / 500 words';
+            wordCounter.style.color = 'var(--text-muted)';
             
             // Reset user display
             document.getElementById('user-display').textContent = '👋 Guest User';
@@ -3153,6 +3092,7 @@
             isLoading = false;
             
             sendButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"></path></svg>';
+            removeLoadingBubble();
             
             console.log('✅ UI reset to initial state completed');
         }
@@ -3196,8 +3136,8 @@
             const messages = [];
             
             messageElements.forEach(element => {
-                // Skip message limit warnings
-                if (element.classList.contains('message-limit-warning')) return;
+                // Skip loading bubble or limits
+                if (element.id === 'current-loading-bubble') return;
                 
                 if (element.classList.contains('user')) {
                     messages.push({
@@ -3308,7 +3248,6 @@
                     
                     // Show welcome modal if user hasn't completed onboarding
                     if (!preferences.satDate || !preferences.targetScore || !preferences.whySat) {
-                        // FIXED: Update welcome modal title with user's name if available
                         const userName = userData.firstName || extractNameFromEmail(currentUser.email);
                         const welcomeTitle = document.getElementById('welcome-modal-title');
                         welcomeTitle.textContent = `Welcome ${userName}! 🎉`;
@@ -3369,7 +3308,6 @@
                 // Close modal
                 document.getElementById('welcome-modal').classList.remove('show');
                 
-                // FIXED: Show personalized welcome message
                 showNotification(`Welcome ${name}! Your preferences have been saved.`, 'success');
                 console.log('✅ Welcome info saved successfully');
                 
@@ -3418,7 +3356,6 @@
                         };
                     });
                     
-                    // FIXED: Better handling of pending updates to prevent conflicts
                     newChatHistory.forEach(newChat => {
                         // Check if this chat has a pending update
                         if (chatHistoryManager.isPendingUpdate(newChat.id, newChat.title)) {
@@ -3428,12 +3365,10 @@
                         
                         const existingChatIndex = chatHistory.findIndex(chat => chat.id === newChat.id);
                         if (existingChatIndex !== -1) {
-                            // Only update if the title is different (avoid unnecessary re-renders)
                             if (chatHistory[existingChatIndex].title !== newChat.title) {
                                 chatHistory[existingChatIndex] = newChat;
                             }
                         } else {
-                            // New chat, add it
                             chatHistory.unshift(newChat);
                         }
                     });
@@ -3588,9 +3523,53 @@
             console.log('✅ New chat started:', currentChatId);
         }
 
+        // Feature 2: Loading Bubble Functions
+        function showLoadingBubble() {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ai`;
+            messageDiv.id = 'current-loading-bubble';
+            
+            const phraseSpan = document.createElement('span');
+            phraseSpan.className = 'loading-phrase';
+            phraseSpan.textContent = loadingPhrases[Math.floor(Math.random() * loadingPhrases.length)];
+            
+            messageDiv.appendChild(phraseSpan);
+            messagesContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            setTimeout(() => {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 100);
+
+            // Cycle text every 2.5s
+            loadingInterval = setInterval(() => {
+                phraseSpan.textContent = loadingPhrases[Math.floor(Math.random() * loadingPhrases.length)];
+            }, 2500);
+        }
+
+        function removeLoadingBubble() {
+            if (loadingInterval) {
+                clearInterval(loadingInterval);
+                loadingInterval = null;
+            }
+            const bubble = document.getElementById('current-loading-bubble');
+            if (bubble) {
+                bubble.remove();
+            }
+        }
+
         // Chat Message Functions
         function selectPrompt(prompt) {
-            document.getElementById('chat-input').value = prompt;
+            const input = document.getElementById('chat-input');
+            input.value = prompt;
+            
+            // Update counter programmatically 
+            const wordCounter = document.getElementById('word-counter');
+            const wordCount = prompt.split(/\s+/).length;
+            wordCounter.textContent = `${wordCount} / 500 words`;
+            wordCounter.style.color = wordCount > 500 ? '#ef4444' : 'var(--text-muted)';
+            
             sendMessage();
         }
 
@@ -3599,6 +3578,13 @@
             const message = input.value.trim();
             
             if (!message || isLoading) return;
+            
+            // Feature 1: Word limit check before sending
+            const wordCount = message.split(/\s+/).length;
+            if (wordCount > 500) {
+                showNotification('Your prompt exceeds the 500-word limit. Please shorten it.', 'warning');
+                return;
+            }
             
             console.log('💬 Sending message:', message);
             
@@ -3612,7 +3598,11 @@
             
             // Add user message to chat
             addMessageToChat(message, 'user');
+            
+            // Clear input and reset word counter
             input.value = '';
+            document.getElementById('word-counter').textContent = '0 / 500 words';
+            document.getElementById('word-counter').style.color = 'var(--text-muted)';
             
             // Hide welcome section on first message
             if (!hasStartedTyping) {
@@ -3624,14 +3614,18 @@
                 messagesContainer.classList.add('expanded');
             }
             
-            // Show loading state
+            // Show loading state and the animated loading bubble
             setLoadingState(true);
+            showLoadingBubble();
             
             try {
                 // Send to Personal AI
                 const response = await aiChat.sendRequest(message, isGuestMode ? null : currentChatId);
                 
                 if (response && response.ai_message) {
+                    // Remove loading bubble before adding actual response
+                    removeLoadingBubble();
+                    
                     // Add AI response to chat
                     addMessageToChat(response.ai_message, 'ai');
                     
@@ -3648,6 +3642,8 @@
             } catch (error) {
                 console.error('❌ Error sending message:', error);
                 
+                removeLoadingBubble();
+                
                 // More specific error handling
                 if (error.message.includes('500')) {
                     addMessageToChat('I apologize, but I\'m experiencing technical difficulties right now. Please try again in a few moments, or check your Personal AI configuration.', 'ai');
@@ -3657,6 +3653,8 @@
                     showNotification('Failed to send message. Please try again.', 'error');
                 }
             } finally {
+                // Ensure state is reset 
+                removeLoadingBubble();
                 setLoadingState(false);
             }
         }
@@ -3695,16 +3693,11 @@
         }
 
         function formatAIMessage(content) {
-            // Enhanced formatting for AI messages
             let formatted = content;
             
-            // Convert numbered lists
             formatted = formatted.replace(/^\d+\.\s+(.+)$/gm, '<li class="numbered-item">$1</li>');
-            
-            // Convert bullet points
             formatted = formatted.replace(/^[-•]\s+(.+)$/gm, '<li class="bullet-item">$1</li>');
             
-            // Wrap consecutive list items
             formatted = formatted.replace(/(<li[^>]*>.*?<\/li>\s*)+/gs, (match) => {
                 if (match.includes('numbered-item')) {
                     return `<ol class="formatted-list">${match}</ol>`;
@@ -3713,16 +3706,9 @@
                 }
             });
             
-            // Convert paragraphs
             formatted = formatted.replace(/^(?!<[ol|ul|li])(.+)$/gm, '<p class="formatted-paragraph">$1</p>');
-            
-            // Clean up empty paragraphs
             formatted = formatted.replace(/<p class="formatted-paragraph">\s*<\/p>/g, '');
-            
-            // Convert **bold** text
             formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            
-            // Convert *italic* text
             formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
             
             return formatted;
@@ -3850,16 +3836,37 @@
 
         // Event Listeners and Initialization
         function setupEventListeners() {
+            // Live word counter logic
+            const chatInput = document.getElementById('chat-input');
+            const wordCounter = document.getElementById('word-counter');
+            const sendBtn = document.getElementById('send-button');
+
+            chatInput.addEventListener('input', () => {
+                const text = chatInput.value.trim();
+                const wordCount = text === '' ? 0 : text.split(/\s+/).length;
+                wordCounter.textContent = `${wordCount} / 500 words`;
+
+                if (wordCount > 500) {
+                    wordCounter.style.color = '#ef4444'; // Red warning
+                    sendBtn.disabled = true;
+                } else {
+                    wordCounter.style.color = 'var(--text-muted)';
+                    sendBtn.disabled = text === '' || isLoading;
+                }
+            });
+
             // Chat input enter key
-            document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            chatInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    sendMessage();
+                    if (!sendBtn.disabled) {
+                        sendMessage();
+                    }
                 }
             });
             
             // Send button click
-            document.getElementById('send-button').addEventListener('click', sendMessage);
+            sendBtn.addEventListener('click', sendMessage);
             
             // Settings toggle
             document.getElementById('settings-toggle').addEventListener('click', () => {
