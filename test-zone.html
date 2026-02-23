@@ -58,7 +58,6 @@
             100% { opacity: 1; }
         }
 
-        /* Glassmorphism Utility */
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -68,7 +67,6 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
-        /* Layout Structure */
         #app {
             position: relative;
             z-index: 1;
@@ -148,11 +146,6 @@
             transform: translateY(-5px);
             border-color: var(--accent-1);
             box-shadow: 0 10px 30px rgba(78, 205, 196, 0.15);
-        }
-
-        .card-btn h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
         }
 
         /* Test Interface */
@@ -245,6 +238,45 @@
             margin-right: 1rem;
         }
 
+        /* NEW: Improved Pagination Buttons */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 0.9rem 2.2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            border-color: var(--accent-1);
+        }
+
+        /* Styling for when "Next" turns into "Submit" */
+        .action-btn.submit-mode {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: #000;
+            border: none;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.2);
+        }
+
+        .action-btn.submit-mode:hover {
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+            transform: translateY(-2px);
+        }
+
         /* Right Panel Elements */
         .timer-panel {
             padding: 1.5rem;
@@ -298,23 +330,22 @@
             box-shadow: 0 0 10px rgba(78, 205, 196, 0.4);
         }
 
-        .submit-btn {
+        /* Hide global right-side submit button since we moved it into the flow */
+        .global-submit-btn {
             padding: 1rem;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            color: #000;
-            border: none;
+            background: transparent;
+            color: var(--error);
+            border: 1px solid rgba(255, 107, 107, 0.3);
             border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
+            font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(78, 205, 196, 0.4);
+        .global-submit-btn:hover {
+            background: rgba(255, 107, 107, 0.1);
+            border-color: var(--error);
         }
 
         /* Loading Overlay */
@@ -377,11 +408,10 @@
         .review-item.correct { border-left: 4px solid var(--success); }
         .review-item.incorrect { border-left: 4px solid var(--error); }
 
-        /* Responsive */
         @media (max-width: 768px) {
             #test-interface { flex-direction: column; height: auto; }
             .test-right { flex-direction: row; flex-wrap: wrap; }
-            .timer-panel, .submit-btn { flex: 1; }
+            .timer-panel, .global-submit-btn { flex: 1; }
             .navigator-panel { width: 100%; }
         }
     </style>
@@ -439,9 +469,9 @@
                     <div class="options-list" id="options-container">
                         </div>
                 </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <button class="nav-btn glass" style="padding: 0.8rem 2rem;" onclick="app.prevQuestion()">← Previous</button>
-                    <button class="nav-btn glass" style="padding: 0.8rem 2rem;" onclick="app.nextQuestion()">Next →</button>
+                <div class="pagination-container">
+                    <button id="prev-btn" class="action-btn" onclick="app.prevQuestion()">← Previous</button>
+                    <button id="next-btn" class="action-btn" onclick="app.nextQuestion()">Next →</button>
                 </div>
             </div>
             
@@ -455,7 +485,7 @@
                     <div class="nav-grid" id="nav-grid">
                         </div>
                 </div>
-                <button class="submit-btn" onclick="app.submitTest()">Submit Assessment</button>
+                <button class="global-submit-btn" onclick="app.submitTest()">End Test Early</button>
             </div>
         </div>
 
@@ -470,7 +500,7 @@
             <h3 style="margin-bottom: 1rem;">Detailed Review</h3>
             <div class="review-list" id="review-list">
                 </div>
-            <button class="submit-btn" style="margin-top: 2rem; width: 100%;" onclick="location.reload()">Return to Dashboard</button>
+            <button class="action-btn submit-mode" style="margin-top: 2rem; width: 100%; justify-content: center;" onclick="location.reload()">Return to Dashboard</button>
         </div>
     </div>
 
@@ -481,7 +511,7 @@
                 difficulty: null,
                 questions: [],
                 currentIdx: 0,
-                answers: {}, // { index: 'A'|'B'|'C'|'D' }
+                answers: {}, 
                 timeLeft: 35 * 60,
                 timerId: null
             },
@@ -499,7 +529,6 @@
 
             async loadTestFile() {
                 this.showLoader(true);
-                // The './' ensures it searches the exact same root folder as testzone.html
                 const filename = `./${this.state.subject}_${this.state.difficulty}.txt`;
                 
                 try {
@@ -527,7 +556,6 @@
                     if (!block.includes('QUESTION_END')) continue;
                     const content = block.split('QUESTION_END')[0].trim();
 
-                    // Strict Regex Parsing
                     const qMatch = content.match(/Question:\s*([\s\S]*?)A:/i);
                     const aMatch = content.match(/A:\s*([\s\S]*?)B:/i);
                     const bMatch = content.match(/B:\s*([\s\S]*?)C:/i);
@@ -577,13 +605,33 @@
                 });
 
                 this.updateNavigatorHighlight();
+                this.updateActionButtons();
+            },
+
+            // FIXED: Hide "Next" on the last question, show "Submit", hide "Previous" on question 1
+            updateActionButtons() {
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+
+                // Toggle visibility of Previous button so it doesn't shift the layout
+                prevBtn.style.visibility = this.state.currentIdx === 0 ? 'hidden' : 'visible';
+
+                // Transform Next button to Submit button on final question
+                if (this.state.currentIdx === this.state.questions.length - 1) {
+                    nextBtn.textContent = 'Submit Assessment ✓';
+                    nextBtn.classList.add('submit-mode');
+                    nextBtn.onclick = () => this.submitTest();
+                } else {
+                    nextBtn.textContent = 'Next →';
+                    nextBtn.classList.remove('submit-mode');
+                    nextBtn.onclick = () => this.nextQuestion();
+                }
             },
 
             handleAnswer(letter) {
                 this.state.answers[this.state.currentIdx] = letter;
-                this.renderQuestion(); // Re-render to show selection
+                this.renderQuestion(); 
                 
-                // Update nav grid visual
                 const navBtn = document.getElementById(`nav-btn-${this.state.currentIdx}`);
                 if (navBtn) navBtn.classList.add('answered');
             },
@@ -604,8 +652,9 @@
                 });
             },
 
+            // FIXED: Specifically select ONLY grid buttons so indexes line up perfectly
             updateNavigatorHighlight() {
-                document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
+                document.querySelectorAll('#nav-grid .nav-btn').forEach((btn, idx) => {
                     btn.classList.toggle('active', idx === this.state.currentIdx);
                 });
             },
